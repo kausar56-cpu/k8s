@@ -1,1 +1,29 @@
+create 2 instance 1 for cluster creating and 2. for ssl genrating
+1 ec2 - t2.medium  2. ec2 - t2 micro
+take access 2.ec2 
+sudo snap install --classic certbot
+------------------------------------------------------------------------------------------------------------------
+sudo certbot certonly --manual \
+--preferred-challenges dns \
+--key-type rsa \
+--email saikiran.pinapathruni18@gmail.com \
+--server https://acme-v02.api.letsencrypt.org/directory \
+--agree-tos \
+-d "*.cloudvishwakarma.com"
+----------------------------------------------------------------------------------------------------------------
+press 2time enter then it will give us 2 cirtificate 
+ACME-CHALLANGE 
+3mQ_Jx6arEg_rUFMd107c{JDNs01Y-tu9busqheyt jo ----text record
+COPY acme-change cirtificate go to rout53 --hosted zones--create it by domain--click on creted hosted zone---crete record  A  & add ACME-CHALLANGE heare ----
+record name -ACME-CHALLANGE
+record type -TXT
+value - copy -text record-pest
+simple routing
+wait up to status insync
+----------------------------------------------------------------------------------------------------------
+after go terminal see cirtificate succussfully recived 
+cert -we got cirtificate saved location ---/etc/letsencrypt/live/cloudvishwakarma.in/fullchain.pem
+key saved at --- /etc/letsencrypt/live/cloudvishwakarma.in/privatekey.pem
+cat - cert 
+cat key
 
