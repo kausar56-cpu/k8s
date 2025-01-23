@@ -10,6 +10,7 @@ sudo certbot certonly --manual \
 --server https://acme-v02.api.letsencrypt.org/directory \
 --agree-tos \
 -d "*.cloudvishwakarma.com"
+
 ----------------------------------------------------------------------------------------------------------------
 press 2time enter then it will give us 2 cirtificate 
 ACME-CHALLANGE 
@@ -20,6 +21,7 @@ record type -TXT
 value - copy -text record-pest
 simple routing
 wait up to status insync
+
 ----------------------------------------------------------------------------------------------------------
 after go terminal see cirtificate succussfully recived 
 cert -we got cirtificate saved location ---/etc/letsencrypt/live/cloudvishwakarma.in/fullchain.pem
@@ -27,3 +29,345 @@ key saved at --- /etc/letsencrypt/live/cloudvishwakarma.in/privatekey.pem
 cat - cert 
 cat key
 
+------------------------------------------------------------------------------------------------------------------
+deploy ingress controller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/aws/deploy.yaml
+cd /tmp
+nano tls.cert 
+copy cert and pest
+nano tls.key
+copy pest key
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+kubectl create secret tls nginx-tls-default --key="tls.key" --cert="tls.crt"
+ku get secrets
+ku describe nginx-tls-default
+output like be  tls.key:
+tis.crt:
+1704 bytes
+3590 bytes
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+docker pull kiran2361993/testing:latestappresults
+now push image private docker repository
+so crete private 1 firstly
+docker tag kiran2361993/testing:latestappresults kiran2361993/votingapp:results
+firstly i have to mention public one then private repostry then tag----------imp
+docker push  kiran2361993/votingapp:results
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+now pull vote image 
+docker pull kiran2361993/testing:latestappvote
+docker tag kiran2361993/testing:latestapp kiran2361993/votingapp:vote
+docker push  kiran2361993/votingapp:vote
+-----------------------------------------------------------------------------------------------------------------------------------
+
+now pull BE image
+docker pull kiran2361993/testing:latestappworker
+docker tag kiran2361993/testing:latestappworker kiran2361993/votingapp:worker
+docker push  kiran2361993/votingapp:worker
+
+------------------------------------------------------------------------------------------------------------------------------
+login hub
+# Tag and push Docker images, then remove local images
+docker rmi $(docker images -aq) --force
+
+# Delete the existing deployment
+kubectl delete deployment <your-deployment-name>
+
+# Create Docker registry secret
+kubectl create secret docker-registry docker-pwd --docker-username=<your-username> --docker-password=<your-password> --docker-email=<your-email>
+
+deploy yaml file
+
+# redis
+--- 
+apiVersion: v1
+kind: Service
+metadata: 
+  labels: 
+    app: redis
+  name: redis
+spec: 
+  clusterIP: None
+  ports:
+  - name: redis-service
+    port: 6379
+    targetPort: 6379
+  selector: 
+    app: redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+
+# db
+--- 
+apiVersion: v1
+kind: Service
+metadata: 
+  labels: 
+    app: db
+  name: db
+spec: 
+  clusterIP: None
+  ports: 
+  - name: db
+    port: 5432
+    targetPort: 5432
+  selector: 
+    app: db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  labels:
+    app: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: postgres:9.4
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        ports:
+        - containerPort: 5432
+          name: db
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+# result
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: result
+  labels:
+    app: result
+spec:
+  #type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    name: result-service
+  selector:
+    app: result
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result
+  labels:
+    app: result
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - name: result
+        image: kiran2361993/votingapp:results
+        ports:
+        - containerPort: 80
+          name: result
+      imagePullSecrets:
+      - name: docker-pwd
+# vote
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote
+  labels:
+    apps: vote
+spec:
+  #type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      name: vote-service
+  selector:
+    app: vote
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote
+  labels:
+    app: vote
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+      - name: vote
+        image: kiran2361993/votingapp:vote
+        ports:
+        - containerPort: 80
+          name: vote
+      imagePullSecrets:
+      - name: docker-pwd
+
+# worker
+--- 
+apiVersion: v1
+kind: Service
+metadata: 
+  labels: 
+    apps: worker
+  name: worker
+spec: 
+  clusterIP: None
+  selector: 
+    app: worker
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  labels: 
+    app: worker
+  name: worker
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template: 
+    metadata: 
+      labels: 
+        app: worker
+    spec: 
+      containers: 
+      - image: kiran2361993/votingapp:worker
+        name: worker
+      imagePullSecrets:
+      - name: docker-pwd
+
+      ------------------------------------------------------------------------------------------------------------------------------
+     go to rout53 - crete recored A - simple recored -recored name www-  alias - network lb watch vedio
+
+     ----------------------------------------------------------------------------------------------------
+     depoly ingress.yaml
+
+     apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: result-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    spec.ingressClassName: nginx
+#  changed - as it is depracted "kubernetes.io/ingress.class"
+spec:
+  tls:
+  - hosts:
+    - "result.cloudvishwakarma.in"
+    secretName: nginx-tls-default
+  rules:
+  - host: result.cloudvishwakarma.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: result
+            port:
+              number: 80
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vote-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    spec.ingressClassName: nginx
+spec:
+  tls:
+  - hosts:
+    - "vote.cloudvishwakarma.in"
+    - "www.cloudvishwakarma.in"
+    secretName: nginx-tls-default
+  rules:
+  - host: vote.cloudvishwakarma.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vote
+            port:
+              number: 80
+  - host: www.cloudvishwakarma.in
+    http: 
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vote
+            port:
+              number: 80
+
+---
