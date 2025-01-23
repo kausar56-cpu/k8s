@@ -1,1 +1,7 @@
-
+crete vpc 1. web
+2. app
+coopy vpc id --go sg--- allow all trafirc
+crete perring connection
+go to route - add route - add cidr -seclect destination peerring connection
+go console - lunch 2 instance - seclect perring connection - sg carrefully 
+ping private ip
