@@ -15,6 +15,7 @@ NACL - staeless firewall
 if in sg we allow 22- ip then + not connecting
 sg - http/s - download page
 ping- icmp - it will ping
+ping uses icmp protocol
 ------------------------------------------------------------------------------------
 nacl - we have to edit inbound and outbond rule but inbound and outbound rule soudent match 
 in outbond rule it gives randum no 1024 - 65535
