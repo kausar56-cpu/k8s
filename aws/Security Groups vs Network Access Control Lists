@@ -19,3 +19,6 @@ ping- icmp - it will ping
 nacl - we have to edit inbound and outbond rule but inbound and outbound rule soudent match 
 in outbond rule it gives randum no 1024 - 65535
 ______________________________________________________________________________________________
+@saiharsha4619  actually security Groups allow incoming SSH on port 22, and the return traffic (outbound) is allowed automatically without needing specific rules. 
+
+But With NACLs, outbound traffic uses a random high-numbered which was called as ephermal  port  for the return, so NACLs need to allow these ephemeral ports for the response to get through.
