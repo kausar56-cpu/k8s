@@ -1,1 +1,11 @@
-
+creat vpc - configure sg- creat s3- crete ec2 select vpc, sg 
+crete flow logs aadd s3 ARN 
+go to ec2 take access install nginx
+copy dns
+root@ip-10-0-6-173:~# curl ec2-18-206-224-75.compute-1.amazonaws.com
+root@ip-10-0-6-173:~# while true
+> do
+> curl ec2-18-206-224-75.compute-1.amazonaws.com | grep -i nginx
+> sleep 1
+> done
+ckexk s3 buket
