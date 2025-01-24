@@ -1,1 +1,21 @@
+FIREWALL 
+2 type
+1. stateless
+2. statefull
+--------------------------------------------------------------------------
 
+statefull - traffic will go from user - firewall - linux machine - and returen to user
+stateless - traffic will go from user - firewall - linux machine -at firewall crete port - through this traffic will go - user
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+SG - statefull firewall
+NACL - staeless firewall
+-----------------------------------------------------------------------------
+if in sg we allow 22- ip then + not connecting
+sg - http/s - download page
+ping- icmp - it will ping
+------------------------------------------------------------------------------------
+nacl - we have to edit inbound and outbond rule but inbound and outbound rule soudent match 
+in outbond rule it gives randum no 1024 - 65535
+______________________________________________________________________________________________
