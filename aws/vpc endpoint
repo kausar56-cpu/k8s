@@ -1,6 +1,6 @@
 crete bucket s3 - add policy 
 ACLS enabled - uncheck public access 
-crete vpc 1 public and 1private subnet crete diff zones
+crete vpc 1 public and 1private subnet cwithout endpoint
 then cret 2ec2 1 private 2. public
 on public ec2 nano pem.key - add key
 chmod 400 pem.key
