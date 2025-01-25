@@ -1,1 +1,12 @@
+colne repo 
+modify all resource
+packer.exce validate --var-file packer-vars.json packer.json
+packer.exce build validate --var-file packer-vars.json packer.json
 
+-----------------------------------------------------------------------
+Please ensure:
+- Auto assign public ip for the subnets
+- SSH is allowed in SG
+- 'amazon-ebs' packer plugin is installed
+- Instance should be in public subnet
+- Proper routing in RT
