@@ -1,3 +1,5 @@
+nv mde dev and testing env ahe prtekach vpc ahe ---- ohio mde preprod ahe tyacha pn vpc ahe ---2 region connect kelte tgw through
+
 crete 2 vpc private 0 public 1
 vpc1 - 10.0.0.0/16
 vpc2- 192.168.0.0/16
