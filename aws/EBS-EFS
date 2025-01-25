@@ -1,0 +1,129 @@
+diff ebs and instace sorage 
+instance storage - 
+1. its not good practice - why? default space get 8gb only /rroot
+2. if u start ans stop data whatever data u kept it will gone
+4 size and type fixed - t2micro , t2 midum
+5 .if u alredy creat8 gb and now u want reqiured 5 gb then i have create EBS
+6. u cannot attach or ditach volume to anyother instance
+---------------------------------------------------------------
+EBS
+12. if u start ans stop data whatever data u kept it will NOT gone
+WE CAN INCRESE UP TO 16 TB
+hhd and ssd
+hhd
+1 GP2 2. GP3  --IO1 AND IO2 THIS 2 IOpS VERY GIVE US EXTREM PERFORMANCE --database -best practise
+------------------------------------------
+ssd
+1.sc1 2 . sct 3 standred
+disadventage - ebs volume is az and region independent
+us-east-1 mde crete kel tr titch add kry yety
+---------------------------------------------------------------------------------------
+
+Here are the key steps from your history in note format:
+
+- **Check Available Devices**:  
+  - Use `lsblk` to ensure `/dev/xvdb1` or `/dev/xvdc1` exists and is properly recognized.
+
+- **Create the Mount Point**:  
+  - Use `sudo mkdir -p /ivo1` to create the mount point.
+
+- **Verify the Filesystem**:  
+  - Run `sudo file -s /dev/xvdb1` and `sudo file -s /dev/xvdc1` to check the filesystem type.
+  - Ensure that the `mkfs.ext4` was successful on `/dev/xvdb1` and `/dev/xvdc1`.
+
+- **Mount the Device**:  
+  - Use `sudo mount /dev/xvdb1 /ivo1` to mount the first device.
+  - If mounting a second device, create a new mount point:  
+    `sudo mkdir -p /ivo2`  
+    `sudo mount /dev/xvdc1 /ivo2`
+
+- **Check for Errors**:  
+  - Use `dmesg | tail -n 20` to see any error messages or logs related to the mount operation.
+
+This summarizes your actions into clear notes. Let me know if you need more details on any step!
+
+--------------------------------------
+--------------------------------------------
+
+To make the mounted volumes persistent across reboots, you'll need to add an entry to the `/etc/fstab` file. This ensures that the volumes are automatically mounted when the system restarts.
+
+Here’s the final step-by-step process to achieve persistence:
+
+---
+
+### Steps to Make the Mount Persistent:
+
+1. **Find the UUID of the Volume**:
+   - Run the command `sudo blkid` to find the UUID of your volume. This will provide the exact identifier for the device (e.g., `/dev/xvdb1` or `/dev/xvdc1`).
+
+2. **Edit `/etc/fstab`**:
+   - Open the `/etc/fstab` file in a text editor:  
+     ```bash
+     sudo nano /etc/fstab
+     ```
+   
+3. **Add the Mount Information**:
+   - Add the following line at the end of the `/etc/fstab` file to ensure the volumes are mounted automatically on boot:
+
+     For `/dev/xvdb1` mounted to `/ivo1`:
+     ```
+     UUID=<UUID_of_xvdb1> /ivo1 ext4 defaults,nofail 0 0
+     ```
+
+     For `/dev/xvdc1` mounted to `/ivo2`:
+     ```
+     UUID=<UUID_of_xvdc1> /ivo2 ext4 defaults,nofail 0 0
+     ```
+   
+   - Replace `<UUID_of_xvdb1>` and `<UUID_of_xvdc1>` with the actual UUIDs from the `blkid` command.
+
+4. **Test the Mounting**:
+   - To test if the configuration is correct and works without rebooting, run:
+     ```bash
+     sudo mount -a
+     ```
+   - This will mount all entries listed in `/etc/fstab`. Check if the volumes are properly mounted by running `df -h` or `lsblk`.
+
+5. **Reboot**:
+   - Reboot your system:
+     ```bash
+     sudo reboot
+     ```
+   - After the system reboots, check if the volumes are still mounted by using `df -h` or `lsblk`. They should now be mounted automatically.
+
+---
+
+### Final Outcome:
+You’ve successfully made the mount persistent. Now, your EBS volumes (`/dev/xvdb1` and `/dev/xvdc1`) will be automatically mounted to `/ivo1` and `/ivo2` respectively, even after a system reboot.
+
+Let me know if you need further assistance!
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Block Storage Elastic Block Storage (EBS) Volumes: Provides persistent block storage volumes that can be attached to EC2 instances. 
+Allows you to create, attach, and detach volumes to EC2 instances as needed. Supports different volume types optimized for various workloads, 
+including General Purpose SSD (gp2/gp3), Provisioned IOPS SSD (io1/io2), and Throughput Optimized HDD (st1).
+Instance Storage: Directly attached storage to EC2 instances. Provides high I/O performance but is non-persistent.
+Data stored in instance storage is lost if the instance is stopped or terminated. 
+Typically available in fixed sizes and types and limited to specific instance types.
+-----------------------------------------------------------------------------------------------------------------------------------
+
+File Storage AWS Elastic File System (EFS): Fully managed file storage service that supports NFSv4 protocol. 
+Offers scalable and highly available file storage for Linux-based workloads, allowing multiple EC2 instances to access the same file system concurrently.
+AWS FSx: Provides fully managed file systems optimized for Windows-based workloads, including Windows File Server and Lustre
+---------------------------------------------------------------------------------------------------------------------------------------
+
+Object Storage Amazon Simple Storage Service (S3): Object storage service designed to store and retrieve any amount of data from anywhere on the web.
+Ideal for storing unstructured data, such as images, videos, documents, and backups. Offers high durability, availability, and scalability at a low cost.
+Amazon Glacier: Low-cost storage service designed for long-term data archiving and backup. Offers multiple retrieval options with varying latency,
+allowing you to optimize costs based on your access requirements. Advantages and 
+Use Cases of EBS Volumes Permanent Storage: EBS volumes provide persistence, ensuring that data remains intact even
+if the associated EC2 instance is stopped or terminated. Flexible Volume Types: Choose from a variety of EBS volume types optimized for different performance
+and cost requirements, ranging from high-performance SSDs to cost-effective HDDs. Scalability and 
+Attachment Flexibility: Easily scale EBS volumes up to 16TB in size and attach/detach them to different EC2 instances as needed. 
+Practical Implementation and Best Practices Volume Provisioning and Mounting: Provision EBS volumes and mount them to EC2 instances using standard Linux commands
+like lsblk, fdisk, mkfs, and mount. Update the /etc/fstab file to automatically mount EBS volumes at boot time.
+Performance Optimization: Utilize different EBS volume types based on your application's performance requirements, ensuring optimal I/O performance
+and cost-effectiveness. By understanding the various storage options available in AWS, including EBS volumes, you can architect scalable and reliable
+storage solutions tailored to your specific workload requirements and budget constraints.
+----------------------------------------------------
