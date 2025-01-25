@@ -1,1 +1,19 @@
-
+crete 2 vpc private 0 public 1
+vpc1 - 10.0.0.0/16
+vpc2- 192.168.0.0/16
+configure sg
+crete tgw 
+crete 2 tgw attachment 
+go to route table edit it select destination tgw and one thing remeber at v1 put v2 cidr and select destination tgw
+crete 2ec2 instance public subnet
+try ping v1 -v2
+-----------------------------------------------------------------------------------------------
+go to ohic region
+crete vpc and crete ec2 take acces
+ctere tgw
+crete attachment
+edit routes - 3 ni vpc che cidir yenar
+--------------------------------------------------------------------------------------------------------------
+go nv - v-1 and v-2 - edit route - add ohic tgw-cidr 
+--------------------------------------------------------------------------------------------------------
+go to ohio region crete perring tgw attachment - select proper resion- tgw id
