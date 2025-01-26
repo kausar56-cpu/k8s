@@ -1,3 +1,18 @@
 LB - 1. regional and 2. vpc
 regional - 1. global acclator lb 
 vpc - 1 nework  2. application
+--------------------------------------
+vpc - 3 private and 3 public subnet
+3 private instance 
+crete target group
+crete lb in that select 3 public subnet - tls-443 -select cirtificate
+1.go to routr53 - hosted zone- CLICK ON IT - 
+2. crete cirtificate - we got cname and value
+then this vale add in route 53 - crete record andd add wait until sync
+------------------------------------------------------------
+go to rote 53 cret record - add subdomain name 
+alias - nlb
+----------------------------
+to check load will balcece each instance
+while true; do curl -sl https://www.kausarmujawar.com/ | grepi -i 'ip-10-0'; sleep 1; done
+while true; do curl -sl https://www.kausarmujawar.com/ | grepi -i 'ip-10-0'; sleep 1; done | tee -a awsnlb.log
