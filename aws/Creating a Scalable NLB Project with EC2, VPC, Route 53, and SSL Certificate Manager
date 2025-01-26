@@ -17,3 +17,5 @@ to check load will balcece each instance
 while true; do curl -sl https://www.kausarmujawar.com/ | grepi -i 'ip-10-0'; sleep 1; done
 while true; do curl -sl https://www.kausarmujawar.com/ | grepi -i 'ip-10-0'; sleep 1; done | tee -a awsnlb.log
 cat awsnlb.log grep -i ip wc -i
+--------------------------------------------------------------
+go to nlb - attributes - select - cross zone
