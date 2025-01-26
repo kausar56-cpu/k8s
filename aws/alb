@@ -1,0 +1,60 @@
+crete vpc 3 subnet private and pulic
+modify sg - all traffic, all udp, all tcp, hppt, htpps, ssh 
+crete 3 instance with private subnet 1,2,3-  add nginx file differently
+-----------------------------------------------------------------------------------------------------
+#!/bin/bash
+
+# Create the /home folder and add content
+sudo mkdir -p /var/www/html/home
+sudo mkdir -p /var/www/html/kausar
+sudo mkdir -p /var/www/html/sara
+echo "<h1>Welcome to Home</h1>" | sudo tee /var/www/html/home/index.html
+
+# Update Nginx to serve /home
+sudo bash -c 'cat >> /etc/nginx/sites-available/default' <<EOF
+
+location /home {
+    alias /var/www/html/home;
+    index index.html;
+}
+EOF
+
+# Restart Nginx to apply changes
+sudo systemctl restart nginx
+
+echo "The /home folder has been configured and is ready at /home."
+---------------------------------------------------------------------------------------------------
+
+crete tg - homepage-tg  -http - select vpc -select 1 ec2 - include as pending - crete
+---------------------------------------------------------------------------------------------
+crete load balancer - select both http and https - select acm
+-----------------------------------------------------------------------------------------------
+
+crete tg - movies-tg  -http - select vpc -select 1 ec2 -  helth check path-/movies/- include as pending - crete
+crete tg - shops-tg  -http - select vpc -select 1 ec2 -   helth check path-/shops/-include as pending - crete
+------------------------------------------------------------------------------------------------------------
+route53 -crete hosted zone - click on it - crete record - alias and wwww subdomain name- 
+-------------------------------------------------------------------------------------------------------------
+how to redirect https to http
+go to -lb - listenr and rule -http:80- edit rule -routing action - 2 option is there - forward to target and redirectto url click on redirect
+--full url
+--------------------------------------------------------------------------------------------------------------------------------
+how to forwerd traffic to /home to /shops
+lb - https - name - add condition -path base - /movies/* - confirm - forward to target - select correct tg -privority -1  -
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
