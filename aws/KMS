@@ -1,2 +1,32 @@
 2 tpe kms 
 master key and data key
+
+Master Key — One line definition would be that It is used to encrypt data. However, the
+maximum size of data that can be encrypted using the master key is 4KB.
+The master Key itself is classified into two types
+1 -Customer Master Key(CMK)
+2-Data Key
+
+---------------------------
+Customer Master Key(CMK): Customer Master Key is a schematic representation of the master
+key. The schema contains
+Key ID
+Creation Date
+Description
+Key State
+Key Material
+------------------------------------------
+Though KMS doesn't perform Asymmetric Encryption, it allows us to create Symmetric and
+Asymmetric Customer Master Keys.
+There is a limit of 10,000 CMKs per account per region by default. But you can always
+request to limit an increase for the CMKs.
+----------------------------------------------
+
+Data Key
+Since the master key by default cannot be used to encrypt data beyond 4KB, CMKs are used tc
+generate data keys, which are in turn used to encrypt data outside KMS. The data key is used
+encrypt and decrypt large volumes of data in other AWS Services such as S3, EC2, EBS, etc
+Though KMS provide high availability as keys are stored in multiple availability zones within
+a region, Customer Master Keys are unique to the AWS Account and your region.
+----------------------------------------------------------------
+
