@@ -1,1 +1,5 @@
-
+launch 2 instance
+crete role without set any policy
+go to custom policy - attach inline policy - go to aws policy genrator - copy arn s3- genratr full s3 access-cpoy pest - in rile crete role
+then take access ec2 - and crete file - aws s3 cp s3://flowvolg/kausar- unable to login -becoz - role is not attached
+attch role
