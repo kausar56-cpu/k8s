@@ -1,12 +1,64 @@
+Hosting a website on AWS EC2 instances requires ensuring constant availability for users, even if some instances fail. Route 53
+employs health checks to monitor instance health and automatically directs traffic away from unhealthy instances, ensuring seamless user experience.
+
+#### Route53 Routing Policies:
+*Latency:* Route traffic to the AWS region with the lowest latency, enhancing application performance by minimizing response time for users.
+*Weighted:* Ideal for load balancing traffic between different versions of a website, gradually rolling out new features to a percentage of users.
+*Failover:* Automatically redirects traffic to a secondary server if the primary server fails.
+*Geo-Location:* Allows routing traffic based on the geographic location of users, optimizing performance and compliance.
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
 how to know on perticular instance are down and now load have to switch on other instance
 
 route 53 policy
 failaver routing policy(fail back policy or primary and secondary policy)
 helath check will check for each 10 sec  application running or not if not then trafic will shift to another instannce failaver routing policy
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+crete instance - crete ami- install nginx
 crete ami copy to mumbai region
 crete helth check in rout 53- select tpc- 
-route53 - cerating record - select type - failaver - 
+route53 - cerating record - select type - failaver -    ------imp
 crete failaver record 
 2 sever creted - if one off trafic will trasfer to other
+
+--------------------------------------------------
+to check wich server traffic folw
+i=0
+while true; do
+  COUNT=$(curl -s http://failover.cloudviohsakarma.in | grep -oP '(?<=server: )\d+')
+  echo "The Count value is $COUNT"
+  sleep 10  # Wait for 10 seconds before checking again
+done
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+latency
+
+lets suppose webserver and user
+user is trying to access weserver 
+time taken to paket reched to webserver
+and web giving respose to user is called as latency
+
+
+to incerese performance of application ----usecase 
+------------------------------------------------------------------------------------------------------------------------------------------------------
+route 53 - latency - crete record - define latency record 
+do it for another record 
+----------------------------------------------------------------------------------------------------------------------------------------
+
+weighted policy
+some traffic will flow mubai and some us-east
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+geo location
+it strictly folw ip 
+urop, ind , jrmn perpole send trafficf self contry only
+-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
