@@ -1,1 +1,89 @@
+clear
+    2  apt update -y
+    3  clear
+    4  apt update -y
+    5  apt-get install docker.io
+    6  docker version
+    7  clear
+    8  docker run -d -name ngnix01 -p 8000:80 nginx:latest
+    9  docker run -d --name ngnix01 -p 8000:80 nginx:latest
+   10  docker exec -it nginx01 bash
+   11  docker ps
+   12  docker exec -it e2401b60f804 bash
+   13  git clone https://github.com/Kausar1011/ECR_Docker.git
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----You have pushed your image to **ECR**, and now you want to **deploy it on EKS**. Here are the short steps:  
+
+### **1. Create an EKS Cluster (If Not Done)**  
+If you don’t have an EKS cluster, create one using `eksctl`:  
+```sh
+eksctl create cluster --name my-cluster --region us-east-1
+```
+
+### **2. Authenticate ECR in EKS**  
+Get your AWS account ID:  
+```sh
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+```
+Login to ECR:  
+```sh
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
+```
+
+### **3. Create Kubernetes Deployment YAML**  
+Create a file `deployment.yaml`:  
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-app
+          image: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/my-image:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+```
+
+### **4. Deploy to EKS**  
+Apply the deployment:  
+```sh
+kubectl apply -f deployment.yaml
+```
+
+### **5. Verify the Deployment**  
+Check pods:  
+```sh
+kubectl get pods
+```
+Check service:  
+```sh
+kubectl get svc my-app-service
+```
+Once the LoadBalancer is created, access your app via the external IP.
+
+Let me know if you need further details! 🚀
