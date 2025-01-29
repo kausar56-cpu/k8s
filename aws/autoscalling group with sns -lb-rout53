@@ -1,1 +1,108 @@
+Step 1: Create an SNS Topic
+Log in to AWS Management Console.
 
+Go to the SNS Service:
+
+Navigate to Topics in the left menu.
+
+Click Create topic.
+
+Fill in the details:
+
+Type: Select Standard.
+
+Name: Enter S3NotificationTopic.
+
+Click Create topic.
+
+Note down the Topic ARN (e.g., arn:aws:sns:region:account-id:S3NotificationTopic).
+
+Step 2: Subscribe Your Email to the SNS Topic
+Go to the SNS Topic created in Step 1.
+
+Click Create subscription.
+
+Set the subscription details:
+
+Protocol: Choose Email.
+
+Endpoint: Enter your email address.
+
+Click Create subscription.
+
+Open your email inbox and click the confirmation link in the AWS email to confirm your subscription.
+
+Step 3: Update the SNS Topic Policy
+Return to the SNS Topic in the SNS console.
+
+Navigate to the Access Policy section (or edit topic settings).
+
+Modify the policy to grant S3 permissions. Use the policy below, replacing:
+
+BUCKET_NAME with your S3 bucket name (e.g., k8s-kausar-11-1-2025).
+
+SNS_TOPIC_ARN with your SNS topic ARN from Step 1.
+
+
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "s3.amazonaws.com"
+            },
+            "Action": "SNS:Publish",
+            "Resource": "SNS_TOPIC_ARN",
+            "Condition": {
+                "ArnLike": {
+                    "aws:SourceArn": "arn:aws:s3:::BUCKET_NAME"
+                }
+            }
+        }
+    ]
+}
+Save the updated policy.
+
+Step 4: Configure S3 Event Notifications
+Navigate to the S3 Service in AWS.
+
+Select your bucket (k8s-kausar-11-1-2025).
+
+Go to the Properties tab.
+
+Scroll down to the Event Notifications section.
+
+Click Create event notification.
+
+Configure the event notification:
+
+Name: Enter UploadDeleteNotification.
+
+Event types: Check the following:
+
+All object create events (for uploads).
+
+All object delete events (for deletions).
+
+Destination: Choose SNS Topic.
+
+Select the topic created earlier (S3NotificationTopic).
+
+Click Save changes.
+
+Step 5: Test the Setup
+Go to your S3 bucket (k8s-kausar-11-1-2025) in the S3 Console.
+
+Upload a sample object:
+
+Click Upload and add a file.
+
+Check your email inbox for a notification about the upload.
+
+Delete the uploaded object:
+
+Select the object, click Delete, and confirm.
+
+Verify that you receive another email notification for the deletion.
