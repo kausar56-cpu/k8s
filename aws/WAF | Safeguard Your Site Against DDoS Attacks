@@ -1,1 +1,37 @@
+WAF AND shield
+
+mainly used to save from DDOS atttack
+if u want block perticular ip/ region/ site like googal, insta etc
+by using that u are allowing fine grent network
+DDoS (Distributed Denial of Service) 
+------------------------------------------------------------------
+crete vpc 1 public and private subnet
+launch 2 waf-1a waf -2a minstance with public subnet
+#!/bin/bash
+# Update package lists
+sudo apt update
+
+# Install Nginx
+sudo apt install nginx -y
+
+# Correct file path and fix the echo command
+echo "THIS IS US-1A" | sudo tee /var/www/html/index.nginx-debian.html
+
+# Correct systemctl commands (fix typos)
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+--------------------------------------------------
+tg
+lb
+seclt public subnet in lb
+-----------------------------------------------------------
+rout53 - crete record -simple record  -
+--------------------------------------------------------
+go and opn waf and shield
+opn ip sets
+whatismyipaddress.com ask crome
+copy ip - pest with subnet mask /32 - cete ip set
+----------------------------------------
+go to - web acls - resional resource - add aws resource -alb -add maged rule- select ip set - rule name - 
+------------------------------------------------------------------------------------------------------------------
 
