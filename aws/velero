@@ -1,0 +1,456 @@
+aws configure
+
+snap install aws-cli --classic
+
+root@ip-172-31-21-68:~# aws configure
+AWS Access Key ID [None]:
+AWS Secret Access Key [None]: 
+Default region name [None]: us-east-1
+Default output format [None]:
+
+install eksctl tool
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install -y curl tar
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz " --output eksctl.tar.gz
+
+tar -xzf eksctl.tar.gz
+
+sudo mv eksctl /usr/local/bin
+
+eksctl version
+
+rm eksctl.tar.gz
+
+install kubectl tool
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+chmod +x kubectl
+
+kubectl version --client
+
+eksctl create cluster --name my-cluster --region us-east-1 --nodes 2 --node-type t2.medium 
+
+apt install -y jq
+
+Get a container to work in
+
+Run a small alpine linux container where we can install and play with velero:
+
+apt install docker
+
+docker run -it --rm -v ${HOME}:/root/ -v ${PWD}:/work -w /work --net host alpine sh
+
+#test cluster access:
+/work # kubectl get nodes
+NAME                    STATUS   ROLES    AGE   VERSION
+velero-control-plane   Ready    master   26m   v1.18.4
+
+Velero CLI
+
+Lets download the velero command line tool
+I grabbed the v1.5.1 release using curl
+
+You can go to the releases page to get it
+
+curl -L -o /tmp/velero.tar.gz https://github.com/vmware-tanzu/velero/releases/download/v1.5.1/velero-v1.5.1-linux-amd64.tar.gz 
+tar -C /tmp -xvf /tmp/velero.tar.gz
+mv /tmp/velero-v1.5.1-linux-amd64/velero /usr/local/bin/velero
+chmod +x /usr/local/bin/velero
+
+velero --help
+
+Deploy some stuff
+
+kubectl apply -f kubernetes/configmaps/configmap.yaml
+kubectl apply -f kubernetes/secrets/secret.yaml
+kubectl apply -f kubernetes/deployments/deployment.yaml
+kubectl apply -f kubernetes/services/service.yaml
+
+kubectl get all 
+
+ 
+
+ 
+
+ 
+
+kubectl create namespace velero
+
+ 
+
+ 
+
+root@ip-172-31-21-68:~# ls
+snap  v1.15.1  velero-crds.yaml  velero-v1.7.0-linux-amd64  velero-v1.7.0-linux-amd64.tar.gz
+
+root@ip-172-31-21-68:~# vim velero-crds.yaml
+root@ip-172-31-21-68:~# kubectl apply -f velero-crds.yaml
+customresourcedefinition.apiextensions.k8s.io/backupstoragelocations.velero.io created
+
+root@ip-172-31-21-68:~# velero install \
+  --provider aws \
+  --bucket tara-bucket-kausar \
+  --secret-file ./credentials-velero \
+  --backup-location-config region=us-east-1 \
+  --snapshot-location-config region=us-east-1 \
+  --plugins velero/velero-plugin-for-aws:v1.1.0
+An error occurred: open /root/credentials-velero: no such file or directory
+
+
+root@ip-172-31-21-68:~# cat > /tmp/credentials-velero <<EOF
+[default]
+aws_access_key_id=AKIAWFIPS3N56NFDWMVB
+aws_secret_access_key=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
+EOF
+
+
+root@ip-172-31-21-68:~# cat > /tmp/credentials-velero <<EOF                                              [default]                                                                                                aws_access_key_id=AKIAWFIPS3N56NFDWMVB
+aws_secret_access_key=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
+EOF
+
+ 
+
+
+root@ip-172-31-21-68:~# velero install \
+  --provider aws \
+  --bucket tara-bucket-kausar \
+  --secret-file /tmp/credentials-velero \
+  --backup-location-config region=us-east-1 \
+  --snapshot-location-config region=us-east-1 \
+  --plugins velero/velero-plugin-for-aws:v1.1.0
+
+ 
+
+add velero-crds.yaml
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: backupstoragelocations.velero.io
+spec:
+  group: Velero 
+  names:
+    kind: BackupStorageLocation
+    listKind: BackupStorageLocationList
+    plural: backupstoragelocations
+    singular: backupstoragelocation
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                provider:
+                  type: string
+                bucket:
+                  type: string
+                config:
+                  type: object
+                accessMode:
+                  type: string
+            status:
+              type: object
+              properties:
+                phase:
+                  type: string
+                lastSynced:
+                  type: string
+                backupCount:
+                  type: integer
+                backupSize:
+                  type: integer
+
+ 
+
+ 
+
+Open image-20250112-134122.png
+image-20250112-134122.png
+output should be like
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Step 1: Create the Velero User
+Log in to the AWS Management Console.
+
+Go to the IAM (Identity and Access Management) service.
+
+In the left sidebar, click on Users, and then click the Add user button.
+
+Enter the username as velero and check the box for Programmatic access to allow API access.
+
+Click Next: Permissions.
+
+Step 2: Attach Policies to the Velero User
+On the Set permissions page, choose Attach policies directly.
+
+In the search bar, look for the AmazonS3FullAccess policy and select it.
+
+If using EBS snapshots with Velero, also attach the AmazonEC2FullAccess policy to enable the creation of EBS snapshots.
+
+Click Next: Tags and then Next: Review.
+
+Review the user’s details and click Create user.
+
+Step 3: Download Access Keys for the Velero User
+After creating the user, you will see the Access key ID and Secret access key for programmatic access.
+
+Download the .csv file or copy these credentials for later use. Save them securely.
+
+Step 4: Store the Access Keys in a File
+Now, you’ll store the AWS credentials in a temporary file (/tmp/credentials-velero) that Velero can use for accessing the S3 bucket.
+
+Open a terminal and create the credentials file:
+
+
+
+cat > /tmp/credentials-velero <<EOF
+[default]
+aws_access_key_id=
+aws_secret_access_key=
+EOF
+Replace the aws_access_key_id and aws_secret_access_key with the ones you downloaded for the velero user.
+
+Step 5: Set Environment Variables
+You can set the AWS credentials and configuration to environment variables so you don’t need to specify them every time you run a command:
+
+
+
+printf "export AWS_ACCESS_ID=\nexport AWS_ACCESS_KEY=\nexport BUCKET=k8s-kausar-11-1-2025\nexport REGION=us-east-1\n" >> ~/.bash_profile
+After running this command, close the terminal and open it again, or run:
+
+
+
+source ~/.bash_profile
+This will set the environment variables persistently for your shell session.
+
+Step 6: Install Velero
+Once the credentials are set, you can install Velero using the following commands:
+
+Install Velero:
+
+
+
+velero install \
+    --provider aws \
+    --plugins velero/velero-plugin-for-aws:v1.1.0 \
+    --bucket $BUCKET \
+    --backup-location-config region=$REGION \
+    --snapshot-location-config region=$REGION \
+    --secret-file /tmp/credentials-velero
+This will automatically use the environment variables set previously for $BUCKET and $REGION.
+
+Step 7: Verify Velero Installation
+Check if Velero pods are running properly:
+
+
+
+kubectl -n velero get pods
+View Velero logs for troubleshooting:
+
+
+
+kubectl logs deployment/velero -n velero
+ 
+
+Access your "My Security Credentials" section in your profile.
+Create an access key
+aws configure
+
+Default region name: ap-southeast-2
+Default output format: json
+
+Create a Storage Bucket
+
+BUCKET=veleromarcel
+REGION=ap-southeast-2
+aws s3api create-bucket --bucket $BUCKET --region $REGION --create-bucket-configuration LocationConstraint=$REGION
+
+aws s3api list-buckets --query "Buckets[?Name=='k8s-kausar-11-1-2025'].[Name]" --output text   --use this command on terminal becoz u already created bucket on aws we just integrate with terminal
+
+ 
+
+ 
+
+Create IAM User
+
+aws iam create-user --user-name velero
+
+Setup Policy for the User
+
+cat > velero-policy.json <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeVolumes",
+                "ec2:DescribeSnapshots",
+                "ec2:CreateTags",
+                "ec2:CreateVolume",
+                "ec2:CreateSnapshot",
+                "ec2:DeleteSnapshot"
+            ],
+            "Resource": ""
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:PutObject",
+                "s3:AbortMultipartUpload",
+                "s3:ListMultipartUploadParts"
+            ],
+            "Resource": [
+                "arn:aws:s3:::${BUCKET}/"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::${BUCKET}"
+            ]
+        }
+    ]
+}
+EOF
+
+aws iam put-user-policy \
+  --user-name velero \
+  --policy-name velero \
+  --policy-document file://velero-policy.json
+
+ 
+
+Create Access Key for that user
+
+aws iam create-access-key --user-name velero > /tmp/key.json
+
+AWS_ACCESS_ID=cat /tmp/key.json | jq .AccessKey.AccessKeyId | sed s/\\"//g
+AWS_ACCESS_KEY=cat /tmp/key.json | jq .AccessKey.SecretAccessKey | sed s/\\"//g
+
+Export variables
+
+printf "export AWS_ACCESS_ID=$AWS_ACCESS_ID \nexport AWS_ACCESS_KEY=$AWS_ACCESS_KEY\nexport BUCKET=$BUCKET \nexport REGION=$REGION\n"
+
+configs
+
+ 
+
+kubectl config 
+
+#${HOME}/.kube/config
+#kubectl config --kubeconfig="C:\someotherfolder\config"
+#$KUBECONFIG
+
+ 
+
+contexts
+
+#get the current context
+kubectl config current-context
+
+#get and set contexts
+kubectl config get-contexts
+kubectl config use-context
+kubectl get namespaces
+kubectl create namespace test
+kubectl get pods -n test
+
+kubectl get <resource>
+
+#examples
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl get configmaps
+kubectl get secrets
+kubectl get ingress
+
+ 
+
+ 
+
+kubectl get crds | grep velero
+
+ 
+
+backups.velero.io
+restores.velero.io
+volumesnapshotlocations.velero.io
+backupstoragelocations.velero.io
+
+ 
+
+kubectl config get-contexts
+
+kubectl config current-context
+
+ 
+
+3. Restore the Pod from Backup
+ 
+
+velero restore create --from-backup my-nginx-backup
+
+ 
+
+velero restore describe my-nginx-backup-<timestamp>
+
+ 
+
+velero restore logs my-nginx-backup-<timestamp>
+
+ 
+
+kubectl get pods -n kausar
+
+ 
+
+kubectl delete namespace velero
+kubectl delete crd backups.velero.io restores.velero.io
+
+ 
+
+ 
+
+check log backup is restore or not yet 
+
+ 
+
+Steps to Check the Restore Logs for All Pods:
+velero restore logs my-nginx-backup-20250111083546
+
+ 
+
+velero restore get
+
+velero restore logs my-nginx-backup-20250111083546
