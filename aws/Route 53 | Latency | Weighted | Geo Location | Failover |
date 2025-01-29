@@ -1,0 +1,12 @@
+how to know on perticular instance are down and now load have to switch on other instance
+
+route 53 policy
+failaver routing policy(fail back policy or primary and secondary policy)
+helath check will check for each 10 sec  application running or not if not then trafic will shift to another instannce failaver routing policy
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+crete ami copy to mumbai region
+crete helth check in rout 53- select tpc- 
+route53 - cerating record - select type - failaver - 
+crete failaver record 
+2 sever creted - if one off trafic will trasfer to other
