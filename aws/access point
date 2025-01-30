@@ -1,0 +1,103 @@
+Here are the full steps to create an **S3 Access Point**, upload a file, and use folders in S3:
+
+---
+
+### **Step 1: Create an S3 Bucket**
+
+1. Open the **AWS Console** and go to **S3**.
+2. Click on **Create bucket**.
+3. Provide a **bucket name** (e.g., `my-bucket-name`).
+4. Choose a **Region** (e.g., `us-east-1`).
+5. Click **Create**.
+
+---
+
+### **Step 2: Create an S3 Access Point**
+
+1. Go to **S3** in the AWS Console and select **Access Points** from the left-hand menu.
+2. Click **Create access point**.
+3. Choose the **bucket** you just created (`my-bucket-name`).
+4. Provide a **name** for the access point (e.g., `developer1`).
+5. Set **permissions** for the access point based on your needs (e.g., granting access to specific IAM users or roles).
+6. Click **Create access point**.
+
+---
+
+### **Step 3: Set Permissions for Access Point (IAM)**
+
+1. Go to **IAM** and select **Policies**.
+2. Create a new policy that allows access to the access point. Example policy for `developer1` access point:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": "s3:ListBucket",
+         "Resource": "arn:aws:s3:us-east-1:431064776024:accesspoint/developer1"
+       },
+       {
+         "Effect": "Allow",
+         "Action": "s3:GetObject",
+         "Resource": "arn:aws:s3:us-east-1:431064776024:accesspoint/developer1/*"
+       }
+     ]
+   }
+   ```
+
+3. Attach this policy to the appropriate IAM user or role that you are using to access the bucket.
+
+---
+
+### **Step 4: Configure AWS CLI**
+
+If you haven’t set up AWS CLI, follow these steps:
+
+1. **Install AWS CLI**:
+   ```bash
+   sudo apt install awscli
+   ```
+
+2. **Configure AWS CLI**:
+   Run the following command and provide your AWS access key, secret key, and region:
+
+   ```bash
+   aws configure
+   ```
+
+---
+
+### **Step 5: Upload a File Using AWS CLI**
+
+Now you can upload the file to the access point:
+
+```bash
+aws s3 cp saikiran.txt s3://arn:aws:s3:us-east-1:431064776024:accesspoint/developer1/folder1/terraform/
+```
+
+This will:
+- Automatically create the folders `folder1/terraform/`.
+- Upload `saikiran.txt` to the path `folder1/terraform/`.
+
+---
+
+### **Step 6: Verify the Upload**
+
+To ensure the file is uploaded successfully, list the contents of the path:
+
+```bash
+aws s3 ls s3://arn:aws:s3:us-east-1:431064776024:accesspoint/developer1/folder1/terraform/
+```
+
+This should show the file `saikiran.txt` in the `terraform` folder.
+
+---
+
+### **Step 7: (Optional) Update Permissions if Necessary**
+
+If you're having access issues, ensure the IAM policy is correct and that the user or role has permissions to interact with the access point.
+
+---
+
+That's it! These steps will guide you through creating an S3 access point, uploading a file, and managing folders. Let me know if you run into any issues!
