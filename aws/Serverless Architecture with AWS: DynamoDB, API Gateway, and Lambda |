@@ -1,0 +1,38 @@
+API Gatway
+
+so what AP. Gateway will do is API Gateway is the core component where it speaks with the external world and it
+will take the informator rontre external and then it will make sure that it is passing the informator to tre
+resource internally
+
+once the data has been written to the API Gateway doesnt have have the compati abilities to copy the data directly database 
+in between something called lambda servise 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+user - access s3 static wesite internate - fill submit form - data return api gatway - take info and pass through internal resource which is lambda - iam - db
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+normal process ec2-lb- autoscale- lets suppose 5000 user - then u can gentrate reneu of customer -
+but waht if 2 user will there after 2 weeks - how will maintain sevises - withot genrating reneu of customer
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+crete dynamodb
+crete lambda funtion - add this in -funtion - tesing001- add
+{
+  "operation": "create",
+  "payload": {
+    "TableName": "bookstore",
+    "Item": {
+      "id": 10,
+      "author": "Robert K",
+      "bookname": "Rich Dad & Poor Dad",
+      "Location": {
+        "Country": "USA",
+        "State": "Hawaii"
+      },
+      "Hobbies": {
+        "Act1": "Swimming",
+        "Act2": "Cycling",
+        "Act3": "Writing"
+      }
+    }
+  }
+}
