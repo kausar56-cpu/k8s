@@ -1,7 +1,8 @@
-Here are the full steps to create an **S3 Access Point**, upload a file, and use folders in S3:
+share with apreasigned url - direct access
 
----
 
+
+-----------------------------------------------------------------
 ### **Step 1: Create an S3 Bucket**
 
 1. Open the **AWS Console** and go to **S3**.
