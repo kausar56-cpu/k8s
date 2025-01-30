@@ -1,1 +1,11 @@
+s3 - put file - bolck public acces - give public access to user with help of policy - genrator
+
+bolck all public access - still will give access in it - by preasingned url
+
+1 buket - files - 2 folder - crete 2 uares - not any given policy user or bucker - still will crete access point hear - we can do upload files by access point
+
+can u mount s3 bucket to perticular folder? 
+ans yes with help of third party tool s3fs   -------vim
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. s3 - put file - bolck public acces - give public access to user with help of policy - genrator
 
