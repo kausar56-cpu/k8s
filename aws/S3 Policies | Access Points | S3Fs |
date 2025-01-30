@@ -12,105 +12,340 @@ ans yes with help of third party tool s3fs   -------vim
 share with apreasigned url - direct access
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# Mastering S3 Policies: Endpoints, Access Points, and S3Fs
 
+age S3 bucket policies, use S3 Access Points, and mount S3 as a filesystem using third-party tools.
 
------------------------------------------------------------------
-### **Step 1: Create an S3 Bucket**
+## Table of Contents
 
-1. Open the **AWS Console** and go to **S3**.
-2. Click on **Create bucket**.
-3. Provide a **bucket name** (e.g., `my-bucket-name`).
-4. Choose a **Region** (e.g., `us-east-1`).
-5. Click **Create**.
+- [Introduction](#introduction)
+- [S3 Bucket Policies](#s3-bucket-policies)
+- [Access Points](#access-points)
+- [S3Fs](#s3fs)
+- [Setup and Configuration](#setup-and-configuration)
+- [Step-by-Step Guide](#step-by-step-guide)
+- [Tags](#tags)
+- [Contributing](#contributing)
+- [License](#license)
 
----
+## Introduction
 
-### **Step 2: Create an S3 Access Point**
+This repository accompanies the YouTube video tutorial on mastering S3 policies, endpoints, and S3Fs.
+Follow along to learn how to securely manage access to your S3 buckets and integrate them with your workflows.
 
-1. Go to **S3** in the AWS Console and select **Access Points** from the left-hand menu.
-2. Click **Create access point**.
-3. Choose the **bucket** you just created (`my-bucket-name`).
-4. Provide a **name** for the access point (e.g., `developer1`).
-5. Set **permissions** for the access point based on your needs (e.g., granting access to specific IAM users or roles).
-6. Click **Create access point**.
+## S3 Bucket Policies
 
----
+### Overview
+S3 bucket policies are an integral part of IAM policies, allowing you to control access to your S3 resources. In this section, we will:
+- Create a bucket and upload files.
+- Set up a bucket policy to grant access to external users.
+- Configure policies for specific IP addresses.
+- Use preassigned URLs for secure access without making the bucket public.
 
-### **Step 3: Set Permissions for Access Point (IAM)**
-
-1. Go to **IAM** and select **Policies**.
-2. Create a new policy that allows access to the access point. Example policy for `developer1` access point:
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": "s3:ListBucket",
-         "Resource": "arn:aws:s3:us-east-1:431064776024:accesspoint/developer1"
-       },
-       {
-         "Effect": "Allow",
-         "Action": "s3:GetObject",
-         "Resource": "arn:aws:s3:us-east-1:431064776024:accesspoint/developer1/*"
-       }
-     ]
-   }
-   ```
-
-3. Attach this policy to the appropriate IAM user or role that you are using to access the bucket.
-
----
-
-### **Step 4: Configure AWS CLI**
-
-If you haven’t set up AWS CLI, follow these steps:
-
-1. **Install AWS CLI**:
+### Steps
+1. **Create the Bucket and Upload Files**:
    ```bash
-   sudo apt install awscli
+   aws s3 mb s3://your-bucket-name
+   aws s3 cp your-file.txt s3://your-bucket-name/
    ```
 
-2. **Configure AWS CLI**:
-   Run the following command and provide your AWS access key, secret key, and region:
+2. **Create Bucket Policy**:
+   - Under the bucket permissions, create a policy to allow `GetObject` access to an external user.
 
+3. **Enable Public Access**:
+   - Modify the policy to enable public access as needed.
+
+4. **IP-Based Policy**:
+   - Create a policy that grants access only from specific IP addresses.
+
+5. **Preassigned URLs**:
+   - Explain and demonstrate the use of preassigned URLs for secure access.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Access Points
+
+### Overview
+S3 Access Points simplify managing access to shared data sets in S3. In this section, we will:
+- Create a bucket with access points.
+- Set up policies for different users and folders.
+- Manage access through access points.
+
+### Steps
+1. **Create a Bucket with Access Points**:
    ```bash
-   aws configure
+   aws s3api create-bucket --bucket your-bucket-name
    ```
 
----
+2. **Create Folders and Users**:
+   - Create two folders in the bucket.
+   - Create `Testuser1` for `testfolder1` and `Testuser2` for `testfolder2`.
+   - Attach inline policies for each user.
 
-### **Step 5: Upload a File Using AWS CLI**
+3. **Policy Management**:
+   - Remove inline policies and delete bucket data as needed.
+   - Configure access points and set permissions accordingly.
 
-Now you can upload the file to the access point:
+4. **Upload Data Using CLI**:
+   ```bash
+   aws s3 cp terraform3.zip s3://arn:aws:s3:us-east-1:431064776024:accesspoint/accesspointtesting1/folder1/terraform3.zip
+   ```
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## S3Fs
 
-```bash
-aws s3 cp saikiran.txt s3://arn:aws:s3:us-east-1:431064776024:accesspoint/developer1/folder1/terraform/
+### Overview
+S3Fs allows you to mount S3 buckets as filesystems on your local machine using third-party tools. This section covers:
+- Setting up an Ubuntu machine.
+- Installing and configuring S3Fs.
+
+### Steps
+1. **Setup Ubuntu Machine**:
+   - Create an Ubuntu instance and connect to it.
+
+2. **Install S3Fs**:
+   ```bash
+   sudo apt-get update
+   sudo apt-get install s3fs
+   ```
+
+3. **Mount S3 Bucket**:
+   ```bash
+   mkdir /path/to/mount
+   s3fs your-bucket-name /path/to/mount -o use_cache=/tmp
+   df -h | grep -i s3
+   ```
+
+## Setup and Configuration
+
+### Prerequisites
+- AWS CLI installed and configured.
+- AWS IAM roles and policies set up.
+- Ubuntu machine for S3Fs setup.
+
+### Installation
+Follow the steps in the guide to set up your environment and install necessary tools.
+
+## Step-by-Step Guide
+Follow the detailed instructions in each section to complete the setup and configuration.
+
+
+## Contributing
+
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 ```
 
-This will:
-- Automatically create the folders `folder1/terraform/`.
-- Upload `saikiran.txt` to the path `folder1/terraform/`.
+Feel free to customize this README further based on your specific requirements and preferences.
+-----------------------------------------------------------------------------------------------------------
 
----
+![25](https://github.com/saikiranpi/mastering-aws/assets/109568252/b192a9f2-534a-4b50-a0e1-f59a6fec4d19)
 
-### **Step 6: Verify the Upload**
 
-To ensure the file is uploaded successfully, list the contents of the path:
 
-```bash
-aws s3 ls s3://arn:aws:s3:us-east-1:431064776024:accesspoint/developer1/folder1/terraform/
+Sure, here's a comprehensive GitHub README for your project:
+
+```markdown
+# Mastering S3 Policies: Endpoints, Access Points, and S3Fs
+
+Welcome to the repository for our comprehensive tutorial on Amazon S3 policies and access management! This guide will walk you through the steps to create and manage S3 bucket policies, use S3 Access Points, and mount S3 as a filesystem using third-party tools.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [S3 Bucket Policies](#s3-bucket-policies)
+- [Access Points](#access-points)
+- [S3Fs](#s3fs)
+- [Setup and Configuration](#setup-and-configuration)
+- [Step-by-Step Guide](#step-by-step-guide)
+- [Tags](#tags)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+This repository accompanies the YouTube video tutorial on mastering S3 policies, endpoints, and S3Fs. Follow along to learn how to securely manage access to your S3 buckets and integrate them with your workflows.
+
+## S3 Bucket Policies
+
+### Overview
+S3 bucket policies are an integral part of IAM policies, allowing you to control access to your S3 resources. In this section, we will:
+- Create a bucket and upload files.
+- Set up a bucket policy to grant access to external users.
+- Configure policies for specific IP addresses.
+- Use preassigned URLs for secure access without making the bucket public.
+
+### Steps
+1. **Create the Bucket and Upload Files**:
+   ```bash
+   aws s3 mb s3://your-bucket-name
+   aws s3 cp your-file.txt s3://your-bucket-name/
+   ```
+
+2. **Create Bucket Policy**:
+   - Under the bucket permissions, create a policy to allow `GetObject` access to an external user.
+
+3. **Enable Public Access**:
+   - Modify the policy to enable public access as needed.
+
+4. **IP-Based Policy**:
+   - Create a policy that grants access only from specific IP addresses.
+
+5. **Preassigned URLs**:
+   - Explain and demonstrate the use of preassigned URLs for secure access.
+
+## Access Points
+
+### Overview
+S3 Access Points simplify managing access to shared data sets in S3. In this section, we will:
+- Create a bucket with access points.
+- Set up policies for different users and folders.
+- Manage access through access points.
+
+### Steps
+1. **Create a Bucket with Access Points**:
+   ```bash
+   aws s3api create-bucket --bucket your-bucket-name
+   ```
+
+2. **Create Folders and Users**:
+   - Create two folders in the bucket.
+   - Create `Testuser1` for `testfolder1` and `Testuser2` for `testfolder2`.
+   - Attach inline policies for each user.
+
+3. **Policy Management**:
+   - Remove inline policies and delete bucket data as needed.
+   - Configure access points and set permissions accordingly.
+
+4. **Upload Data Using CLI**:
+   ```bash
+   aws s3 cp terraform3.zip s3://arn:aws:s3:us-east-1:431064776024:accesspoint/accesspointtesting1/folder1/terraform3.zip
+   ```
+
+## S3Fs
+
+### Overview
+S3Fs allows you to mount S3 buckets as filesystems on your local machine using third-party tools. This section covers:
+- Setting up an Ubuntu machine.
+- Installing and configuring S3Fs.
+
+### Steps
+1. **Setup Ubuntu Machine**:
+   - Create an Ubuntu instance and connect to it.
+
+2. **Install S3Fs**:
+   ```bash
+   sudo apt-get update
+   sudo apt-get install s3fs
+   ```
+
+3. **Mount S3 Bucket**:
+   ```bash
+   mkdir /path/to/mount
+   s3fs your-bucket-name /path/to/mount -o use_cache=/tmp
+   df -h | grep -i s3
+   ```
+
+## Setup and Configuration
+
+### Prerequisites
+- AWS CLI installed and configured.
+- AWS IAM roles and policies set up.
+- Ubuntu machine for S3Fs setup.
+
+### Installation
+Follow the steps in the guide to set up your environment and install necessary tools.
+
+## Step-by-Step Guide
+Follow the detailed instructions in each section to complete the setup and configuration.
+
+
+## Contributing
+
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 ```
 
-This should show the file `saikiran.txt` in the `terraform` folder.
+Feel free to customize this README further based on your specific requirements and preferences.
+----------------------------------------------------------------------------------------------------------
+// This policy allows any AWS user to perform any action on the specified S3 bucket and its objects
 
----
+// But only if the action is performed through a Data Access Point belonging to the AWS account with ID "431064776024"
+{
+	"Version": "2012-10-17",
+	"Statement": [
+    	{
+        	"Effect": "Allow",
+        	"Principal": {
+            	"AWS": "*"
+        	},
+        	"Action": "*",
+        	"Resource": [
+            	"arn:aws:s3:::saikiran236236",
+            	"arn:aws:s3:::saikiran236236/*"
+        	],
+        	"Condition": {
+            	"StringEquals": {
+                	"s3:DataAccessPointAccount": "431064776024"
+            	}
+        	}
+    	}
+	]
+}
 
-### **Step 7: (Optional) Update Permissions if Necessary**
 
-If you're having access issues, ensure the IAM policy is correct and that the user or role has permissions to interact with the access point.
 
----
 
-That's it! These steps will guide you through creating an S3 access point, uploading a file, and managing folders. Let me know if you run into any issues!
+// This policy allows the IAM user "developeruser1" in the AWS account "431064776024" to perform any action on all objects accessible 
+// through the S3 access point "dev1accesspoint" in the "us-east-1" region.
+
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::431064776024:user/developer1"
+			},
+			"Action": "*",
+			"Resource": "arn:aws:s3:us-east-1:431064776024:accesspoint/accesspointdev1/object/folder1/*"
+		}
+	]
+}
+
+
+
+
+####### S3 COMMAND ##########
+
+
+aws s3 cp saikiran.txt s3://arn:aws:s3:us-east-1:431064776024:accesspoint/accesspointdev1/folder1/saikiran.txt
+------------------------------------------------------------------------------------------------------------------
+
+##GIVING ACCESS TO ONLY SPECIFIC IP
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::testingggggggggggggggggggggggggggggggggggggg/*"
+            ],
+            "Condition": {
+                "IpAddress": {
+                    "aws:SourceIp": [
+                        "49.37.154.22/32"
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+---------------------------------------------------------------------------------------------------------------
