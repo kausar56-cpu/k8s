@@ -3,3 +3,101 @@ crete s3 bucket - add or upload index.html- access it
 opn public access
 stating wesite hosting enable
 all object punlicly accesable -make public using ACL -permissin -object ownership -make pulic it
+-------------------------------------------------------------------------------------------------------------------
+
+acm
+
+To host a **static website** on **Amazon S3** with **Route 53 (Custom Domain) and ACM (SSL/HTTPS)**, follow these steps:
+
+---
+
+## **🛠 Steps to Host a Static Website on S3 with Route 53 & ACM (HTTPS)**
+
+### **1️⃣ Create an S3 Bucket for Your Website**
+1. Go to **AWS Console** → **S3**
+2. Click **Create bucket**
+3. Set **Bucket name** as your domain (e.g., `example.com`)  
+4. **Disable "Block all public access"**
+5. Enable **Static Website Hosting**
+   - **Index document:** `index.html`
+   - **Error document:** `error.html` (optional)
+6. Click **Create bucket**
+
+---
+
+### **2️⃣ Upload Website Files**
+1. Open your bucket  
+2. Click **Upload** → Add `index.html` and `images/` folder  
+3. Click **Upload**
+
+---
+
+### **3️⃣ Set Public Read Access**
+1. Go to the **Permissions** tab  
+2. Scroll to **Bucket Policy** → Click **Edit**  
+3. **Add this policy** (Replace `your-bucket-name`):
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Principal": "*",
+         "Action": "s3:GetObject",
+         "Resource": "arn:aws:s3:::your-bucket-name/*"
+       }
+     ]
+   }
+   ```
+4. Click **Save Changes**  
+
+---
+
+### **4️⃣ Request an SSL Certificate in ACM**
+1. Go to **AWS Console** → **Certificate Manager (ACM)**
+2. Click **Request a certificate**
+3. Select **Public certificate**
+4. Enter your domain:  
+   ```
+   example.com
+   *.example.com (for subdomains)
+   ```
+5. Click **Next**
+6. Select **DNS validation** → Click **Request**
+7. In **Route 53**, create the required **CNAME record**
+8. ACM will issue the SSL certificate
+
+---
+
+### **5️⃣ Set Up CloudFront (For HTTPS)**
+1. Go to **AWS Console** → **CloudFront**
+2. Click **Create Distribution**
+3. **Origin Settings**:  
+   - **Origin domain**: Select your S3 bucket  
+   - **Origin access**: Choose **Origin access control settings (OAC)**  
+   - **Bucket policy**: Click **Create policy**
+4. **Default Cache Behavior**:  
+   - **Viewer Protocol Policy**: Redirect HTTP to HTTPS
+5. **Custom SSL Certificate**: Select your **ACM certificate**
+6. Click **Create Distribution**
+
+---
+
+### **6️⃣ Configure Route 53 (Custom Domain)**
+1. Go to **Route 53** → **Hosted Zones**
+2. Click your domain (e.g., `example.com`)
+3. Create a **new A record**:  
+   - **Alias**: Yes  
+   - **Target**: Choose **CloudFront Distribution**
+4. Click **Save Changes**
+
+---
+
+## ✅ **Your Static Website is Now Live!**
+- Test using:  
+  ```
+  https://example.com
+  ```
+- Everything will be served via **CloudFront (HTTPS)** with your **custom domain**.
+
+Let me know if you need help! 🚀
