@@ -1,1 +1,20 @@
-
+# Containers vs Virtual Machines
+# What exactly is a container ?
+# Docker Architecture
+* Installing Docker & Network changes
+* Listing namespaces for Docker Containers
+# Running basic docker commands
+* Understanding Docker Networking Options
+* Building docker images with Dockerfile & Dockerfile instructions
+# Docker Compose
+# Container Orchestration & Docker Swarm vs Kubernetes
+* Deploying 5 Node Docker Swarm Cluster
+# Docker Node Availibility & Maintenance
+# Container Placement using Labels & Constraints
+# Data Persistance with Docker Volumes & Bindmounts
+# Docker Secrets & Configmaps
+# Docker Reservations & Limits
+# Docker Healthchecks
+# Docker cAdvisor for Monitoring
+# Docker Log Collection
+# Monolith VS Microservices
