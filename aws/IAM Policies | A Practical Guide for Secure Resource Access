@@ -1,1 +1,48 @@
+DEV - USER -ROLE - ACCESS - UG
+QA - USER -ROLE - ACCESS - USER GROUP
+uat -USER -ROLE - ACCESS - USER GROUP
+---------------------------------------
+ACCESS = POLICY
+--------------------------------------
+creat ec2 - give tag owner = testuser
+create testuser1 - provide user access - custom pass 
+policy - policy genrator -iam policy - amazon ec2 - describe instance -typs - *
+policy name -crete it 
+user -add perrmision - attch this policy
+---------------------------------------------------------------------
+generate a policy for IAM instance start and stop alon with the resource and condition tag
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DescribeInstances",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeInstanceTypes",
+                "ec2:DescribeInstances"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "StartStopInstances",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:StartInstances",
+                "ec2:StopInstances"
+            ],
+            "Resource": "arn:aws:ec2:*:43106:instance/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/owner": "your_value"
+                }
+            }
+        }
+    ]
+}
+
+go -user -policy - json change it it -pest new one - check it 
+-----------------------------------------------------------------------------------------------------------------
+route 53 full view acces
 
