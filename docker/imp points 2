@@ -1,0 +1,44 @@
+each and every PID has own namespace 
+
+-----------------------------------------
+how to install 10 container at time 
+for i in {1..10}; do
+    docker run -d nginx:latest
+done
+--------------------------------------------
+stop all conatiner at time 10
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+---------------------------------------------
+to show backend container even stop conatiner
+docker ps -aq
+------------------------------------------------
+
+docker run --rm -d --name app1 nginx:latest
+This command will start an Nginx container in the background with the name **app1** and remove it when it stops. 🚀
+------------------------------------------------------------------------------------------------------------
+i creted 3 conatiner frontend, backend , database
+now all 3 running on tcp port no 80 
+requirment is : devolper1 wants access - frontend
+                 dev2 - backend
+                 dev3 - database
+portforwarding
+dev1 - eathnet0 -docker0 - c-1 8000
+dev2 - eathnet0 -docker0 - c-2 8001
+dev3 - eathnet0 -docker0 - c-3 8003
+
+docker run --rm -d --name frontend -p 8000:80 nginx:latest
+------------------------------------------------------------------------------------------------------------------------------
+how to see logs 
+cd /var/lib/docker/containers/
+ls -a
+go to perticular container
+install jq to see perticualr log of container
+cat d394743e0815e37adec4976b62ea21397bc59c086f612a7368625f5453e8de03-json.log |jq
+u are not suppose to excedd 50 % root volume insted application data creted sepretd EBS volume
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
