@@ -12,21 +12,21 @@ To prevent this, we can store all our Docker data in a separate directory.
 
 #### 1. **Update your package list:**
    First, update the package list on your system:
-   ```bash
+   
    apt update -y
-   ```
+  
 
 #### 2. **Install Docker:**
    Install Docker on your system using the command:
-   ```bash
+  
    apt install docker.io
-   ```
+  
 
 #### 3. **Check available disk space:**
    Before creating a custom directory for Docker, check the available disk space:
-   ```bash
+ 
    df -h
-   ```
+ 
 
 #### 4. **Create a new directory for Docker data:**
    Create a custom directory (e.g., `/kausar`) to store Docker-related files:
@@ -36,63 +36,63 @@ To prevent this, we can store all our Docker data in a separate directory.
 
 #### 5. **Partition and format the disk (Optional if you have an additional disk):**
    - First, list the block devices:
-     ```bash
+   
      lsblk
-     ```
+     
    - Use `fdisk` to partition the new disk (e.g., `/dev/xvdf`):
-     ```bash
+   
      fdisk /dev/xvdf
-     ```
+
    - Format the partition:
-     ```bash
+    
      mkfs.ext4 /dev/xvdf1
-     ```
+    
 
 #### 6. **Mount the custom directory:**
    Mount the custom directory to the file system. First, you will need to update `/etc/fstab` with the correct information to mount it on boot:
-   ```bash
+
    nano /etc/fstab
-   ```
+   
    Add an entry for `/dev/xvdf1` (or your disk) and the mount point `/kausar`, then save and close the file.
 
    After that, mount all filesystems:
-   ```bash
+  
    mount -a
-   ```
+  
 
 #### 7. **Run Docker containers with custom directories:**
    Run a Docker container using the `nginx` image and bind mount your custom directory to the container's filesystem:
-   ```bash
+  
    docker run --rm -d --name app1 -p 8000:80 -v /kausar:/usr/share/nginx/html nginx:latest
-   ```
+   
 
    This command will run an `nginx` container, binding the `/kausar` directory to `/usr/share/nginx/html` in the container, so any files placed in `/kausar` will be accessible inside the container.
 
 #### 8. **Create files with the current date:**
    To create 10 files with the current date inside the `/kausar` directory, use the following loop:
-   ```bash
+
    for i in {1..10}; do
      echo $(date) > /kausar/FILE-$i
    done
-   ```
+ 
 
 #### 9. **Verify the files in `/kausar`:**
    List the files in the `/kausar` directory to verify:
-   ```bash
+
    ls -al /kausar
-   ```
+
 
 #### 10. **Check Docker container logs (optional):**
    If you need to check the logs of the running Docker container:
-   ```bash
+  
    docker logs app1
-   ```
+
 
 #### 11. **Clean up (optional):**
    If you need to clean up any files created during the process:
-   ```bash
+
    rm -rf /kausar/FILE-*
-   ```
+  
 
 
 
