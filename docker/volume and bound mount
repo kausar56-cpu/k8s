@@ -1,1 +1,75 @@
+docker persistent volume
+
+docker ps- client - demon in http api call
+but how does demon kkown whethre client is asking for docker ps for that ---- docker socket ---------- imp
+-------------------------------------------------------------------------------------------------------------
+
+Query Container Status (QCS)
+this will be having running status containers 
+once the request has been recived QCS it will gives the reverce response to client directly by the help of socket -----imp
+-------------------------------------------------------------------------------------------------------------------------------
+
+docker run --rm -d --name mongodb -p 27017:27017 mongo:latest
+
+docker exec -it  mongodb mongosh
+
+show dbs;
+
+db.helo.insertMany([
+{ "_id" : 1, "name" : "Matt", "status": "active", "level": 12, "score":202},
+        	{ "_id" : 2, "name" : "Frank", "status": "inactive", "level": 2, "score":9},
+        	{ "_id" : 3, "name" : "Karen", "status": "active", "level": 7, "score":87},
+        	{ "_id" : 4, "name" : "Katie", "status": "active", "level": 3, "score":27, "status": "married", "emp": "yes", "kids": 3},
+        	{ "_id" : 5, "name" : "Matt1", "status": "active", "level": 12, "score":202},
+        	{ "_id" : 6, "name" : "Frank2", "status": "inactive", "level": 2, "score":9},
+        	{ "_id" : 7, "name" : "Karen3", "status": "active", "level": 7, "score":87},
+        	{ "_id" : 8, "name" : "Katie4", "status": "active", "level": 3, "score":27, "status": "married", "emp": "yes", "kids": 3}
+        	])
+db.helo.find({name: "Karen"})
+
+
+db.helo.find({})
+-----------------------------------------------------------------------------------------------------------------------------
+ docker stop mongodb
+data out
+for that volume
+---------------------------------------------------------------------------------------------------------------------------
+docker volume create mongodb
+docker run --rm -d --name mongodb -v mongodb:/data/db -p 27017:27017 mongo:latest
+docker exec -it  mongodb mongosh
+show dbs;
+
+db.helo.insertMany([
+{ "_id" : 1, "name" : "Matt", "status": "active", "level": 12, "score":202},
+        	{ "_id" : 2, "name" : "Frank", "status": "inactive", "level": 2, "score":9},
+        	{ "_id" : 3, "name" : "Karen", "status": "active", "level": 7, "score":87},
+        	{ "_id" : 4, "name" : "Katie", "status": "active", "level": 3, "score":27, "status": "married", "emp": "yes", "kids": 3},
+        	{ "_id" : 5, "name" : "Matt1", "status": "active", "level": 12, "score":202},
+        	{ "_id" : 6, "name" : "Frank2", "status": "inactive", "level": 2, "score":9},
+        	{ "_id" : 7, "name" : "Karen3", "status": "active", "level": 7, "score":87},
+        	{ "_id" : 8, "name" : "Katie4", "status": "active", "level": 3, "score":27, "status": "married", "emp": "yes", "kids": 3}
+        	])
+db.helo.find({name: "Karen"})
+
+
+db.helo.find({})
+exit
+stop c
+crete again
+data will be as it ia
+-----------------------------------------------------------------------------------------------------------------------------------------
+docker bound -mount
+docker run --rm -d --name app1 --network none kiran2361993/troubleshootingtools:v1
+docker run --rm -d --name app1 -v /var/run/docker.sock:/var/run/docker.sock --network  none kiran2361993/troubleshootingtools:v1  ---vvimp
+none nework doesnt have any ip
+-----------------------------------------------------------------------------------------------------------------------
+docker create volume create portainerdata
+
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer \
+        --restart=always \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v portainer_data:/data \
+        portainer/portainer-ce:2.11.1
+
+
 
