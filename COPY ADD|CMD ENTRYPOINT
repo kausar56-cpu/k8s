@@ -1,1 +1,180 @@
+EXPOSE
+8000:80
+8000 - hoste port
+80:container port
+-----------------------------------------------------
+which ping -copy ping location 
+------------------------------------------------------
+FROM ubuntu:latest
+
+LABEL name="saikiran"
+
+# Environment Variables
+ENV AWS_ACCESS_KEY_ID=SDFSDFSDFSDFSDFSDFSDFSDF \
+    AWS_SECRET_ACCESS_KEY=SDSDSDSDSDSDSDSDSDSDSDSD \
+    AWS_DEFAULT_REGION=us-east-1
+
+# Build Arguments
+ARG T_VERSION=1.6.6
+ARG P_VERSION=1.8.0
+
+# Update and install required packages
+RUN apt update && apt install -y \
+    net-tools curl wget unzip nginx iputils-ping
+
+# Download and install Terraform and Packer
+RUN wget https://releases.hashicorp.com/terraform/${T_VERSION}/terraform_${T_VERSION}_linux_amd64.zip && \
+    wget https://releases.hashicorp.com/packer/${P_VERSION}/packer_${P_VERSION}_linux_amd64.zip && \
+    unzip terraform_${T_VERSION}_linux_amd64.zip && \
+    unzip packer_${P_VERSION}_linux_amd64.zip && \
+    chmod +x terraform packer && \
+    mv terraform /usr/local/bin/ && \
+    mv packer /usr/local/bin/
+
+# Verify installation
+RUN terraform version && packer version
+
+# Default command
+CMD ["/usr/bin/ping", "-c", "4", "www.google.com"]
+
+---------------------------------------------------------------------------------------------------------------
+nano dockerfile.cmd
+docker build -t kiran236/cmd:vl -f dockerfile.cmd .
+docker run kiran236/cmd:v1
+----------------------------------------------
+cmd overwrite   ---------------------------------------------------------------------------------------------------imp
+overwriting ping to youtube
+docker run kiran236/cmd:v1 ping www.youtube.com
+---------------------------------------------------------------------------------------------------------------------------------------------
+docker edit comment out cmd and add entrypoint 
+nano dockerfile.entrypoint
+docker build -t kiran236/entrypoint -f dockerfile.entrypoint .
+docker run kiran236/entrypoint
+try to overwrite 
+No.address associated with hostname
+-----------------------------------------------------------------------
+nano dokerfile both
+
+FROM ubuntu:latest
+
+LABEL name="saikiran"
+
+# Environment Variables
+ENV AWS_ACCESS_KEY_ID=SDFSDFSDFSDFSDFSDFSDFSDF \
+    AWS_SECRET_ACCESS_KEY=SDSDSDSDSDSDSDSDSDSDSDSD \
+    AWS_DEFAULT_REGION=us-east-1
+
+# Build Arguments
+ARG T_VERSION=1.6.6
+ARG P_VERSION=1.8.0
+
+# Update and install required packages
+RUN apt update && apt install -y \
+    net-tools curl wget unzip nginx iputils-ping
+
+# Download and install Terraform and Packer
+RUN wget https://releases.hashicorp.com/terraform/${T_VERSION}/terraform_${T_VERSION}_linux_amd64.zip && \
+    wget https://releases.hashicorp.com/packer/${P_VERSION}/packer_${P_VERSION}_linux_amd64.zip && \
+    unzip terraform_${T_VERSION}_linux_amd64.zip && \
+    unzip packer_${P_VERSION}_linux_amd64.zip && \
+    chmod +x terraform packer && \
+    mv terraform /usr/local/bin/ && \
+    mv packer /usr/local/bin/
+
+# Verify installation
+RUN terraform version && packer version
+
+# Set EntryPoint and Command
+ENTRYPOINT ["/usr/bin/ping", "-c", "4"]
+CMD ["www.google.com"]
+
+docker build -t kiran236/both -f dockerfile.both .
+docker run kiran236/both
+
+output - cmd only overwrite not entrypoint
+-------------------------------------------------------------------------------------------------------------------------------
+expose 
+expose 80   add only in file 
+nano dockerfile.expose
+docker build -t kiran236/expose -f dockerfile.expose .
+docker run --rm -d --name app1 -p 80:80 kiran236/expose
+docker inspect app1
+
+even i am not given expose 80 in file - it will run on 80 itself only 
+its docs between devolper and the person who is building image                         ------------------------imp
+
+---------------------------------------------------------------------------------------------------------------------------
+copy and add
+
+both are similar 
+copy will coping file from current location to anyother loaction internely
+add   same + retrive file from s3 bucket or internet
+------------------------------------------------------------------------------------------------------------------------
+we are not give any user instruction in docker file problem is may in future any security threts will be happen
+they will be having root access directly 
+container is excuting with the rrot crd in backend                                -------------------vvvimp
+-----------------------------------------------------------------------------------------------------------------------
+crete cred file at root access by ubantu permission denied
+in dockerfile we crete user and this user should doent have access root  --- this task
+
+------------------------------------------------------------------------------------------------------------
+FROM ubuntu:latest
+
+# Create a new group and user
+RUN groupadd appuser && useradd -r -g appuser appuser
+
+WORKDIR /app
+
+# Set Environment Variables
+ENV AWS_ACCESS_KEY_ID=SDESDESDESDESDESDESDESDE \
+    AWS_SECRET_ACCESS_KEY=SDSDSDSDSDSDSDSDSDSDSDSD \
+    AWS_DEFAULT_REGION=us-east-1
+
+# Copy files to appropriate locations
+COPY index.nginx-debian.html /var/www/html/
+COPY scorekeeper.js /var/www/html/
+ADD style.css /var/www/html/
+
+# Download Terraform and Packer
+RUN wget https://releases.hashicorp.com/terraform/${T_VERSION}/terraform_${T_VERSION}_linux_amd64.zip -O /var/www/html/terraform.zip && \
+    wget https://releases.hashicorp.com/packer/${P_VERSION}/packer_${P_VERSION}_linux_amd64.zip -O /var/www/html/packer.zip && \
+    unzip /var/www/html/terraform.zip -d /var/www/html/ && \
+    unzip /var/www/html/packer.zip -d /var/www/html/ && \
+    chmod +x /var/www/html/terraform /var/www/html/packer && \
+    mv /var/www/html/terraform /usr/local/bin/ && \
+    mv /var/www/html/packer /usr/local/bin/
+
+# Set the build arguments
+ARG T_VERSION=1.6.6
+ARG P_VERSION=1.8.0
+
+# Expose port 80
+EXPOSE 80
+
+# Install required packages
+RUN apt update && apt install -y \
+    net-tools curl wget unzip nginx iputils-ping
+
+# Switch to the appuser
+USER appuser
+
+# Run the application (ping test)
+CMD ["ping", "-c", "1000000", "www.google.com"]
+
+
+build it
+run it 
+check root access has or not
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
