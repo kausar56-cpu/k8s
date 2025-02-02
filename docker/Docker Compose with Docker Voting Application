@@ -1,1 +1,35 @@
+if u want run docker conatnaer at time 10 then compose is used
+lets suppose 5 container and we run it then by using compose up or down its possible
+----------------------------------------------------------------------
+nano Dockerfile.dev
+root@ip-172-31-26-200:~# cp Dockerfile.dev Dockerfile.prod
+root@ip-172-31-26-200:~# cp Dockerfile.dev Dockerfile.staging
+---------------------------------------------------------------------
+nano docker-compose.yaml
+version: '3.8'
 
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: dev_container
+
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: prod_container
+
+  staging:
+    build:
+      context: .
+      dockerfile: Dockerfile.staging
+    container_name: staging_container
+
+mkdir -p /user/local/bin/
+serch https://github.com/docker/compose/releases 
+copy linux compose
+mv docker-compose-linux-x86_64 compose
+chmod 777 compose
+compose --version
