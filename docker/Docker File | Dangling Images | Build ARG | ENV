@@ -43,7 +43,6 @@ CMD ["nginx", "-g", "daemon off;"]
 Docker Commands
 Building the Docker Image
 To build the Docker image with a specific name and tag:
-
 docker build -t your_image_name:v3 .
 
 To build the Docker image without using the cache:
@@ -67,7 +66,7 @@ docker build -t kiran2361993/custom:vl \
 ya command mde all content dist nahit
 
 docker build -t kiran2361993/custom:v2 \
-  --progress=plain
+  --progress=plain                        ---------------------imp
   --build-arg T_VERSION='1.5.0' \
   --build-arg P_VERSION='1.4.0' \
   -f dockerfile.dev . --no-cache
