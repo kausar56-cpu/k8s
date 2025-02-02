@@ -1,0 +1,104 @@
+Google Distroless Images | Docker Multi Build |docker file
+---------------------------------------------------------------
+ SAST (Static Application Security Testing),sonar - build artifact maven - store at nexus -copy artifact by using dockerfile -build it -push ecr - 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+google distroless image extremly light weight nature 
+image size around 2mb.3mb why?
+this image doesnt content around any kind of shell inside or  ssh      ------------------vimp
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+docker exec -it app1 bash
+this bash not present in google distroless image
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+disadvantage - login and install pakege not possible heare
+this image are best for ecurity practice
+The phrase "Hypothetical possible to login" in English means:
+
+👉 Is it theoretically possible to log in?
+👉 Is logging in possible in a hypothetical situation?
+👉 Can logging in be done as a premise or assumption?
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+docker pull gcr.io/distroless/static-debian12
+vim dockerfile.dev
+
+# Use a base image that supports package installations
+FROM debian:12-slim
+
+LABEL name="saikiran"
+
+# Define Terraform & Packer versions as build arguments
+ARG T_VERSION='1.6.6'
+ARG P_VERSION='1.8.0'
+
+# Install required dependencies
+RUN apt update && apt install -y jq net-tools curl wget unzip nginx iputils-ping \
+    && mkdir /app \
+    && groupadd appuser && useradd -r -g appuser appuser \
+    && wget https://releases.hashicorp.com/terraform/${T_VERSION}/terraform_${T_VERSION}_linux_amd64.zip -O /app/terraform.zip \
+    && wget https://releases.hashicorp.com/packer/${P_VERSION}/packer_${P_VERSION}_linux_amd64.zip -O /app/packer.zip \
+    && unzip /app/terraform.zip -d /usr/local/bin \
+    && unzip /app/packer.zip -d /usr/local/bin \
+    && chmod +x /usr/local/bin/terraform /usr/local/bin/packer \
+    && rm -rf /app/*.zip
+
+WORKDIR /app
+
+USER appuser
+
+ENV AWS_ACCESS_KEY_ID=DUMMYKEY \
+    AWS_SECRET_ACCESS_KEY=DUMMYKEY \
+    AWS_DEFAULT_REGION=us-east-1a
+
+# Uncomment and add files if needed
+# COPY index.nginx-debian.html /var/www/html/
+# COPY scorekeeper.js /var/www/html/
+# ADD  style.css /var/www/html/
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+---------------------------------------------------------------------
+docker build -t kiran2361993/distro:v1 -f Dockerfile .
+--------------------------------------------------------------------
+git clone https://github.com/spring-projects/spring-petclinic.git
+
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the project files to the container
+COPY . .
+
+# Package the application (this will create a JAR file)
+RUN ./mvnw package -DskipTests
+
+# Expose the port the application runs on
+EXPOSE 8080
+
+# Run the application
+CMD ["java", "-jar", "target/*.jar"]
+
+docker build -t kiran2361993/distro:v1 -f Dockerfile.prod .
+conatinerize application
+---------------------------------------------------------------------------------
+multistage
+
+# Stage 1: Build stage 
+FROM maven:3.8.5-openjdk-17-slim AS build
+WORKDIR /app
+COPY . .
+RUN ./mvnw package -DskipTests
+
+# Stage 2: Runtime stage
+FROM openjdk:17-jdk-slim AS runtime     -----make sure application is running
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
+
+
+ docker build -t kiran2361993/distro:v1 -f Dockerfile.prod .
+
+docker run --rm -d --name app1 -p 8000:80 kiran2361993/petapp:v2
