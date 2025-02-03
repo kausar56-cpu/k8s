@@ -1,0 +1,6 @@
+kubelet is only component run as demon service
+lets we have 6 inginx pod should acrooss multiple node 1 and 2
+kubelet insure are all this conatiner running correctly if fail it - it will restart container and reporet to control plan
+------------------------------------------------------------------------------------------------------------
+kubeproxy assign ip uniq to each pods
+------------------------------------------------------------------------------------------------------------------------
