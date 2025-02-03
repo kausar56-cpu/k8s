@@ -31,5 +31,123 @@ mkdir -p /user/local/bin/
 serch https://github.com/docker/compose/releases 
 copy linux compose
 mv docker-compose-linux-x86_64 compose
+sudo mv /user/local/bin/compose /usr/local/bin/
 chmod 777 compose
 compose --version
+--------------------------------------------------------
+mkdir -p ~/.docker/cli-plugins
+curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+------------------------------------------------------------------------------------------
+n simple terms, seeding refers to the process of adding initial data into a database. For example, you may want to populate your database with some test data or default values when setting up your application for the first time.
+
+In your docker-compose.yml, the seed service is responsible for doing this. It runs a script or command to insert the necessary data into the database (db service) before your main application starts.
+
+Key Points:
+seed service: This is a Docker container that runs a script to add initial data to your database.
+depends_on: Ensures the database (db service) is ready before running the seed service.
+profiles: The seed service will only run when explicitly called with docker-compose --profile seed up.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ git clone  https://github.com/dockersamples/example-voting-app.git
+ cd example-voting-app/
+ docker compose up -d
+--------------------------
+
+# version is now using "compose spec"
+# v2 and v3 are now combined!
+# docker-compose v1.27+ required
+
+services:
+  vote:
+    build: 
+      context: ./vote
+      target: dev
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+     - ./vote:/usr/local/app
+    ports:
+      - "5000:80"
+    networks:
+      - front-tier
+      - back-tier
+
+  result:
+    build: ./result
+    # use nodemon rather than node for local dev
+    entrypoint: nodemon --inspect=0.0.0.0 server.js
+    depends_on:
+      db:
+        condition: service_healthy 
+    volumes:
+      - ./result:/usr/local/app
+    ports:
+      - "5001:80"
+      - "127.0.0.1:9229:9229"
+    networks:
+      - front-tier
+      - back-tier
+
+  worker:
+    build:
+      context: ./worker
+    depends_on:
+      redis:
+        condition: service_healthy 
+      db:
+        condition: service_healthy 
+    networks:
+      - back-tier
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/redis.sh
+      interval: "5s"
+    networks:
+      - back-tier
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: "NA"
+      POSTGRES_PASSWORD: "NA"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/postgres.sh
+      interval: "5s"
+    networks:
+      - back-tier
+
+  # this service runs once to seed the database with votes
+  # it won't run unless you specify the "seed" profile
+  # docker compose --profile seed up -d
+  seed:
+    build: ./seed-data
+    profiles: ["seed"]
+    depends_on:
+      vote:
+        condition: service_healthy 
+    networks:
+      - front-tier
+    restart: "no"
+
+volumes:
+  db-data:
+
+networks:
+  front-tier:
+  back-tier:
+
