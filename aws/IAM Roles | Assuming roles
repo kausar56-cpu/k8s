@@ -1,1 +1,88 @@
+we will attach directly role to ec2 instance 
+
+if u crete user- u have to crete - cred - attach policy -all thing
+
+but in case role not requred - somtime reqired just temprary key - we can attach role to our ec2
+
+------------------------------------------------------------------------------------------------
+task1  -  i want access perticular bucket not all
+
+task2  -  how will asign role directly to perticular user
+----------------------------------------------------------------------------------------------
+task1  -  i want access perticular bucket not all
+
+2 ec2 instance
+iam - crete role - select ec2 - not selct any policy - role name - crete
+go to that role - inline policy - josn - add - name - crete
+go to policy genrater - select type - iamp policy - give ARN /* - perticulat buckert here - genrate policy
+ARN /*  - means full access to  perticular buckert
+---
+2 ec2 instance t1 and t2 
+take access t1 - touch kausar - aws s3 kel ka access hot ny - attacvh role to t1 ec2 -give command 
+aws a3 cp kausar s3://flowloqs236/kausar
+--------------------------------------------------------------------------------------------
+
+task2  -  how will asign role directly to perticular user
+
+trustrelationship
+assumerole - nothing but go and grabing requred servise as which wahtever we want
+sts - secure token servise
+assume role say hey entity give me tempray access in order to complte my task 
+entity - ec2, lambda ,s3
+--------------
+crete user kausar witout policy
+crte role 
+crtete inline policy - crtete it 
+we have to mention which role we want acces - mention role arn 
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": "arn:aws:iam::431064776024:role/Mian-role-1"
+    }
+  ]
+}
+------------
+crete role - main-role1- go to in - trust policy -edit it - hit user ch arn dych 
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::431064776024:user/testing-aws-user",
+        "Service": [
+          "ec2.amazonaws.com",
+          "lambda.amazonaws.com",
+          "ssm.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+
+----------------
+this role attch to - ec2 
+aws s3 ls
+aws configure
+user - other - crete access key and secrete key 
+add it
+aws ats got-caller-identity
+
+aws sts assume-role --role-arn "arn:aws:iam::431064776024:role/Mian-role-1" --role-session-name AWSSAIKIRAN
+
+tem access key 
+tem. secret key
+tem. seeion token we eill got by this command
+
+export AWS_ACCESS_KEY_ID="ASIAWIXLWRVMGWKG5XUA"
+export AWS_SECRET_ACCESS_KEY="9X9XQ3Gg/20297zKuBzAbH2M2EcUxTAR15PS$38"
+export AWS_SESSION_TOKEN="IQоJbЗ]pZ2]uX2VjEG8aCXVzLWhc3QtMSJHMEUCIQCIоЗ4гPBQ1fnEJCg9KJd41YVeLcid541zH6ZYVxkXEGgIgCoHb8s0"
+
+aws a3 cp kausar s3://flowloqs236/kausar
+
 
