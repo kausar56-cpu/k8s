@@ -22,10 +22,10 @@ go to ohio region crete perring tgw attachment - select proper resion- tgw id
 accept fron nv region
 ----------------------------------------------------------------------------------
 allow satic routing ohio region
-go tgw route table - crete staic route - select - vpc-1 cidr - select pwrring
+go tgw route table - crete staic route - select - vpc-1 cidr nv  - select pwrring ohivo
 same do vpc2 cider
------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
 allow satic routing  nv region
-go tgw route table - crete staic route - select - vpc-1 cidr - select pwrring
-same do vpc2 cider
+go tgw route table nv - crete staic route - select - vpc-1 cidr ohio - select pwrring nv
+
 -------------------------------------------------------------------
