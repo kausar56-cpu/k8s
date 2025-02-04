@@ -45,4 +45,24 @@ generate a policy for IAM instance start and stop alon with the resource and con
 go -user -policy - json change it it -pest new one - check it 
 -----------------------------------------------------------------------------------------------------------------
 route 53 full view acces
+when u opn it u havent any access 
+crete route 53 full view acces and give it to user
+--------------------------------------------------------------------------------------------------------------
 
+inline policy
+
+user 1 and 2
+1 . having ec2 access
+2.having s3
+if i go 1st policy inline and edit it pest s3 policy then i acn easily access it
+same for 2
+----------------------------------------------------------------------------------------------------
+permission bondary policy
+
+soppose u are having admin policy - but u can set permisson or boundry
+user
+
+To provide view-only access to S3 and EC2 resources, you can create an IAM policy with read-only
+permissions for those services.
+crete policy - json - pest - name permission -bundry- go to set permission bundry policy - select it 
+-------------------------------------------------------------------------------------------------------------
