@@ -1,0 +1,9 @@
+kubectl create ns alpha
+kubectl create ns bravo
+kubectl get ns
+kubectl run alpha -n alpha  --image kiran 2361993/kubegame:v1 --dry-run -o yaml
+--dry-run -o yaml  ------ yaml file betel
+-----------------------------------------------------------------------------------------------------------
+in real time u are using hasicrop paker to use image aomaticaly deploy across multiple AZ     ------ imp
+--------------------------------------------------------------------------------------------------------------
+kubectl api-resources --namespaced=true 
