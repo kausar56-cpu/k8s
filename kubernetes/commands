@@ -1,5 +1,13 @@
 To check all objects or resurce version
 kubectl api-resources --namespaced=true 
 
+--dry-run -o yaml  ------ yaml file betel
+
+kubectl explain pod 
+kubectl explain pod.metadata
+
+kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
+
+
   
   
