@@ -4,3 +4,10 @@ kubelet insure are all this conatiner running correctly if fail it - it will res
 ------------------------------------------------------------------------------------------------------------
 kubeproxy assign ip uniq to each pods
 ------------------------------------------------------------------------------------------------------------------------
+in realtime k8s cluster deploy with help only KOPS only becoz
+1. in backend when it depoly automaticaly depoly autoscalling group
+2. someone try to delee master node or node it will create automaticaly nodes
+-----------------------------------------------------------------------------------------------------------------------
+PODS: PODS ARE NOTHING BUT, ITS A WRAPPER WHICH CONTAINS ONE OR MORE CONTAINERS
+pods does have default temp space which is clled as empty dir
+--------------------------------------------------------------------------------------------------------
