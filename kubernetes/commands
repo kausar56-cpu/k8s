@@ -8,6 +8,7 @@ kubectl explain pod.metadata
 
 kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
 
+watch kubectl get pods
 
   
   
