@@ -1,0 +1,175 @@
+suppose 3 node ahe - 3 databse ahe in order - db1, 2, 3 - database having some hostname - network identity 
+soppose node1 goes down - after some time fix it - node up - but ip , hostname, all gone or change - thats why we need stafullset
+its alwys needed for mongo and sqldb
+--------------------------------------------
+deployment
+selfhealing
+atutomation
+scalbility
+load balancing
+--------------------------------------------------------
+kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
+
+kubectl run pod --image=nginx:latest
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testpod1
+  labels:
+    app: testpod1
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: testpod1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: testpod1
+    spec:
+      containers:
+        - name: kubegame
+          image: kiran2361993/kubegame:v2
+------------------------------------------
+we can mention annotation in this yaml file to chose load balncer
+kind: Deployment
+metadata:
+  labels:
+    app: testpod1
+  name: testpod1
+  annotations:
+    info: "saikiran deployment"
+    email: "saikiranpi"
+    owner: "saikiranoi"
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: testpod1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: testpod1
+    spec:
+      containers:
+      - image: kiran2361993/kubegame:v2
+        name: kubegame
+        name:mysqldb
+        env:
+        - name: DB_NAME
+          value: "mysqldb"
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_URL
+          value: "saikiranpi.in/mydb"
+apply it
+if devolper want to db port no    ---------------imp
+kubectl describe pod
+
+tostpod1-1dfesc685b-16s15
+key - value -pair
+or
+kubectl exec -it port name 
+env
+-------------------------------------------------------------------------------------------------------------
+expose this application through external world
+kubectl expose deployment testpod1 --name svc1 --port 8000 --target-port 80 --type NodePort
+kubectl expose deployment testpod1 --name svc2 --port 5000 --target-port 5000 --type NodePort
+
+kubectl get sve -o wide
+see port no all it SG
+ DNS name:port no
+----------------------------------------------------------------------------------------------------------
+delete all deployment
+------------------------------------------------------------------------------------------------
+rolling update
+maxSurge: 100%
+-------------------
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testpod1
+  labels:
+    app: testpod1
+spec:
+  replicas: 6
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: testpod1
+  template:
+    metadata:
+      labels:
+        app: testpod1
+    spec:
+      containers:
+      - name: kubegame
+        image: kiran2361993/kubegame:v1
+change v2 see
+---------------------------------------------------------------------------------
+
+ maxSurge: 1
+      maxUnavailable: 1
+
+apiVersion: apps/v1
+kind: DeamonSet
+metadata:
+  labels:
+    app: testpod1
+  name: testpodi
+spec:
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: testpod1  # This matches the labels in `template.metadata.labels`
+  template:
+    metadata:
+      labels:
+        app: testpod1  # This matches the `selector.matchLabels`
+    spec:
+      containers:
+      - image: kiran2361993/kubegame:v1
+        name: kubegame
+change v1 to v2 and see
+-----------------------------------------------------------------------------------------
+Deamonset
+
+kind: DeamonSet
+metadata:
+  labels:
+    app: testpod1
+  name: testpodi
+spec:
+  selector:
+    matchLabels:
+      app: testpod1  # This matches the labels in `template.metadata.labels`
+  template:
+    metadata:
+      labels:
+        app: testpod1  # This matches the `selector.matchLabels`
+    spec:
+      containers:
+      - image: kiran2361993/kubegame:v2
+        name: kubegame
+on eavry node it will crete 1 node
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
