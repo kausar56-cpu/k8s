@@ -1,0 +1,5 @@
+To check all objects or resurce version
+kubectl api-resources --namespaced=true 
+
+  
+  
