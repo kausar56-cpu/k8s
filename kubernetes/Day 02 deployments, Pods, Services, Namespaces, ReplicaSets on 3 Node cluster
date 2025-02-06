@@ -7,3 +7,94 @@ kubectl run alpha -n alpha  --image kiran 2361993/kubegame:v1 --dry-run -o yaml
 in real time u are using hasicrop paker to use image aomaticaly deploy across multiple AZ     ------ imp
 --------------------------------------------------------------------------------------------------------------
 kubectl api-resources --namespaced=true 
+-----------------------------------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpha1
+  namespace: alpha
+  labels:
+    run: alpha1
+    app: alpha1
+spec:
+  containers:
+    - name: alpha1
+      image: kiran2361993/kubegame:v1
+--------------------------------------------------------------------------------------------------------------------
+i can give evry time ns name
+we download binary kubens 0.9.5
+wget link
+tar -zxvf kubons_v0.9.5_linux_x86_64.tar.gz
+kubens alpha
+--------------------------------------------------------------------------------------------------------------------------------
+alias ku=kubectl
+ku get pods
+-----------------------------------------------------------------------------------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpha2
+  namespace: alpha
+  labels:
+    run: alpha1
+    app: alpha1
+spec:
+  containers:
+    - name: alpha2
+      image: kiran2361993/kubegame:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpha3
+  namespace: alpha
+  labels:
+    run: alpha3
+    app: alpha3
+spec:
+  containers:
+    - name: alpha3
+      image: kiran2361993/kubegame:v1
+
+apply it 
+--------------------------------------------------------------------
+what are posible way to connect application apart from servises
+kubeforwading
+cretse lens application - mainly used for monitoring - file add cluster -   ~/.kube/config - ~ tillar
+cd  ~/.kube/config
+copy all 
+pest add cluster
+kubectl -n alpha port-forward pod/alphal 8000:80
+localhost:8000
+----------------------------------------------------------------------------
+kubectl expose pod alpha1 --port=8000 --target-port=80 --type=NodePort
+dns od ec2:32667
+pod jr delete kela tri sevise rahte as it is 
+------------------------------------------------------------------------------
+pod delete kela 
+endpont none al then pod apply kely then tych sevise la connect zala lebel mul -------------------vimp
+-------------------------------------------------------------------------------------------------------------------
+replicaset
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  replicas: 3  # Modify replicas as needed
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+        - name: kubegame
+          image: kiran2361993/kubegame:v1
+
+----------------------------------------------------------------------------
