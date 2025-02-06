@@ -4,36 +4,16 @@ resion to use cloudfront
 2. it make sure cashes u are wesite content - edges of loaction around the world reason why it caches the data because see whenever someone is accessing from a
 different place they should not face any kind of latncy to avoid that latency what cloud cloud friend
 distribution will do is it will gives good performance by storing cash memory
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+3. costoptimization
+4. scurity WAF 
+5. scalibility - automaticaly up and down
+6. costumizatim - ACM - SSL - ERROR PAGE URL - 
+------------------------------------------------------------
+configure ACM and Rout53
+s3 - enable ACL - Block public access - upload file - permission - Grant public-read access
+-------------------------------------------------------------------------------
+cogigure cloudfront
+-------------------------------------------------------------
 go to - vs code make file index.html- save it .
 crete s3 bucket - add or upload index.html- access it 
 opn public access
