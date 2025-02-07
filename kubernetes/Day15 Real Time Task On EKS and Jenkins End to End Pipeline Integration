@@ -1,0 +1,280 @@
+eksctl utils associate-iam-oidc-provider --region us-east-1 --cluster mara --approve
+
+eksctl create nodegroup \
+  --cluster mara \
+  --region us-east-1 \
+  --name mara-cluster-ng-1 \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 2 \
+  --nodes-max 4 \
+  --node-volume-size 20 \
+  --ssh-access \
+  --ssh-public-key palak \
+  --managed \
+  --asg-access \
+  --external-dns-access \
+  --full-ecr-access \
+  --appmesh-access \
+  --alb-ingress-access
+Here is a summary of the steps you have taken so far in setting up your environment, from installing tools like `eksctl` to configuring Jenkins for accessing EKS:
+
+---
+
+### **1. Install and Configure `eksctl`**
+- You attempted to install `eksctl` on your system using the following commands:
+   - `curl -L "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl-linux-amd64" -o eksctl`
+   - `sudo mv eksctl /usr/local/bin/`
+   - You faced some issues with file permissions and were not able to successfully execute the commands.
+
+---
+
+### **2. Install AWS CLI**
+- You installed AWS CLI using the command:
+   - `sudo apt install awscli`
+- You encountered issues with setting the correct permissions and also tried using the `--classic` option, which led to confusion.
+- Eventually, the AWS CLI was installed, and you were able to use it to interact with AWS services.
+
+---
+
+### **3. Setting Up EKS Cluster**
+- You created an EKS cluster named **mara** using `eksctl` (although you encountered errors related to cluster name syntax).
+
+---
+
+### **4. Configuring Jenkins with AWS Credentials**
+- You installed the required Jenkins plugins for AWS interaction:
+   - **Pipeline: AWS Steps**
+   - **AWS Credentials Plugin**
+- After installing these plugins, you created AWS credentials in Jenkins under **Manage Jenkins** > **Manage Credentials**.
+   - You named the credential as `aws-creds`.
+
+---
+
+### **5. Integrating AWS Credentials with Jenkins Pipeline**
+- You created a Jenkins pipeline to authenticate with AWS and interact with the EKS cluster. The pipeline uses the `withAWS` block to load AWS credentials and execute AWS CLI and `kubectl` commands.
+- The pipeline example you used looks like this:
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Checking EKS Access') {
+            steps {
+                // Use the AWS credentials in the pipeline
+                withAWS(credentials: 'aws-creds') {
+                    // Update kubeconfig for EKS cluster
+                    sh 'aws eks --region us-east-1 update-kubeconfig --name mara'
+                    // List all pods across all namespaces
+                    sh 'kubectl get pods -A'
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+### **6. Testing Jenkins Pipeline**
+- You tested the pipeline, and the `aws eks update-kubeconfig` command should have updated your `kubeconfig` to allow interaction with the `mara` EKS cluster.
+- You tried to execute `kubectl get pods -A` to list the pods from your EKS cluster, though the `Forbidden` errors for `kubectl` suggest that your permissions or IAM setup may need adjustments.
+
+---
+
+### **7. Troubleshooting and Permissions Issues**
+- You encountered multiple issues related to IAM permissions and roles, as well as some issues with accessing AWS resources (e.g., “Forbidden” errors) in your Jenkins pipeline.
+- You’ve tried using AWS CLI commands directly in the terminal but faced challenges regarding credentials and permissions to access the EKS cluster.
+  
+---
+
+### **8. Attempts to Create EKS Cluster Node Group**
+- You tried running the following command to create a node group:
+  ```bash
+  eksctl create nodegroup --cluster mara --region us-east-1 --name eks-cluster-1-cluster-ng-1 --node-type t3.medium --nodes 2 --nodes-min 2 --nodes-max 4 --node-volume-size 20 --ssh-access --ssh-public-key QA-Account --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
+  ```
+- However, you encountered issues related to the cluster name and node group configuration syntax.
+
+---
+
+### **Next Steps to Complete Setup**
+- **Ensure IAM Role Permissions**: Double-check the IAM role permissions associated with your AWS credentials. You need to ensure that your IAM user or role has the necessary permissions for EKS and other AWS services (such as CloudFormation, EC2, and IAM roles).
+  
+- **Fix Errors in Commands**: Some of the commands you executed were not properly formatted or had missing arguments. Review the `eksctl` and `kubectl` commands for correctness.
+
+- **Configure Node Groups**: If you want to create a node group, make sure the `eksctl` command follows the correct format and the cluster name is valid. Ensure that you specify the correct node type, node count, and volume size.
+
+- **Fix Jenkins Permissions**: If the `kubectl get pods -A` is failing in Jenkins, you may need to adjust the IAM policy of the role associated with the AWS credentials. Make sure it has access to EKS and permissions for `kubectl` operations.
+
+---
+
+This gives a comprehensive overview of the steps you’ve taken so far. Let me know if you need further assistance!
+
+
+add 2 ns devopment and prod 
+pipeline {
+    agent any
+    stages {
+        stage('Checking EKS Access') {
+            steps {
+                withAWS(credentials: 'aws-creds') {
+                    sh 'aws eks --region us-east-1 update-kubeconfig --name mara'
+                    sh 'kubectl get pods -A'
+                }
+            }
+        }
+        stage('Create Namespace') {
+            steps {
+                withAWS(credentials: 'aws-creds') {
+                    // Update kubeconfig for the cluster
+                    sh 'aws eks --region us-east-1 update-kubeconfig --name mara'
+                    
+                    // Create namespaces
+                    sh 'kubectl create ns development'
+                    sh 'kubectl create ns production'
+                }
+            }
+        }
+    }
+}
+ 
+
+add in jenkins
+
+task
+
+"If the branch is 'development', it should deploy to the 'development' namespace. 
+If the branch is 'production', it should deploy to the 'production' namespace."
+
+creat private repo eks-jenkins
+
+
+
+
+If you are seeing a message about your key being too small, it's possible that the SSH key you've generated is considered weak by certain systems. In the case of `ED25519`, the key size is fixed at 256 bits, which is generally considered secure and sufficient for most uses.
+
+However, if you're referring to an RSA key and encountering issues with key size, the recommended minimum key size for RSA is 2048 bits, though 4096 bits is considered more secure.
+
+To create an RSA key with a stronger size (2048 bits or 4096 bits), you can follow these steps:
+
+### For RSA with a 2048-bit key:
+```bash
+ssh-keygen -t rsa -b 2048 -f /var/lib/jenkins/.ssh/id_rsa
+```
+
+### For RSA with a 4096-bit key:
+```bash
+ssh-keygen -t rsa -b 4096 -f /var/lib/jenkins/.ssh/id_rsa
+```
+
+After this, follow the steps to configure your Jenkins user to use the new private key. If you were using `ED25519` and there are no specific restrictions for the key type, you may continue to use it, as it is already a secure and modern choice.
+
+If you're still facing issues with the key size, it might be helpful to specify the exact error message you're encountering.
+
+
+
+Here’s a short version of your steps to set up Jenkins for automatic deployment from GitHub:
+
+1. **Generate SSH Key in Jenkins**:
+   - Run `ssh-keygen -t rsa -b 4096 -f /var/lib/jenkins/.ssh/id_rsa` under the Jenkins user.
+
+2. **Add Private Key to Jenkins Credentials**:
+   - Go to `Jenkins > Manage Jenkins > Manage Credentials > Global`.
+   - Add `SSH Username with private key`, and paste the private key in the key field.
+
+3. **Add Public Key to GitHub**:
+   - Run `cat /var/lib/jenkins/.ssh/id_rsa.pub` to get the public key.
+   - Add the public key as a deploy key in your GitHub repository under `Settings > Deploy Keys`.
+
+4. **Create and Push Development Branch**:
+   - Create a branch: `git checkout -b development`.
+   - Push to GitHub: `git push origin development`.
+
+5. **Install Multi-Branch Pipeline Webhook Plugin**:
+   - Install the **Multi-Branch Pipeline Webhook Trigger Plugin** from `Jenkins > Manage Jenkins > Manage Plugins`.
+
+6. **Set Up Multi-Branch Pipeline**:
+   - Create a new Multi-Branch Pipeline job.
+   - Configure the Git repository and Jenkins credentials.
+
+7. **Disable Host Key Verification** (if needed):
+   - Go to `Jenkins > Manage Jenkins > Security`, and turn off host key verification to resolve errors.
+
+This sets up Jenkins to automatically trigger builds on changes to the development branch of your private GitHub repository.
+
+
+
+
+pipeline {
+    agent any
+    environment {
+        DEV_DESTROY = "YES"
+        PROD_DESTROY = "YES"
+    }
+    stages {
+        stage('Checking EKS Access') {
+            steps {
+                withAWS(credentials: 'aws-creds') {
+                    sh 'aws eks update-kubeconfig --region us-east-1 --name eks-cluster'
+                    sh 'kubectl get pods -A'
+                }
+            }
+        }
+        stage('Creating EKS Namespaces') {
+            steps {
+                withAWS(credentials: 'aws-creds') {
+                    sh 'aws eks update-kubeconfig --region us-east-1 --name eks-cluster'
+                    sh 'kubectl create ns development || exit 0'
+                    sh 'kubectl create ns production || exit 0'
+                }
+            }
+        }
+        stage('Deploy To Dev Namespace') {
+            when {
+                branch 'development'
+            }
+            steps {
+                withAWS(credentials: 'aws-creds') {
+                    sh 'aws eks update-kubeconfig --region us-east-1 --name eks-cluster'
+                    sh 'ls -al'
+                    sh 'kustomize build kustomize/overlays/development'
+                    sh 'kubectl apply -k kustomize/overlays/development'
+                    sh 'kubectl get pods,deploy,svc -n development'
+                }
+            }
+        }
+        stage('Deploy To Production Namespace') {
+            when {
+                branch 'production'
+            }
+            steps {
+                withAWS(credentials: 'aws-creds') {
+                    sh 'aws eks update-kubeconfig --region us-east-1 --name eks-cluster'
+                    sh 'ls -al'
+                    sh 'kustomize build kustomize/overlays/production'
+                    sh 'kubectl apply -k kustomize/overlays/production'
+                    sh 'kubectl get pods,deploy,svc -n production'
+                }
+            }
+        }
+    }
+}
+
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: development
+namePrefix: dev-
+resources:
+  - ../../base
+replicas:
+  - name: nginx001
+    count: 4
+images:
+  - name: kiran2361993/kubegame
+    newName: kiran2361993/kubegame
+    newTag: v2
+
+`http://ec2-3-251-101-xxx.compute-1.amazonaws.com:8080/multibranch-webhook-trigger`  
+
+Replace `3-251-101-xxx` with the actual public DNS or IP of your Jenkins server.
