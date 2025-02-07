@@ -1,0 +1,128 @@
+suppose 3 conatiners out of 1 down someresion
+kubelet will try to restart conatiner 
+in BE how does kubelet know this conatiner is not working 
+there should be core component which is passing info to kubelet 
+that there is conatiner that not sevring traffic properly
+health probes     --vimp
+------------------------------------------------------
+readness - it is make sure sending traffic 
+           it is also responsible to sotping traffic but
+          it cant restart to the perticular conatiner
+livenes - it is similar to readness but it can restart conatiner
+
+startop - it used for manily legacy application - it take mainly 
+4 + min to start conatiner
+eg. windows base application
+if u implementing startuf prob it will not work we have to implement
+other 2 probe also
+--------------------------------------------------------------------
+ku create deployment app1 --image kiran2361993/kubegame:v2 --replicas 3 --dry-run -o yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    app: appl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: appl
+  template:
+    metadata:
+      labels:
+        app: appl
+    spec:
+      containers:
+        - name: app1
+          image: kiran2361993/kubegame:v2  # Removed space after `:`
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /index.html
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+### **Steps to Remove `index.html` and Fix Access Issues**  
+
+1️⃣ **Check Pod Status:**  
+```bash
+kubectl get pods
+kubectl describe pod <pod-name>
+```
+
+2️⃣ **Access the Pod Shell:**  
+```bash
+kubectl exec -it appl-69f47d6787-ph869 -- bash
+```
+
+3️⃣ **Navigate & Delete Files:**  
+```bash
+cd /var/www/html/
+ls -al
+rm -rf index.html index.nginx-debian.html
+ls -al  # Verify deletion
+```
+
+4️⃣ **Exit Pod & Restart (if needed):**  
+```bash
+exit
+kubectl delete pod appl-69f47d6787-ph869  # Kubernetes will recreate it
+```
+
+5️⃣ **Check Service & Access:**  
+```bash
+kubectl get svc
+curl -I http://<EXTERNAL-IP>  # If using LoadBalancer
+kubectl logs appl-69f47d6787-ph869  # Check logs if issues persist
+```
+
+This ensures your app is properly served. 🚀
+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: appl
+  template:
+    metadata:
+      labels:
+        app: appl
+    spec:
+      containers:
+        - name: kubegame
+          image: kiran2361993/kubegame:v2
+          ports:
+            - containerPort: 80
+          
+          # Readiness Probe (Ensures app is ready before accepting traffic)
+          readinessProbe:
+            httpGet:
+              path: /index.html
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          # Liveness Probe (Ensures app is running, restarts if it fails)
+          livenessProbe:
+            httpGet:
+              path: /index.html
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
