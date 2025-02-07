@@ -34,3 +34,115 @@ devops engg dont need to change manuall 29 application host name and url
 simple devops engg change host name and url in external name
 it will be apply rest all application
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+cluster ip
+
+
+ku create deployment app1 --image kiran2361993/loadbalncerimage:v1 --replicas 3 --dry-run -o  y
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    app: app1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+        - name: loadbalancerimage
+          image: kiran2361993/loadbalancerimage:v1
+apply it
+--------------------------------
+expose it 
+ku expose deployment app1 --port 80 --target-port 80 --type ClusterIp
+
+kubectl run troubleshooting --image=kiran2361993/troubleshootingtools:v1
+
+login in that and access pod with help of cluster ip 
+
+kubectl exec -it troubleshooting -- bash
+
+nslookup app1
+
+to check it is doing balncing or not
+while true; do 
+  curl -sL http://appl | grep -i 'IP Address'; 
+  sleep 1; 
+done
+
+ku delete svc app1
+delete deployment
+-------------------------------------------------------------
+in real time container will not be having each and every pakege whaterver we required thats
+why cret one trobleshoting conatiner which conatin all dependency or pakeges    ---------------resume point
+ctl+siftp ---fomat doc in vs code
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+nodeport 
+
+ku create deployment app1 --image kiran2361993/kubegame:v2 --replicas 3 --dry-run -o yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appl
+  labels:
+    app: appl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: appl
+  template:
+    metadata:
+      labels:
+        app: appl  # Ensure label matches the selector
+    spec:
+      containers:
+        - name: kubegame
+          image: kiran2361993/kubegame:v2
+
+deploy it
+expose it
+
+ku expose deployment appl --port 80 --target-port 80 --type NodePort
+
+configure sg
+access it 
+delete svc only 
+---------------------------------------------------------------------------------------------------------------------------------------
+load balncer
+
+ku expose deployment appl --port 80 --target-port 80 --type LoadBalancer
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+opn rote53 - attach dns name it - crte record - simple routing - www - ip4 - load balncer - us-east-1 - 
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
