@@ -12,6 +12,8 @@ watch kubectl get pods
 
 ku cluste-info
 
+kubectl delete all --all
 
-  
+  kubectl delete pod,deploy --all
+
   
