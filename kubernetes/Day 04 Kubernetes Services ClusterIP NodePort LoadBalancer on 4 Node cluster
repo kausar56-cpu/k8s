@@ -37,7 +37,7 @@ it will be apply rest all application
 cluster ip
 
 
-ku create deployment app1 --image kiran2361993/loadbalncerimage:v1 --replicas 3 --dry-run -o  y
+kubectl create deployment app1 --image kiran2361993/loadbalncerimage:v1 --replicas 3 --dry-run -o  y
 
 apiVersion: apps/v1
 kind: Deployment
@@ -61,7 +61,7 @@ spec:
 apply it
 --------------------------------
 expose it 
-ku expose deployment app1 --port 80 --target-port 80 --type ClusterIp
+kubectl expose deployment app1 --port 80 --target-port 80 --type ClusterIp
 
 kubectl run troubleshooting --image=kiran2361993/troubleshootingtools:v1
 
@@ -81,7 +81,7 @@ ku delete svc app1
 delete deployment
 -------------------------------------------------------------
 in real time container will not be having each and every pakege whaterver we required thats
-why cret one trobleshoting conatiner which conatin all dependency or pakeges    ---------------resume point
+why creat one trobleshoting conatiner which conatin all dependency or pakeges    ---------------resume point
 ctl+siftp ---fomat doc in vs code
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -121,7 +121,7 @@ delete svc only
 ---------------------------------------------------------------------------------------------------------------------------------------
 load balncer
 
-ku expose deployment appl --port 80 --target-port 80 --type LoadBalancer
+kubectl expose deployment appl --port 80 --target-port 80 --type LoadBalancer
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 opn rote53 - attach dns name it - crte record - simple routing - www - ip4 - load balncer - us-east-1 - 
