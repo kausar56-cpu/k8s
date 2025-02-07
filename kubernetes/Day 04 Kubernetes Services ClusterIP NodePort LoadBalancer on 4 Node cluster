@@ -1,0 +1,36 @@
+cluster ip
+
+devopler give an task to test application local env 
+cluster ip does have also capability routing traffic to diff diff pods 
+it can balnce load accurdingly it follows round robin method 
+route traffic across multiple pods by using iptables
+-----------------------------------------------------------------------------------------
+node port
+
+if we crete node port dont thing cluster ip not there cluster ip present at backend
+uniq host port will cretate between 30000:32667
+we can crte anyone special yes we can during manifest yaml file
+nodeport do nating internally once this part done it will writing to cluster ip
+------------------------------------------------------------------------------------------
+node port is not use case for production application
+load balncing is good for production
+custermer/user - we cannot give public ip:port
+evry thime they are going to remember this
+------
+so we are suppose give proper DNS name - domain name 
+------------------------------------------------------------------------------------------------
+external name     --------------------------vimp
+
+i am working on k8s application - suddenly product maneger came - can u integrate database to k8s application  - this an external database not from other resion
+this database access all teams becoz 
+it contains product info
+custmer feedback
+reviews
+---------------------
+adv. of integrating database to k8s is database haing host name , uniq URL 
+dtabase admin - he came back to devops guy - we are migrating database sever to another server 
+next time url and host name intergated with many application 29 - aftermigration host name and url will change - 
+devops engg dont need to change manuall 29 application host name and url 
+simple devops engg change host name and url in external name
+it will be apply rest all application
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
