@@ -128,6 +128,25 @@ opn rote53 - attach dns name it - crte record - simple routing - www - ip4 - loa
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-nlb
+  labels:
+    app: app1
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enable: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enable: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: "30"
+spec:
+  type: LoadBalancer
+  selector:
+    app: app1
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
 
 
 
