@@ -114,18 +114,16 @@ spec:
       - name: kubegame
         image: kiran2361993/kubegame:v1
 change v2 see
----------------------------------------------------------------------------------
-
- maxSurge: 1
-      maxUnavailable: 1
+----------------------------------
 
 apiVersion: apps/v1
-kind: DeamonSet
+kind: Deployment
 metadata:
+  name: testpod1
   labels:
     app: testpod1
-  name: testpodi
 spec:
+ replicas: 6
   minReadySeconds: 10
   strategy:
     rollingUpdate:
@@ -133,15 +131,19 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: testpod1  # This matches the labels in `template.metadata.labels`
+      app: testpod1
   template:
     metadata:
       labels:
-        app: testpod1  # This matches the `selector.matchLabels`
+        app: testpod1
     spec:
       containers:
-      - image: kiran2361993/kubegame:v1
-        name: kubegame
+      - name: kubegame
+        image: kiran2361993/kubegame:v1
+---------------------------------------------------------------------------------
+
+ maxSurge: 1
+      maxUnavailable: 1
 change v1 to v2 and see
 -----------------------------------------------------------------------------------------
 Deamonset
