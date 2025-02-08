@@ -2,6 +2,17 @@ user - vote and result - frentend
 user - send -request - vote -it will return into redies - it will writte to worker (.net)- 
 worker based on result wite to database - database sotre - result -user
 
+------------------------------------------------------------------------------------------------------------------------------------
+1. To Generate Secure Key and cert... Do we really use `certbot` command in Realtime ????  or any Other alternative approach ??
+2. If we use microservice architecture, do we create separate certs and key or only one cert and key is enough???
+
+Good Question , actually in real time they will be having licensed keys, .crt and .key. The only thing what we have to do is  , 
+we have to follow the process what I showed in video .
+Else there will be one common location they run the key in that particular location.
+
+Nonwe don’t use , only one.  We have 28 services we  use a single SSL key for all 28 services by configuring 
+a load balancer or reverse proxy with the SSL certificate.
+The load balancer then handles SSL termination and forwards traffic to the microservices.
 
 
 --------------------------------------------------------------------------------------------------------------
