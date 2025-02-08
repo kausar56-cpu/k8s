@@ -33,6 +33,451 @@ limit = conatainer level              -----IQ
 
 
 --------------------------------------------------------------------------------------------------------------------------------------
+mkdir init
+cd
+nano init.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: init-container-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: init-container-app
+  template:
+    metadata:
+      labels:
+        app: init-container-app
+    spec:
+      initContainers:
+        - name: wait-for-service
+          image: busybox
+          command: ['sh', '-c', 'until nslookup myservice.default.svc.cluster.local; do echo waiting for myservice; sleep 2; done']
+        
+        - name: perform-task
+          image: busybox
+          command: ['sh', '-c', 'echo "Init container tasks completed" > /tasks/status.txt']
+          volumeMounts:
+            - name: tasks-volume
+              mountPath: /tasks
+
+      containers:
+        - name: main-container
+          image: busybox
+          command: ['sh', '-c', 'while true; do echo "Main container running"; sleep 10; done']
+          volumeMounts:
+            - name: tasks-volume
+              mountPath: /tasks
+
+      volumes:
+        - name: tasks-volume
+          emptyDir: {}
+
+apply it
+--------------------------------------------------------------------------------------------------------
+kubectl expose deployment init-container-deployment --name=myservice --port=80
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ku exec -it init-container-deployment-565c664c9b- --sh
+cd task/
+ls -al
+cat status.txt
+-----------------------------------------------------------------------------------------------------------------------------------------------
+delete deployment and svc
+-------------------------------
+adapter conatiner
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adapter-container-demo
+  labels:
+    env: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: prod
+  template:
+    metadata:
+      labels:
+        env: prod
+    spec:
+      initContainers:
+        - name: init-container
+          image: alpine/git
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - "git clone https://github.com/saikiranpi/Sidecar-Test /html/"
+          volumeMounts:
+            - name: nginxvol
+              mountPath: /html/
+      containers:
+        - name: adapter-container
+          image: busybox:1.28
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - "while true; do echo '<h1>'$(date)'</h1>' >> /html/index.html; sleep 5; done"
+          volumeMounts:
+            - name: nginxvol
+              mountPath: /html/
+        - name: main-container
+          image: nginx:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginxvol
+              mountPath: /usr/share/nginx/html/
+      volumes:
+        - name: nginxvol
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adapter-cont
+  labels:
+    env: prod
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    env: prod
+  type: NodePort
+
+
+all SG
+delete all
+------------------------------------------------------------------------
+adpator +init 
+
+nano deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adapter-container-deployment
+  labels:
+    env: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: prod
+  template:
+    metadata:
+      labels:
+        env: prod
+    spec:
+      initContainers:
+        - name: wait-for-service
+          image: busybox
+          command: ['sh', '-c', 'until nslookup myservice.default.svc.cluster.local; do echo waiting for myservice; sleep 2; done']
+
+        - name: perform-task
+          image: busybox
+          command: ['sh', '-c', 'echo "Init container tasks completed" > /tasks/status.txt']
+          volumeMounts:
+            - name: shared-vol
+              mountPath: /tasks
+
+      containers:
+        - name: adapter-container
+          image: kiran2361993/kubegame:v1
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args: ["-c", "while true; do echo '<h1>'$(date)'</h1>' > /html/index.html; sleep 5; done"]
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-vol
+              mountPath: /html/
+
+        - name: main-container
+          image: nginx:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-vol
+              mountPath: /usr/share/nginx/html/
+
+      volumes:
+        - name: shared-vol
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adapter-container-service
+  labels:
+    env: prod
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    env: prod
+  type: NodePort
+
+apply it 
+kubectl exec -it adapter-container-deployment-69cf6494c-xkvjf -- sh
+cd html/
+ls -al
+cat index.html
+
+delete all
+------------------------------------------------------------------------------------------------------------------------------
+
+
+resorce quta
+
+
+
+kubectl create ns development
+kubens development
+
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: count-quotas
+spec:
+  hard:
+    pods: "2"
+
+kubectl run pod  --image nginx:latest
+kubectl run pod2  --image nginx:latest
+kubectl run pod3  --image nginx:latest
+delete all
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+  labels:
+    name: development
+---
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: object-counts
+  namespace: development
+spec:
+  hard:
+    requests.cpu: "1000m"         # Max 1 CPU request करता येईल
+    limits.cpu: "2000m"           # Max 2 CPU limit सेट करता येईल
+    requests.memory: 1Gi          # Max 1GB Memory request करता येईल
+    limits.memory: 2Gi            # Max 2GB Memory limit करता येईल
+    pods: "10"                    # Max 10 Pods तयार करता येतील
+    replicationcontrollers: "20"   # Max 20 ReplicationControllers तयार करता येतील
+    resourcequotas: "10"           # Max 10 ResourceQuotas तयार करता येतील
+    services: "5"                  # Max 5 Services तयार करता येतील
+
+apply it
+kubectl run pod --image  nginx:latest
+-------------------------------------------------------------------
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-memory-min-max-demo-1r
+  namespace: development
+spec:
+  limits:
+    - max:
+        cpu: "200m"         # एका कंटेनरला Max 200m CPU मिळेल
+        memory: 128Mi       # एका कंटेनरला Max 128MB Memory मिळेल
+      min:
+        cpu: "100m"         # एका कंटेनरला कमीत कमी 100m CPU लागेल
+        memory: 100Mi        # एका कंटेनरला कमीत कमी 64MB Memory लागेल
+      type:container
+apply it
+kubectl run pod --image  nginx:latest
+delete all
+-----------------------------------------------------------------------------
+
+init +adpor+depolyment+ resorce quta+limits
+
+
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+  labels:
+    name: development
+
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: object-counts
+  namespace: development
+spec:
+  hard:
+    requests.cpu: "1000m"
+    limits.cpu: "2000m"
+    requests.memory: 1Gi
+    limits.memory: 2Gi
+    pods: "10"
+    replicationcontrollers: "20"
+    resourcequotas: "10"
+    services: "5"
+
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-memory-min-max-demo-lr
+  namespace: development
+spec:
+  limits:
+    - max:
+        cpu: "200m"
+        memory: 128Mi
+      min:
+        cpu: "100m"
+        memory: 100Mi
+      type: Container
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adapter-container-deployment
+  labels:
+    env: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: prod
+  template:
+    metadata:
+      labels:
+        env: prod
+    spec:
+      initContainers:
+        - name: init-container
+          image: alpine/git
+          command: ["/bin/sh"]
+          args:
+            [
+              "-c",
+              "git clone https://github.com/saikiranpi/Sidecar_Test.git /html",
+            ]
+        - name: wait-for-service
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup myservice.default.svc.cluster.local; do echo waiting for myservice; sleep 2; done",
+            ]
+        - name: perform-task
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              'echo "Init container tasks completed" > /tasks/status.txt',
+            ]
+          volumeMounts:
+            - name: shared-vol
+              mountPath: /tasks
+      containers:
+        - name: adapter-container
+          image: kiran2361993/kubegame:v1
+          command: ["/bin/sh"]
+          args:
+            [
+              "-c",
+              "while true; do echo \\<h1\\>$(date)\\</h1\\> >> /html/index.html; sleep 5; done",
+            ]
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-vol
+              mountPath: /html/
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
+        - name: main-container
+          image: kiran2361993/kubegame:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-vol
+              mountPath: /usr/share/nginx/html/
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "200m"
+              memory: "512Mi"
+      volumes:
+        - name: shared-vol
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adapter-container-service
+  labels:
+    env: prod
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    env: prod
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myservice
+  labels:
+    env: prod
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    env: prod
+  type: NodePort
+
+
+kubectl scale deployment adapter-container-deployment --replicas=6
+kubectl get pods -o wide
+login to conatiner any 
+cd /html/
+ls -al
+cat inde.html
+cat status.txt
+ kubectl get svc
+access it
+
+
 
 
 
