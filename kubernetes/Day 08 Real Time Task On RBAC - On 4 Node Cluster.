@@ -1,1 +1,287 @@
+1 ] dev - user1 - 1. ca.crt 2. ca.key
+    prod - user2 -  1. ca.crt 2. ca.key
+     1. ca.crt 2. ca.key with help of this keys i will create 2 user
+
+ 2] then we are going to crete configs - in that we will call key uder /root/file  - just for authentication betwween multiple server most secure way
+
+3] roles - rules - apigrups /resources (pod.dep, rc) - under resurce -verbs (grt , update,crete)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+gentrate key
+before creting cluster
+ssh-keygen
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+kubectl Create ns development 
+kubectl Create ns Production.
+ 
+ls -l /etc/kubernetes/pki/
+/etc/kubernetes/pki/ca.crt
+/etc/kubernetes/pki/ca.key
+copy and save it
+
+/tmp
+nano ca.crt
+nano ca.key
+
+openssl genrsa -out user1.key 2048
+openssl req -new -key user1.key -out user1.csr -subj "/CN=user1/O=development"
+openssl x509 -req -in user1.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out user1.crt -days 365
+
+
+openssl genrsa -out user2.key 2048
+openssl req -new -key user2.key -out user2.csr -subj "/CN=user1/O=development"
+openssl x509 -req -in user2.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out user1.crt -days 365
+
+Now copy all .crt and .key to master root location safely.
+ you need to copy the .crt and .key files from the master to the worker node.
+
+nano user1.crt
+nano user1.key
+nano user2.crt
+nano user2.key
+------------------------------------------------------------------------------------------------------------------
+ cd ~/. kube/
+ls -al
+cat config
+
+apiVersion: v1
+kind: Config
+clusters:
+- name: kausarmujawar.shop
+  cluster:
+    certificate-authority-data: LSetLS1CRUdJTiBDRVJUSUZJQ8FURS... (your actual CA data here)
+    server: https://api.cloudvishwakarma.in
+    tls-server-name: api.internal.kausarmujawar.shop
+
+contexts:
+- name: user1-context
+  context:
+    cluster: kausarmujawar.shop
+    namespace: development
+    user: user1
+
+current-context: user1-context
+
+users:
+- name: user1
+  user:
+    client-certificate: /root/user1.crt
+    client-key: /root/user1.key
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+nano /root/USER1-CONFIG
+export KUBECONFIG=/root/USER1-CONFIG
+kubectl get pods
+
+
+
+#USER-1
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: XXXXXXXXXXx
+    server: https://api.kausarmujawar.shop
+    tls-server-name: api.internal.kausarmujawar.shop
+  name: kausarmujawar.shop
+contexts:
+- context:
+    cluster: kausarmujawar.shop
+    namespace: development
+    user: user1
+  name: user1-context
+current-context: user1-context
+kind: Config
+users:
+- name: user1
+  user:
+    client-certificate: /root/user1.crt
+    client-key: /root/user1.key
+
+user2
+
+nano /root/USER1-CONFIG
+export KUBECONFIG=/root/USER1-CONFIG
+
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS®tLS1CRUdЭTiBDRVJUSUZJQ@FURS@tLS@tCk1JSUMгRENDQWVDZ@F3SUJBZ@1NRitrSHg2L0pFMkE3RHZzSU1BMEdDU:
+    server: https://api.kausarmujawar.shop
+    tls-server-name: api.internal.kausarmujawar.shop
+  name: kausarmujawar.shop
+contexts:
+- context:
+    cluster: kausarmujawar.shop
+    namespace: production
+    user: user2
+  name: user2-context
+current-context: user2-context
+kind: Config
+users:
+- name: user2
+  user:
+    client-certificate: /root/user2.crt
+    client-key: /root/user2.key
+----------------------------------------------------------------------------------------------------------------------
+CRETE ROLE AND DEPLOY
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: user1-role
+  namespace: development
+rules:
+- apiGroups: ["", "apps", "networking.k8s.io"] # Use "" for core API group
+  resources:
+    - "pods"
+    - "deployments"
+    - "nodes"
+    - "ingress"
+    - "services"
+  verbs: ["get", "update", "list", "create", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: user2-role
+  namespace: production
+rules:
+- apiGroups: ["", "apps", "networking.k8s.io"] # Use "" for core API group
+  resources:
+    - "pods"
+    - "deployments"
+    - "replicasets"
+    - "nodes"
+    - "ingress"
+    - "services"
+  verbs: ["get", "update", "list", "create", "delete"]
+
+apply it
+
+kubectl api-resources --namespaced=true
+sgle kind distil ani trule vale ns vr apply hotat
+false apply on cluster level
+-------------------------------------------------------------------------------------------------------------------apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: user1-rolebinding
+  namespace: development
+subjects:
+- kind: User
+  name: user1
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: user1-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: user2-rolebinding
+  namespace: production
+subjects:
+- kind: User
+  name: user2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: user2-role
+  apiGroup: rbac.authorization.k8s.io
+---------------------------------------------------------------------------------------
+kubectl get rolebindings.rbac.authorization.k8s.io -n production
+kubectl get rolebindings.rbac.authorization.k8s.io -n devlopment
+
+export KUBECONFIG=/root/USER1-CONFIG
+kubectl get pods
+---------------------------------------------------------
+kubectl create deployment my-deployment --image=nginx --replicas=2 -n development
+--------------------------------------------------------------------------
+openssl genrsa -out saikiran.key 2048
+openssl req -new -key saikiran.key -out saikiran.csr -subj "/CN=saikiran/O=clusteradmin"
+openssl x509 -req -in saikiran.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out saikiran.crt -days 365
+
+cat saikiran.crt
+copy
+nano saikiran.crt
+nano saikiran.key
+
+apiVersion: v1
+kind: Config
+clusters:
+- name: cloudvishwakarma.in
+  cluster:
+    certificate-authority-data: LSetLS1CRUdJTiBDRVJUSUZJQ8FURS0tLS@tCk1JSUMrRENDQ
+    server: https://api.cloudvishwakarma.in
+    tls-server-name: api.internal.cloudvishwakarma.in
+
+contexts:
+- name: saikiran-context
+  context:
+    cluster: cloudvishwakarma.in
+    user: saikiran
+
+current-context: saikiran-context
+
+users:
+- name: saikiran
+  user:
+    client-certificate: /root/saikiran.crt
+    client-key: /root/saikiran.key
+
+apply it
+
+export KUBECONFIG=/root/SAIKIRAN-CONFIG
+kubectl get pods
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: new-cluster-admin-role
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: clusterrolebinding-saikiran
+subjects:
+- kind: User
+  name: saikiran
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: new-cluster-admin-role
+  apiGroup: rbac.authorization.k8s.io
+
+-----------------------------------------------------------------------
+kubeconfing merging
+
+KUBECONFIG=USER1-CONFIG:USER2-CONFIG:SAIKIRAN-CONFIG kubectl config view --merge --flatten > mixed-config.txt
+ls -al
+export KUBECONFIG=/root/mixed-config.txt
+
+download kubectx
+cd /usr/local/bin/
+
+wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubectx_v0.9.5_linux_x86_64.tar.gz
+tar -xvzf kubectx_v0.9.5_linux_x86_64.tar.gz
+kubectx
+--------------------------------------------------------------------------------------------------------------------------
+
+Portainer Kubernetes GitHub
+kubectl apply -f https://raw.githubusercontent.com/portainer/k8s/master/deploy/manifests/portainer/portainer.yaml
+kubens portainer
+kubectl get pods 
+kubectl get svc
+access it
+
+
 
