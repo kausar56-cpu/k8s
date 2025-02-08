@@ -1,3 +1,10 @@
+user - vote and result - frentend
+user - send -request - vote -it will return into redies - it will writte to worker (.net)- 
+worker based on result wite to database - database sotre - result -user
+
+
+
+--------------------------------------------------------------------------------------------------------------
 genrating TLS KEYS
 .crt and . key 
 -------------------------------
@@ -115,109 +122,6 @@ to see token
 
 deploy yaml file
 --------------------------------------------------
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: result
-  labels:
-    app: result
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: result
-  template:
-    metadata:
-      labels:
-        app: result
-    spec:
-      containers:
-      - name: result
-        image: kausar1011/votingapp:results
-        ports:
-        - containerPort: 80
-          name: result
-      imagePullSecrets:
-      - name: docker-pwd
-# vote
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: vote
-  labels:
-    apps: vote
-spec:
-  #type: LoadBalancer
-  ports:
-    - port: 80
-      targetPort: 80
-      name: vote-service
-  selector:
-    app: vote
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: vote
-  labels:
-    app: vote
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: vote
-  template:
-    metadata:
-      labels:
-        app: vote
-    spec:
-      containers:
-      - name: vote
-        image: kausar1011/votingapp:vote
-        ports:
-        - containerPort: 80
-          name: vote
-      imagePullSecrets:
-      - name: docker-pwd
-
-# worker
---- 
-apiVersion: v1
-kind: Service
-metadata: 
-  labels: 
-    apps: worker
-  name: worker
-spec: 
-  clusterIP: None
-  selector: 
-    app: worker
---- 
-apiVersion: apps/v1
-kind: Deployment
-metadata: 
-  labels: 
-    app: worker
-  name: worker
-spec: 
-  replicas: 1
-  selector:
-    matchLabels:
-      app: worker
-  template: 
-    metadata: 
-      labels: 
-        app: worker
-    spec: 
-      containers: 
-      - image: kausar1011/votingapp:worker
-        name: worker
-      imagePullSecrets:
-      - name: docker-pwd
----------------------------------------------
-
 # redis
 --- 
 apiVersion: v1
@@ -338,8 +242,109 @@ spec:
     name: result-service
   selector:
     app: result
----
 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result
+  labels:
+    app: result
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - name: result
+        image: kausar1011/votingapp:results
+        ports:
+        - containerPort: 80
+          name: result
+      imagePullSecrets:
+      - name: docker-pwd
+# vote
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote
+  labels:
+    apps: vote
+spec:
+  #type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      name: vote-service
+  selector:
+    app: vote
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote
+  labels:
+    app: vote
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+      - name: vote
+        image: kausar1011/votingapp:vote
+        ports:
+        - containerPort: 80
+          name: vote
+      imagePullSecrets:
+      - name: docker-pwd
+
+# worker
+--- 
+apiVersion: v1
+kind: Service
+metadata: 
+  labels: 
+    apps: worker
+  name: worker
+spec: 
+  clusterIP: None
+  selector: 
+    app: worker
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  labels: 
+    app: worker
+  name: worker
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template: 
+    metadata: 
+      labels: 
+        app: worker
+    spec: 
+      containers: 
+      - image: kausar1011/votingapp:worker
+        name: worker
+      imagePullSecrets:
+      - name: docker-pwd
+--------------------------------------------------------------------------------------------------------------------------------
 
       ------------------------------------------------------------------------------------------------------------------------------
      go to rout53 - crete recored A - simple recored -recored name www-  alias - network lb watch vedio
