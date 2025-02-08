@@ -1,1 +1,57 @@
+side car container is just dependecy for main container
+types of sidecar container
+1.init
+2.adapter
+3.Ambassador Containers
+--------------------------------------------------------------------------------------------
+1.init - 
+
+suppose 3 container out of 2 init and 1 main - 
+all init container shoud be complete before main container
+once after this container is good to go - if they given green signal enpont and sevices waterver task we have given working good then
+our main conatiner is good to go
+no restriction to crete to container init
+--------------------------------------------------------------------------------------------------------------------------------------
+2.adapter
+
+its not like init 
+its not servent to anyone
+simultenously it going to run along with your main container 
+mainly used for login , tracing , collecting matrix
+--------------------------------------------------------------------------------------------------------------------------------------
+
+3.Ambassador Containers
+
+it is mainly used for microservise artitecture
+its capability of ssl termination
+route to path based routing within k8s cluster 
+--------------------------------------------------------------------------------------------------------------------------------------
+Resource quta
+
+quota = NS level
+limit = conatainer level              -----IQ
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
