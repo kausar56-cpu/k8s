@@ -10,8 +10,10 @@ gentrate key
 before creting cluster
 ssh-keygen
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-kubectl Create ns development 
-kubectl Create ns Production.
+kubectl create ns development
+
+kubectl create ns production
+
  
 ls -l /etc/kubernetes/pki/
 /etc/kubernetes/pki/ca.crt
