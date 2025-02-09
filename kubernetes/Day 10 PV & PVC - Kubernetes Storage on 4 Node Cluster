@@ -48,6 +48,540 @@ how?
 whenever devolper raising cliam
 when deploying cluster with kops at backend storage class will be crteated - storage gp2 Imidiate class which mean
 if thre no pv remains - with help of storage class its possible - but its gooing to create volume as a dynamic provisioning cliam 
+----------------------------------------------------------------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: troubleshooting
+          image: kiran2361993/troubleshootingtools:v1
+          volumeMounts:
+            - name: myemptydir
+              mountPath: /etc/myemptydir
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /tmp/myemptydir
+              name: myemptydir
+      volumes:
+        - name: myemptydir
+          emptyDir: {}
+
+apply it
+
+kubectl exec -it nginx-deployment-854844fdfc-k5d47 -c troubleshooting -- bash
+
+cd /etc/myemptydir
+
+ls -al
+
+for I in {1..10}
+do
+    echo "$(date)" > FILE-$I
+done
+
+ls -al
+
+kubectl exec -it nginx-deployment-854844fdfc-k5d47 -c nginx -- bash
+
+cd /tmp/myemptydir
+
+ls -al
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+hostpath
+
+
+tommarow u have deploy depoyment with 3 or 4 replicaset we should be make sure that on each and every node this is deploying 
+that why we are deploying as demonset
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: containerd-deamonset
+  labels:
+    app: containerd-deamonset
+spec:
+  selector:
+    matchLabels:
+      app: containerd-deamonset
+  template:
+    metadata:
+      labels:
+        app: containerd-deamonset
+    spec:
+      containers:
+      - name: troubleshooting
+        image: kiran2361993/troubleshootingtools:v1 
+        volumeMounts:
+          - name: containerdsock
+            mountPath: "/run/containerd/containerd.sock"
+      volumes:
+        - name: containerdsock
+          hostPath:
+            path: /run/containerd/containerd.sock
+
+
+
+
+host pasun connect hot ahe container chya at mde 
+kubectl get pods 
+login in contanair
+
+# apt-get update -y && apt-get install -f containerd
+# ctr image pull docker.io/library/hello-world:latest
+# ctr container ls
+---------------------------------------------------------------------------------------------------------------------------
+EBS
+containe is stateless
+if we not mount volume to conatiner 
+we dont want data loss
+how we can save info by using EBS at co1
+
+-----------------------
+create EBS volume - gp2 - 10 gb -add tags 
+key and value
+kubernetescluster sara - copy volume ID -
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+      name: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        name: mongodb
+    spec:
+      containers:
+      - image: mongo
+        name: mongodb
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+      volumes:
+      - name: mongodb-data
+        awsElasticBlockStore:
+           volumeID: vol-016f2bbb6f3e82c1d
+           fsType: ext4
+      nodeSelector:
+          kubernetes.io/hostname: i-0eabc073991b3166c
+
+appy it
+login into pod
+mongosh
+show dbs
+
+sample data copy and pest 
+
+# db.movie.insert({"name":"Fast & Furious 1"})
+# db.movie.insert({"name":"Fast & Furious 2"})
+# db.movie.insert({"name":"Fast & Furious 3"})
+# db.movie.insert({"name":"Fast & Furious 4"})
+# db.movie.insert({"name":"Fast & Furious 5"})
+# db.movie.insert({"name":"Fast & Furious 6"})
+mongosh
+show dbs
+
+sql quries
+# > show dbs
+# > show collections 
+# > db.movie.find()
+kubectl get pods
+delete it 
+crte again
+login in 
+mongosh
+show dbs
+# > show collections 
+# > db.movie.find()
+delete all
+-------------------------------------------------------------------------------------------------------------------------------------------------
+aws ec2 create-volume \
+    --volume-type gp2 \
+    --size 2 \
+    --availability-zone us-east-1a \
+    --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=sara},{Key=Name,Value=aws-pv1}]'
+
+
+aws ec2 create-volume \
+    --volume-type gp2 \
+    --size 4 \
+    --availability-zone us-east-1a \
+    --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=sara},{Key=Name,Value=aws-pv2}]'
+
+
+aws ec2 create-volume \
+    --volume-type gp2 \
+    --size 6 \
+    --availability-zone us-east-1a \
+    --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=sara},{Key=Name,Value=aws-pv3}]'
+
+
+aws ec2 create-volume \
+    --volume-type gp2 \
+    --size 8 \
+    --availability-zone us-east-1a \
+    --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=sara},{Key=Name,Value=aws-pv4}]'
+
+
+aws ec2 create-volume \
+    --volume-type gp2 \
+    --size 10 \
+    --availability-zone us-east-1a \
+    --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=sara},{Key=Name,Value=aws-pv5}]'
+
+copy volume id from UI
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-pv1
+  labels:
+    type: aws-pv1
+spec:
+  storageClassName: gp2
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: vol-0d583b79033e9dfa2
+    fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-pv2
+  labels:
+    type: aws-pv2
+spec:
+  storageClassName: gp2
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: 4Gi
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: vol-03383941a331ed8aa
+    fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-pv3
+  labels:
+    type: aws-pv3
+spec:
+  storageClassName: gp2
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: 6Gi
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: vol-05c109790d96ccbed
+    fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-pv4
+  labels:
+    type: aws-pv4
+spec:
+  storageClassName: gp2
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: 8Gi
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: vol-07d7e78d1a0c3e62a
+    fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-pv5
+  labels:
+    type: aws-pv5
+spec:
+  storageClassName: gp2
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: vol-0d0864d2cf3cef1c1
+    fsType: ext4
+
+
+
+
+# aws ec2 create-volume --volume-type gp2 --size 2 --availability-zone us-east-1a --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=cloudvishwakarma.in},{Key=Name,Value=aws-pv1}]' && aws ec2 create-volume --volume-type gp2 --size 4 --availability-zone us-east-1a --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=cloudvishwakarma.in},{Key=Name,Value=aws-pv2}]' && aws ec2 create-volume --volume-type gp2 --size 6 --availability-zone us-east-1a --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=cloudvishwakarma.in},{Key=Name,Value=aws-pv3}]' && aws ec2 create-volume --volume-type gp2 --size 8 --availability-zone us-east-1a --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=cloudvishwakarma.in},{Key=Name,Value=aws-pv4}]' && aws ec2 create-volume --volume-type gp2 --size 10 --availability-zone us-east-1a --tag-specifications 'ResourceType=volume,Tags=[{Key=KubernetesCluster,Value=cloudvishwakarma.in},{Key=Name,Value=aws-pv5}]'
+
+apply it
+kubectl get pods
+
+one by one appy or claim it
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim1
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim2
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim3
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim4
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim5
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+
+kubectl get pv it will shown bound 
+after claiming he will mount
+
+------------------------------------------------------------------------------------------
+static persistent volume cliam
+firstly i have to create PV - create yaml add id - devolper will claim
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+      name: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        name: mongodb
+    spec:
+      containers:
+      - image: mongo
+        name: mongodb
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: mongodb-data1
+          mountPath: /data/db
+        - name: mongodb-data2
+          mountPath: /tmp/db1
+        - name: mongodb-data3
+          mountPath: /tmp/db2
+        - name: mongodb-data4
+          mountPath: /tmp/db3
+      volumes:
+      - name: mongodb-data1
+        persistentVolumeClaim:
+           claimName: task-pv-claim1
+      - name: mongodb-data2
+        persistentVolumeClaim:
+           claimName: task-pv-claim2
+      - name: mongodb-data3
+        persistentVolumeClaim:
+           claimName: task-pv-claim3
+      - name: mongodb-data4
+        persistentVolumeClaim:
+           claimName: task-pv-claim4
+      nodeSelector:
+          kubernetes.io/hostname: i-0eabc073991b3166c
+
+apply it
+login in
+cd /data/db
+ls -al
+ cd /tmp/db1
+ cd /tmp/db2
+ cd /tmp/db3
+---------------------------------------------------------------------------------------------------------------------------------------
+dynamic pv calim
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim6
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+apply it it will atomaticaly bound
+becoz sotrage class avilable
+--------------------------------------
+ku get storageclasses.storage.k8s.io
+delete all storage
+-----------------------------------
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim7
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+apply it 
+je sorage all delte kele tr kiti pn cliam krude pending state mde jat
+
+#Creating gp2 storage class and making it default
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: gp2
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+  fsType: ext4 
+
+#Creating io storage class
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: io1
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: io1
+  iopsPerGB: "10"
+  fsType: ext4
+
+
+apply it
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim8
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+
+apply it
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
