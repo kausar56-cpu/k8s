@@ -249,8 +249,89 @@ prod to dev pn ping hoil l
 
 --------------------------------------------------------------------------------------
 
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-from-prod-to-qa-on-tcp8888
+  namespace: qa
+spec:
+  podSelector: 
+   matchLabels:
+    ns: qa
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          nsp: prod
+    - podSelector:
+        matchLabels:
+          ns: prod
+    ports:
+    - protocol: TCP
+      port: 8888
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-from-prod-to-qa-on-tcp8888
+  namespace: prod
+spec:
+  podSelector: 
+   matchLabels:
+    ns: prod
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          nsp: qa
+    - podSelector:
+        matchLabels:
+          ns: qa
+    ports:
+    - protocol: TCP
+      port: 8888
+
+curl http://100.106.150.84:8888
+
+--------------------------------------------------------------------------
+-allowing-coredns-ingress-prod.ym
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-from-prod-to-coredns-on-tcp53
+  namespace: prod
+spec:
+  podSelector: 
+   matchLabels:
+    ns: prod
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    - podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 9153
 
 
+#ku get pods -n kube-system
 
 
 
