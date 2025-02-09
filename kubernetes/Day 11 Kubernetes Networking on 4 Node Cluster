@@ -1,1 +1,211 @@
+crtete 3 ns prod QA dev
+block communication between them
+ns - in that 2 pod - block access between 2 pods
+do it same on  all 3 namespace
+ we will give access on port level in real time   -------------vimp
+-----------------------------------------------------------------
+network policies apply on 
+pod
+lebel
+ns
 
+--------------------------------------------------
+eksctl create cluster \
+  --name kausarmujawar-shop \
+  --region us-east-1 \
+  --nodegroup-name sara \
+  --node-type t2.medium \
+  --nodes 1 \
+  --ssh-access \
+  --ssh-public-key ~/.ssh/id_ed25519.pub \
+  --topology private \
+  --networking calico \
+  --external-dns-name kausarmujawar.shop
+
+ku run trouble1 --image=kiran2361993/troubleshootingtools:v1 -n default
+ku run trouble2 --image=kiran2361993/troubleshootingtools:v1 -n default
+
+login 1st conatiner and try ti ping it for both p1 -p2
+p2 -p1
+
+but i want restrict acssess
+
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-ingress
+  namespace: default
+spec:
+  podSelector: 
+    matchLabels:
+      run: trouble1
+  policyTypes:
+  - Ingress
+
+apply it 
+
+kubectl get nodes -o wide --no-headers
+login pod 1 ping pod 2 - success - ingress
+login pod 2 ping pod 1  - failed - egress
+
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-egress
+  namespace: default
+spec:
+  podSelector: 
+    matchLabels:
+      run: trouble1
+  policyTypes:
+  - Egress
+block from 2 side
+delete pod all
+-------------------------------------------------------------------------------------------------------------------------------------------------
+#Creating Namespaces & Utilpods
+kubectl create ns prod
+kubectl create ns dev
+kubectl create ns qa
+
+#Labling Namespaces
+kubectl label ns prod nsp=prod
+kubectl label ns dev nsp=dev
+kubectl label ns qa nsp=qa
+
+#Deploy  pod in all namespaces
+ku run -n prod prod1 --image=kiran2361993/troubleshootingtools:v1 -l ns=prod
+ku run -n prod prod2 --image=kiran2361993/troubleshootingtools:v1 -l ns=prod
+
+ku run -n dev dev1 --image=kiran2361993/troubleshootingtools:v1 -l ns=dev
+ku run -n dev dev2 --image=kiran2361993/troubleshootingtools:v1 -l ns=dev
+
+ku run -n qa qa1 --image=kiran2361993/troubleshootingtools:v1 --labels ns=qa
+ku run -n qa qa2 --image=kiran2361993/troubleshootingtools:v1 --labels ns=qa
+
+
+
+ku get po -n prod -o wide --no-headers && ku get po -n dev -o wide --no-headers && ku get po -n qa -o wide --no-headers
+
+alias allpods='ku get po -n prod -o wide --no-headers && ku get po -n dev -o wide --no-headers && ku get po -n qa -o wide --no-headers'
+
+ku delete pods -n default --all
+
+change IP ALL
+
+ku exec -it  prod1 -n prod -- ping -c 3  100.106.150.83 \
+&& ku exec -it  prod2 -n prod -- ping -c 3  100.97.52.10 \
+&& ku exec -it  prod1 -n prod -- ping -c 3   100.106.150.84     \
+&& ku exec -it  prod2 -n prod -- ping -c 3   100.99.93.24
+
+
+ku exec -it  dev1 -n dev -- ping -c 3    100.106.150.84 \
+&& ku exec -it  dev2 -n dev -- ping -c 3  100.99.93.24 \
+&& ku exec -it  dev1 -n dev -- ping -c 3   100.99.93.22    \
+&& ku exec -it  dev2 -n dev -- ping -c 3 100.99.93.23 
+
+
+ku exec -it  qa1 -n qa -- ping -c 3     100.99.93.22  \
+&& ku exec -it  qa2 -n qa -- ping -c 3   100.99.93.23  \
+&& ku exec -it  qa1 -n qa -- ping -c 3  100.106.150.83 \
+&& ku exec -it  qa2 -n qa -- ping -c 3   100.97.52.10
+
+after that it will ping each other but i dont want that
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-all-traffic-prod
+  namespace: prod
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-all-traffic-dev
+  namespace: dev
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: deny-all-traffic-qa
+  namespace: qa
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+
+apply it
+again apply above command
+-----------------------------------------------------------------------------------------------------------------------------------
+ata 3 namespace ahet tyamdil 
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------
