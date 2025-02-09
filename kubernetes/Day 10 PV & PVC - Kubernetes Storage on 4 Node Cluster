@@ -3,7 +3,55 @@ types
 2. host path
 3. ebs
 4. PV -PVC
+
+--------------------------------------------------------------------------------------------------------------------------------
+1. empty dir - temparay volume
 when pod will crte with that default volume also crete calles empty dir
 co1 - /etc - 123..file
 c02 -/tmp - atomatically we can able to see heare this file
 we are crteing file on munted location 
+--------------------------------------------------------------------------------------------------------------------------------
+2. host path
+
+we ahve container 2 in pod - this in cluster
+and docker is on host machine
+if suppose i trying to give command in conatiner docker pas its not possible dirctly
+so hostpath comes in picure
+
+by default when u configuring docker API is going to expose uniq socket at /var/run/docker.sock
+if want communication betwwen them them mount hostpath volume between conatiner and /var/run/docker.sock this path
+--------------------------------------------------------------------------------------------------------------------------------------------
+EBS
+POD - CO1  - in that mongodb - application -running - customer trying upload images/files - all datat - store at db - some reson
+conatiner is down - when it up data will loss - co1 is stateless - to rescure data - ebs
+
+create - GP2 5gb -volume - tag - cluster name - creted it - uniq -volume id will crted 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+this all process is maunalyy - if devopd engg not present or on leave then - devolper cannot be wait - so
+
+PV -PVC
+types
+1.static
+2.dynamic
+---------------------------
+1.static
+if my devoplper requre some 4 gb volume he caaot attact dirctly to node 
+he should be clame it 
+
+bunded means
+before state - it will be avilable state which means 
+If it is not bound to any PVC it will be showing as available once it has been claimed, and then the statue will turn to bounded
+------------------------------------------------------------------------------------------------------------------------------
+
+if soppose all pv bounded - still devlper want 20gb gp2 volume - its possible dynamic PV cliam
+how?
+whenever devolper raising cliam
+when deploying cluster with kops at backend storage class will be crteated - storage gp2 Imidiate class which mean
+if thre no pv remains - with help of storage class its possible - but its gooing to create volume as a dynamic provisioning cliam 
+
+
+
+
+
+
+
