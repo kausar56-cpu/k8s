@@ -1,1 +1,9 @@
-
+types
+1. empty dir - temparay volume
+2. host path
+3. ebs
+4. PV -PVC
+when pod will crte with that default volume also crete calles empty dir
+co1 - /etc - 123..file
+c02 -/tmp - atomatically we can able to see heare this file
+we are crteing file on munted location 
