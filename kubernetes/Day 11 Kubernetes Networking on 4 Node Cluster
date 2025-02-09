@@ -151,11 +151,95 @@ spec:
 apply it
 again apply above command
 -----------------------------------------------------------------------------------------------------------------------------------
-ata 3 namespace ahet tyamdil 
+ata 3 namespace ahet tyamdhe acess nko ahe pn single ns mdil pod mde hvy
 
+kubens prod
+allpods
 
+pod communication in single ns                 -------------vimp
 
+#This Policy Will Allow Traffic Between PODs in prod NS with Label ns=prod
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-within-prod-namespace
+  namespace: prod
+spec:
+  podSelector: 
+   matchLabels:
+    ns: prod
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          ns: prod
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          ns: prod
 
+apply it
+login pod 1
+acess pod 2
+---------------------------------------------------------------------------
+now allow acess between 2 ns
+
+kubens dev
+allpods
+
+#Allow Ingress Traffic From dev To prod applied at prod Namespace
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-from-dev-to-prod
+  namespace: prod
+spec:
+  podSelector: 
+   matchLabels:
+    ns: prod
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          nsp: dev
+    - podSelector:
+        matchLabels:
+          ns: dev
+
+#Allow Egress Traffic From dev To prod applied at dev Namespace
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-from-dev-to-prod
+  namespace: dev
+spec:
+  podSelector: 
+   matchLabels:
+    ns: dev
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          nsp: prod
+    - podSelector:
+        matchLabels:
+          ns: prod
+
+apply it
+ku exec -it dev1 --bash
+ping prod ip both - mhnje dev te prod access zal
+prod to dev pn ping hoil l
 
 
 
