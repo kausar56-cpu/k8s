@@ -1,1 +1,50 @@
 
+----------------------------------------------------------------------
+ 
+**Node Exporter**: Node Exporter is responsible for collecting metrics (logs) from agents.  
+- **Agent**: Refers to the master node, worker node 1, and worker node 2.  
+- When Node Exporter collects logs, it receives raw data, typically in numerical form (e.g., 1, 2, 3).  
+- Node Exporter converts these raw metrics into a user-readable format.  
+
+
+------------------------------------------------------------------------------
+ **Data Retrieval in Prometheus**
+1. **Scraping Interval**:  
+   - Prometheus retrieves metrics from Node Exporter every 15 seconds.  
+   - This process is called the "scraping interval."  
+
+2. **TSDB (Time-Series Database)**:  
+   - All logs and metrics are stored in Prometheus's TSDB.  
+
+3. **Prometheus HTTP Server**:  
+   - Monitoring multiple containers (e.g., 20 containers) manually can be challenging.  
+   - Prometheus UI serves as a centralized tool to manage and monitor all container logs efficiently.  
+
+--------------------------------------------------------------------------------------------------
+
+ **Prometheus Workflow**:
+1. **Configuration**:  
+   - After configuring Prometheus UI, it does not directly fetch logs from TSDB.  
+
+2. **Query Processing**:  
+   - Prometheus uses PromQL (Prometheus Query Language) to retrieve data.  
+   - For example:  
+     - Entering the query `up` in the Prometheus UI sends a request to:  
+       - Prometheus UI → HTTP → TSDB → HTTP → Prometheus UI.  
+   - The result is displayed on the dashboard.  
+
+
+--------------------------------------------------------------------------------------------------
+ **Grafana Overview**
+1. **Visualization Tool**:  
+   - Grafana provides detailed visual monitoring of metrics.  
+   - It is more intuitive compared to Prometheus’s native UI.  
+
+2. **Custom Dashboards**:  
+   - Users can create custom dashboards in Grafana for tailored views.  
+   - Configuration involves specifying the data source URL.  
+     - Example: `http://localhost:9090` (Prometheus URL).  
+   - Grafana retrieves data from Prometheus to populate its visual dashboards.  
+
+--------------------------------------------------------------------------------------
+
