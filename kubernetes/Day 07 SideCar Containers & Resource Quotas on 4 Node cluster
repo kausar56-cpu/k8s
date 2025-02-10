@@ -8,7 +8,7 @@ types of sidecar container
 
 suppose 3 container out of 2 init and 1 main - 
 all init container shoud be complete before main container
-once after this container is good to go - if they given green signal enpont and sevices waterver task we have given working good then
+once after this container is good to go - if they given green signal enpiont and sevices waterver task we have given working good then
 our main conatiner is good to go
 no restriction to crete to container init
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -77,6 +77,7 @@ spec:
 apply it
 --------------------------------------------------------------------------------------------------------
 kubectl expose deployment init-container-deployment --name=myservice --port=80
+kubectl exec -it init-container-deployment-847c84d95b-d2crk -c main-container -- sh
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ku exec -it init-container-deployment-565c664c9b- --sh
