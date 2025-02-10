@@ -14,11 +14,67 @@ kubectl create ns development
 
 kubectl create ns production
 
+
+If you want to generate and store your **CA certificate (ca.crt) and private key (ca.key)** under `/etc/kubernetes/pki/` after creating a cluster, follow these steps.
+
+---
+
+## **✅ Step 1: Generate the CA Key and Certificate**
+Run these commands on your control plane node (or primary master node in a self-managed Kubernetes cluster).
+
+### **🔹 Navigate to the PKI Directory**
+```sh
+sudo mkdir -p /etc/kubernetes/pki
+cd /etc/kubernetes/pki
+```
+
+### **🔹 Generate the CA Private Key (ca.key)**
+```sh
+sudo openssl genrsa -out ca.key 2048
+```
+
+### **🔹 Create a Self-Signed CA Certificate (ca.crt)**
+```sh
+sudo openssl req -x509 -new -nodes -key ca.key -sha256 -days 365 \
+    -out ca.crt -subj "/CN=kubernetes-ca"
+```
+
+---
+
+## **✅ Step 2: Set Correct Permissions**
+Ensure the private key is **secure** and accessible **only by root**:
+```sh
+sudo chmod 600 ca.key
+sudo chmod 644 ca.crt
+sudo chown root:root ca.*
+```
+
+---
+
+## **✅ Step 3: Verify the Files**
+Run these commands to check that the files were created correctly:
+```sh
+ls -lah /etc/kubernetes/pki/
+openssl x509 -in /etc/kubernetes/pki/ca.crt -noout -text
+```
+
+---
+
+## **✅ Step 4: Restart Kubernetes Components (if needed)**
+If you need Kubernetes to recognize the new CA, restart the **control plane components**:
+```sh
+sudo systemctl restart kube-apiserver
+sudo systemctl restart kube-controller-manager
+sudo systemctl restart kube-scheduler
+```
+
+---
+
+## **🚀 Next Steps: Sign Certificates for Kubernetes Components?**
+If you need to generate **kube-apiserver, kubelet, or user certificates** signed by this CA, let me know! 🚀
  
-ls -l /etc/kubernetes/pki/
-/etc/kubernetes/pki/ca.crt
-/etc/kubernetes/pki/ca.key
-copy and save it
+---------------------------------------------------------------------
+on node
 
 /tmp
 nano ca.crt
@@ -30,7 +86,7 @@ openssl x509 -req -in user1.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kuber
 
 
 openssl genrsa -out user2.key 2048
-openssl req -new -key user2.key -out user2.csr -subj "/CN=user1/O=development"
+openssl req -new -key user2.key -out user2.csr -subj "/CN=user2/O=production"
 openssl x509 -req -in user2.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out user1.crt -days 365
 
 Now copy all .crt and .key to master root location safely.
@@ -51,7 +107,7 @@ clusters:
 - name: kausarmujawar.shop
   cluster:
     certificate-authority-data: LSetLS1CRUdJTiBDRVJUSUZJQ8FURS... (your actual CA data here)
-    server: https://api.cloudvishwakarma.in
+    server: https://api.kausarmujawar.shop
     tls-server-name: api.internal.kausarmujawar.shop
 
 contexts:
@@ -73,33 +129,40 @@ users:
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
-nano /root/USER1-CONFIG
-export KUBECONFIG=/root/USER1-CONFIG
-kubectl get pods
-
-
 
 #USER-1
+
+
 apiVersion: v1
+kind: Config
 clusters:
-- cluster:
-    certificate-authority-data: XXXXXXXXXXx
-    server: https://api.kausarmujawar.shop
-    tls-server-name: api.internal.kausarmujawar.shop
-  name: kausarmujawar.shop
+- name: kausarmujawar.shop
+  cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJY1ExK3NhOUR1UTh3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBeU1UQXdORFUyTWpWYUZ3MHpOVEF5TURnd05UQXhNalZhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURzRjJjbjBuaGlwOUh4TFdxa3dNTURpaXZtZUE5YkVFaFVCSEEveDU0NGtzN2ZFc25EVE5OVU1JVWcKNWpMNzRzNkZjSUNaUWdmL295cFpPZyswUHhQZHBEL3JaL1dqblo5K3dOOFZtbStLcklQMm1DU3dQNG5RdWZSWApRNEpZQXFUdy96M240MHBhWlpTMzlDWnhHU0xFY29JV0FuOXlIdS9sMW16NDM5blpoUnRtMmZiN3ozdFI4WEo2CnVXU0g0MklHcVZWNVRkalUrL1B6K3dFbHdnMVpwU085S3pvczBOMWpNak53Zm1SNVNoamRmYldyb1dISjlUMXkKWDkxclJQbndjQnBMcDN5aTJBVXBpNWZ3M240L3hzaC84eWpnK1VLalpUT3ZMcUhzSTgyUzZYdXNQNUF4bStPQwo4T1QyK3RaSlBQclB0WTErY1RmOTQ2M0YzUXI5QWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJTVU5tTGhtZFNhMUJycnNpWHhWcHBXYXBQL0JUQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ1JYakE5QUJxUAo1Wi9GUFRITldWZmJNU3BwVEtoNEFPeVhkMlRHMFpLeExKTkZlUFN3U2tFMXBkcHpONjVIS0ZHaVFLSjZLVldGCmtHRU1YYnU0bnBxODhOd1BsUXhoYjBhTXR5aVNiZ3ZMQTlCb0M3dU5HZml1VWpPbWpPTDJzNG5LdEMwT3ZwM3YKWHBRSE1ySUZZeTA1djZnTU9Jd0lDdUw5bFlKQ1Fab1E1SzhzaHNGZVdMRUtPSDA5WlhQUEhNV0ZzclpuNzlGVwpQOWFKRXZVOG1mcCtLYnFTaS9SKzFpaEFqWjRDVEM5bjB3cHRtY1ZuUGltUktHWHY5WGtlQzErY3Y1NVN5Z0I2Citidzc2aDZ2OTlMZThOSlZsWi93cmdEYjg5UG8xTS9USTlMY0FybVdlYmd1UjF3WGwvWVBPbEhhdzdobHhWTi8KTG5MNGhIOTNGMkNHCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    server: https://16AB23D8C7BD3508855BA2CB85FAE8F5.gr7.us-east-1.eks.amazonaws.com
+
 contexts:
-- context:
+- name: user1-context
+  context:
     cluster: kausarmujawar.shop
     namespace: development
     user: user1
-  name: user1-context
+
 current-context: user1-context
-kind: Config
+
 users:
 - name: user1
   user:
     client-certificate: /root/user1.crt
     client-key: /root/user1.key
+
+
+nano /root/USER1-CONFIG
+export KUBECONFIG=/root/USER1-CONFIG
+kubectl get pods
+------------------------------------------------------------------
+
+
 
 user2
 
@@ -166,7 +229,8 @@ apply it
 kubectl api-resources --namespaced=true
 sgle kind distil ani trule vale ns vr apply hotat
 false apply on cluster level
--------------------------------------------------------------------------------------------------------------------apiVersion: rbac.authorization.k8s.io/v1
+-------------------------------------------------------------------------------------------------------------------
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: user1-rolebinding
