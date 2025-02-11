@@ -1,27 +1,26 @@
-3 AWS ACCUNT
-1.master
+3 AWS ACCOUNT 
+1 .master 
 2. staging
 3. QA  
 
-INTEGRATE MASTER  to staging and QA accunt
+INTEGRATE MASTER  to staging and Qa ccountnt 
 
-QA - crte role -aws accunt - anthoer aws accunt - add master accunt id heare - add admin permission - role anme qa-role - crtete
+QAcreaterte role -aws account -another aws account - add master account id heare - add admin permission - rolnameme qa-role - create 
 
-stageing - crte role -aws accunt - anthoer aws accunt - add master accunt id heare - add admin permission - role anme qa-role - crtete
+Staging - create role -aws account -another aws account - add master account id heare - add admin permission - role name qa-role - create 
 ------------
-master - crte user - admin1 - provide user asses - custom pass - docnt attach policy - 
-         crte user - admin2 - provide user asses - custom pass - docnt attach policy 
-----
-crte user group- add user 2 -crte it 
-attach policy gropue - permission -crte inline - add below - policy name ug policy -crete
+master - crate user - admin1 - provide user asses - custom pass -docent attach policy -  
+         create user - admin2 - provide user asses - custom pass - docent attach policy  
+---- create user group- add user 2 -create it  
+attach policy group - permission -create inline - add below - policy name ug policy -Crete 
 
-go to qa and staging copy role ARN
+Go to QA and stage copy role ARN.
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "sts:AssumeRole",
+      "Action": "sts: AssumeRol,", 
       "Resource": [
         "arn:aws:iam::891377035410:role/Staging-Role",
         "arn:aws:iam::211125710812:role/QA-Role"
@@ -31,12 +30,12 @@ go to qa and staging copy role ARN
 }
 ------------
 access admin1 and 2
-kahi access honar ny tysati
-go admin 1 user accunt - click on accunt url corner - switch role -
-copy staging accunt id -role name staging-role - switch role 
+kai access hhonorny lysate 
+go admin 1 user account - click on the account url corner - switch role - 
+copy staginaccountnt id -role name staging-role - switch role  
 
 2 way
- go - ug rgoup - attach admin policy
+ go - group out - attach admin policy 
 
 
 -------------------------------------------------
