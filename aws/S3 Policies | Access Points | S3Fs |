@@ -1,20 +1,19 @@
-s3 - put file - bolck public acces - give public access to user with help of policy - genrator
+s3 - put file - block public access - give the public access to a user with the help of policy -  generator
 
-bolck all public access - still will give access in it - by preasingned url
-
-1 buket - files - 2 folder - crete 2 uares - not any given policy user or bucker - still will crete access point hear - we can do upload files by access point
-
-can u mount s3 bucket to perticular folder? 
-ans yes with help of third party tool s3fs   -------vim
+block all public access - still will give access in it - by preassigned URL 
+ 
+1 bucket - files - 2foldersr create 2 uares - not any given policy user or bucker - still wicreateete access point here - we can do upload files by access point
+can u mount an s3 bucket to a particular folder?  
+and yes, with the help of third-party tool s3fs   -------vim 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-1. s3 - put file - bolck public acces - give public access to user with help of policy - genrator
+1. s3 - put file - block public access - give the  public access to a user with the help of policy -  generator
 
-share with apreasigned url - direct access
+Share with preassigned url - direct access 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Mastering S3 Policies: Endpoints, Access Points, and S3Fs
 
-age S3 bucket policies, use S3 Access Points, and mount S3 as a filesystem using third-party tools.
+Age S3 bucket policies, use S3 Access Points, and mount S3 as a filesystem using third-party tools. 
 
 ## Table of Contents
 
@@ -121,7 +120,7 @@ S3Fs allows you to mount S3 buckets as filesystems on your local machine using t
 - Ubuntu machine for S3Fs setup.
 
 ### Installation
-Follow the steps in the guide to set up your environment and install necessary tools.
+Follow the steps in the guide to set up your environment and install the necessary tools. 
 
 ## Step-by-Step Guide
 Follow the detailed instructions in each section to complete the setup and configuration.
@@ -254,7 +253,7 @@ S3Fs allows you to mount S3 buckets as filesystems on your local machine using t
 - Ubuntu machine for S3Fs setup.
 
 ### Installation
-Follow the steps in the guide to set up your environment and install necessary tools.
+Follow the steps in the guide to set up your environment and install the necessary tools. 
 
 ## Step-by-Step Guide
 Follow the detailed instructions in each section to complete the setup and configuration.
@@ -335,11 +334,11 @@ aws s3 cp saikiran.txt s3://arn:aws:s3:us-east-1:431064776024:accesspoint/access
             "Principal": "*",
             "Action": "s3:*",
             "Resource": [
-                "arn:aws:s3:::testingggggggggggggggggggggggggggggggggggggg/*"
+                "arn:aws:s3:::testinG/*" 
             ],
             "Condition": {
                 "IpAddress": {
-                    "aws:SourceIp": [
+                    "aws: SourceIp": [ 
                         "49.37.154.22/32"
                     ]
                 }
