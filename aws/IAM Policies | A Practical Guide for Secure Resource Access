@@ -1,16 +1,16 @@
 DEV - USER -ROLE - ACCESS - UG
 QA - USER -ROLE - ACCESS - USER GROUP
-uat -USER -ROLE - ACCESS - USER GROUP
+at -USER -ROLE - ACCESS - USER GROUP 
 ---------------------------------------
 ACCESS = POLICY
 --------------------------------------
-creat ec2 - give tag owner = testuser
+creat ec2 - give tag owner = test user 
 create testuser1 - provide user access - custom pass 
-policy - policy genrator -iam policy - amazon ec2 - describe instance -typs - *
-policy name -crete it 
-user -add perrmision - attch this policy
+policy - policy generator -iam policy - amazon ec2 - describe instance -types - * 
+policy name -create it  
+user -add permissions - attach this policy 
 ---------------------------------------------------------------------
-generate a policy for IAM instance start and stop alon with the resource and condition tag
+Generate a policy for IAM instance start and stop along with the resource and condition tag. 
 
 {
     "Version": "2012-10-17",
@@ -42,27 +42,26 @@ generate a policy for IAM instance start and stop alon with the resource and con
     ]
 }
 
-go -user -policy - json change it it -pest new one - check it 
+Go -user -policy -JSONn change it -pest new one - check it.  
 -----------------------------------------------------------------------------------------------------------------
-route 53 full view acces
-when u opn it u havent any access 
-crete route 53 full view acces and give it to user
+route 53 full view access 
+when u open it, u haven't access  
+create route 53 full view access and give it to user 
 --------------------------------------------------------------------------------------------------------------
 
 inline policy
 
 user 1 and 2
-1 . having ec2 access
-2.having s3
-if i go 1st policy inline and edit it pest s3 policy then i acn easily access it
-same for 2
+1 . Having EC2 access 
+2. having s3 If I go 1st policy inline and edit it to s3 policy, then I can easily access it 
+same for 2 
 ----------------------------------------------------------------------------------------------------
-permission bondary policy
+permission boundary policy 
 
-soppose u are having admin policy - but u can set permisson or boundry
+suppose u have an admin policy - but u can set permission or boundary 
 user
 
 To provide view-only access to S3 and EC2 resources, you can create an IAM policy with read-only
 permissions for those services.
-crete policy - json - pest - name permission -bundry- go to set permission bundry policy - select it 
+Create policy - json - pest - name permission -boundary- go to set permission boundary policy - select it.  
 -------------------------------------------------------------------------------------------------------------
