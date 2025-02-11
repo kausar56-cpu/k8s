@@ -1,21 +1,21 @@
-diff ebs and instace sorage 
+diff ebs and instance storage  
 instance storage - 
-1. its not good practice - why? default space get 8gb only /rroot
-2. if u start ans stop data whatever data u kept it will gone
-4 size and type fixed - t2micro , t2 midum
-5 .if u alredy creat8 gb and now u want reqiured 5 gb then i have create EBS
-6. u cannot attach or ditach volume to anyother instance
+1. it's not good practice - why? default space gets 8 GB only /root 
+2. if u start and stop data whatever data u kept will gone 
+4 size and type fixed - t2micro, t2 medium 
+5 .if u already created GB and now u want the required 5 GB then I have to create EBS 
+6. u cannot attach or detach volume to another instance 
 ---------------------------------------------------------------
 EBS
-12. if u start ans stop data whatever data u kept it will NOT gone
-WE CAN INCRESE UP TO 16 TB
-hhd and ssd
-hhd
+12. if u start and stop data whatever data u kept it will NOT go 
+WE CAN INCREASE UP TO 16 TB 
+HHD and SSD 
+HHD 
 1 GP2 2. GP3  --IO1 AND IO2 THIS 2 IOpS VERY GIVE US EXTREM PERFORMANCE --database -best practise
 ------------------------------------------
-ssd
+SSD 
 1.sc1 2 . sct 3 standred
-disadventage - ebs volume is az and region independent
+disadvantage - ebs volume is az and region independent 
 us-east-1 mde crete kel tr titch add kry yety
 ---------------------------------------------------------------------------------------
 
@@ -126,4 +126,4 @@ like lsblk, fdisk, mkfs, and mount. Update the /etc/fstab file to automatically 
 Performance Optimization: Utilize different EBS volume types based on your application's performance requirements, ensuring optimal I/O performance
 and cost-effectiveness. By understanding the various storage options available in AWS, including EBS volumes, you can architect scalable and reliable
 storage solutions tailored to your specific workload requirements and budget constraints.
-----------------------------------------------------
+---------------------------------
