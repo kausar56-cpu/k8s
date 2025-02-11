@@ -1,5 +1,5 @@
 Hosting a website on AWS EC2 instances requires ensuring constant availability for users, even if some instances fail. Route 53
-employs health checks to monitor instance health and automatically directs traffic away from unhealthy instances, ensuring seamless user experience.
+employs health checks to monitor instance health and automatically directs traffic away from unhealthy instances, ensuring a seamless user experience. 
 
 #### Route53 Routing Policies:
 *Latency:* Route traffic to the AWS region with the lowest latency, enhancing application performance by minimizing response time for users.
@@ -10,23 +10,22 @@ employs health checks to monitor instance health and automatically directs traff
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
-how to know on perticular instance are down and now load have to switch on other instance
+How do we know a particular instance is down, and now the load has to switch on another instance.
 
 route 53 policy
-failaver routing policy(fail back policy or primary and secondary policy)
-helath check will check for each 10 sec  application running or not if not then trafic will shift to another instannce failaver routing policy
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-crete instance - crete ami- install nginx
-crete ami copy to mumbai region
-crete helth check in rout 53- select tpc- 
-route53 - cerating record - select type - failaver -    ------imp
-crete failaver record 
+failover routing policy(failback policy or primary and secondary policy) 
+health check will check whether each 10-sec application is running or not if not, the traffic will shift to another policy 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------ 
+create instance -create ami- install nginxcreatete ami copy Mumbaibai region 
+create healthy check-in route 53- select tpc-  
+route53 - creating a record - select type - failover -    ------imp 
+create failover record  
 2 sever creted - if one off trafic will trasfer to other
 
 --------------------------------------------------
-to check wich server traffic folw
+to check which server traffic flow 
 i=0
-while true; do
+while true, do 
   COUNT=$(curl -s http://failover.cloudviohsakarma.in | grep -oP '(?<=server: )\d+')
   echo "The Count value is $COUNT"
   sleep 10  # Wait for 10 seconds before checking again
@@ -34,27 +33,26 @@ done
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 latency
 
-lets suppose webserver and user
-user is trying to access weserver 
-time taken to paket reched to webserver
-and web giving respose to user is called as latency
+let's suppose the webserver and user 
+user is trying to access Webserver  
+time is taken to paket reached to webserver 
+and web response the user is called latency 
 
 
-to incerese performance of application ----usecase 
+to increase the performance of application ----use case  
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 route 53 - latency - crete record - define latency record 
 do it for another record 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 weighted policy
-some traffic will flow mubai and some us-east
-
----------------------------------------------------------------------------------------------------------------------------------------------------------
-geo location
-it strictly folw ip 
-urop, ind , jrmn perpole send trafficf self contry only
+some traffic will flow to Mumbai and some us-east 
+ 
+--------------------------------------------------------------------------------------------------------------------------------------------------------- 
+geolocation 
+it strictly follows the IP  
+Europe and jjoinperpole send traffic self country only 
 -----------------------------------------------------------------------------------------------------------------------
-
 
 
 
