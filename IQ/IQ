@@ -30,3 +30,8 @@
 22. If you’re given a new project with no CI/CD pipeline, how would you design and implement one?
 23. How does Argo CD detect when an image is updated?
 24. How do you connect to an EC2 instance after deployment?
+
+sg - inbound all trafic ahe outbond band ahe tr access hoil ka
+ky value chya base vr cluoud watch trigger ks hoil
+private ani public ahe kshyavrun olkhych
+
