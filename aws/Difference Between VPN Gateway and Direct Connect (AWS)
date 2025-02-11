@@ -1,0 +1,52 @@
+When connecting an on-premises network to AWS (or other cloud providers), two common options
+
+VPN Gateway – Uses an encrypted tunnel over the internet.
+Direct Connect – Provides a private, dedicated network link between AWS and your data center.
+------------------------------------------------------------------------------------------------------
+
+1. What is a VPN Gateway?
+
+A VPN (Virtual Private Network) Gateway allows secure communication between an 
+on-premises network and AWS over the public internet using IPSec VPN or OpenVPN.
+
+---------------------------------------------------------------------------------------------------
+
+How it Works?
+
+A VPN tunnel is created between your on-premises network and the AWS VPN Gateway.
+Traffic is encrypted using IPSec (AES-256 encryption) before being sent over the internet.
+AWS decrypts the data and routes it to your VPC (Virtual Private Cloud).
+
+
+Use Cases for VPN Gateway:
+✅ Secure AWS connectivity over the internet at a low cost.
+✅ Connecting on-premises data centers or remote offices to AWS.
+✅ AWS Transit Gateway integration for multiple VPN connections.
+✅ Backup connectivity for AWS Direct Connect (failover).
+
+-------------------------------------------------------------------------------------------------
+
+
+
+2. What is AWS Direct Connect?
+
+AWS Direct Connect is a private, high-speed network connection between your on-premises data center and AWS.
+It does not use the public internet, reducing latency and improving performance.
+-----------------------------------------------------------------------------------------------------------
+
+A dedicated fiber-optic link is set up between your data center and an AWS Direct Connect location.
+Traffic is sent privately between your network and AWS without using the internet.
+Routing is managed via BGP (Border Gateway Protocol).
+
+---------------------------------------------------------------------------------------------------------
+
+Use Cases for Direct Connect:
+✅ High-speed, low-latency AWS connectivity for large-scale applications.
+✅ Data-heavy workloads like machine learning, databases, and analytics.
+✅ Secure private network without exposing traffic to the internet.
+✅ Hybrid cloud architecture requiring consistent network performance.
+
+
+
+
+
