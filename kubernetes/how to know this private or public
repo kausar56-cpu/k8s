@@ -1,0 +1,66 @@
+If you have two **CIDR (Classless Inter-Domain Routing) ranges** and want to determine which one is **public** and which one is **private**, follow these steps:  
+
+---
+
+### **1. What are the Private IP Ranges?**  
+Private IP ranges are reserved for internal networks as per **RFC 1918 and RFC 6598**.  
+
+| **Private IP Range** | **CIDR Notation** | **Example** |
+|----------------------|------------------|-------------|
+| `10.0.0.0 – 10.255.255.255` | `10.0.0.0/8` | `10.1.2.3` |
+| `172.16.0.0 – 172.31.255.255` | `172.16.0.0/12` | `172.20.5.10` |
+| `192.168.0.0 – 192.168.255.255` | `192.168.0.0/16` | `192.168.1.100` |
+| `100.64.0.0 – 100.127.255.255` | `100.64.0.0/10` | `100.100.50.25` |
+
+✅ **These ranges are private and cannot be accessed directly from the internet.**  
+🔹 **Used for AWS VPC, LAN, and custom private networks.**  
+
+---
+
+### **2. What are Public IP Ranges?**  
+Any IP **outside the private ranges** is considered **public**, meaning it can be directly accessed over the internet.  
+
+- **Examples:**  
+  - `54.160.0.0/12` (AWS Public IPs)  
+  - `8.8.8.8/32` (Google DNS)  
+  - `203.0.113.0/24` (Test-Net-3)  
+
+✅ **Public IPs are routable over the internet.**  
+
+---
+
+### **3. How to Identify if a CIDR Range is Public or Private?**  
+#### **(A) Manually Check the Range**  
+- If the IP falls within **the private IP ranges**, it is **private**.  
+- Otherwise, it is **public**.  
+
+#### **(B) Use `ipcalc` in Linux to Check**  
+```bash
+ipcalc 192.168.1.10
+```
+✅ **Private IP because it falls under `192.168.0.0/16`.**  
+
+#### **(C) Use `whois` for Public IP Lookup**  
+```bash
+whois 54.160.0.1
+```
+✅ **Public IP because it belongs to AWS.**  
+
+---
+
+### **4. Examples**
+| **CIDR** | **Private/Public?** | **Reason** |
+|----------|---------------------|------------|
+| `10.0.0.0/16` | **Private** | Falls under `10.0.0.0/8` |
+| `172.20.0.0/16` | **Private** | Falls under `172.16.0.0/12` |
+| `192.168.5.0/24` | **Private** | Falls under `192.168.0.0/16` |
+| `54.160.0.0/12` | **Public** | AWS public IP range |
+| `203.0.113.0/24` | **Public** | Internet-accessible range |
+
+---
+
+### **5. Conclusion**
+🔹 **Private CIDR Ranges:** `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `100.64.0.0/10`  
+🔹 **Public CIDR Ranges:** Anything **outside** these private ranges  
+
+✦ If you have a specific CIDR range you want to check, let me know! 🚀
