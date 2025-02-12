@@ -324,8 +324,173 @@ spec:
 
 taint and  tolration
 
+dofault namespaco.
+ku create deployment saikiran --inage nginx:latest --replicas 3
+
+kubectl taint node i-08cb4fad5c2fd467e high-cpu=yes:NoSchedule
+kubectl taint node i-0d255ef313a497963 med-cpu=yes:NoSchedule
+kubectl taint node i-0dcf19a32f70443af low-cpu=yes:NoSchedule
 
 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app1
+  name: app1
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: app1
+template:
+  metadata:
+    labels:
+      app: app1
+  spec:
+    containers:
+      - image: nginx:latest
+        name: nginx
+    tolerations:
+      - key: "high-cpu"
+        operator: "Equal"
+        value: "yes"
+        effect: "NoSchedule"
+
+apply it
+
+pending mens some taint and tolration occer 
+
+how to do untaint
+kubectl taint node i-08cb4fad5c2fd467e high-cpu-
+kubectl taint node i-0d255ef313a497963 med-cpu-
+kubectl taint node i-0dcf19a32f70443af low-cpu-
+--------------------------------------------------------------------------------------------------------------------
+
+ku create deployment saikiran --inage nginx:latest --replicas 3
+
+ku taint node 1-08cb4fad5c2d467e high-cpu=yes: NoExecute
+ku taint node i-0d255ef313a497963 med-cpu=yes:NoExecute
+ku taint node i-0dcf19a32f70443af low-cpu=yes:NoExecute
+
+ku get pods -o wide
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app2
+  name: app2
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: app2
+template:
+  metadata:
+    labels:
+      app: app2
+  spec:
+    containers:
+      - image: nginx:latest
+        name: nginx
+    tolerations:
+      - key: "med-cpu"
+        operator: "Equal"
+        value: "yes"
+        effect: "NoExecute"
+      - key: "low-cpu"
+        operator: "Equal"
+        value: "yes"
+        effect: "NoExecute"
+
+apply it 
+
+NoSchedule	❌ New pods CANNOT be scheduled on the node unless they have a matching toleration. Existing pods remain running.
+
+NoExecute	❌ New pods CANNOT be scheduled, and ❌ Existing pods will be REMOVED (evicted) unless they have a matching toleration.
+
+PreferNoSchedule	⚠️ Kubernetes will try to avoid scheduling new pods on this node, but it may still place them
+if no other option is available. Existing pods are not affected.
+--------------------------------------------------------------------------------------------------------------------------------
+
+ podAntiAffinity:| podAffinity:
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+  name: redis
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - redis
+            topologyKey: "topology.kubernetes.io/zone"
+      containers:
+      - image: redis:latest
+        name: redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+        perf: high
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web
+            topologyKey: "topology.kubernetes.io/zone"
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - redis
+            topologyKey: "topology.kubernetes.io/zone"
+      containers:
+      - image: nginx:latest
+        name: nginx
+
+
+# ku taint node nodeid high-cpu=yes:NoExecute
+# ku taint node nodeid med-cpu=yes:NoExecute 
+# ku taint node nodeid low-cpu=yes:NoExecute 
 
 
 
