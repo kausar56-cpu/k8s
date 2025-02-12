@@ -112,7 +112,228 @@ Conclusion
 This repository provides practical examples and commands to help you understand and implement advanced scheduling techniques in Kubernetes. 
 By mastering these concepts, you can ensure that your applications run efficiently and reliably in a Kubernetes environment.
 
+
+
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+node selctor and node affinity diff
+in node selector we can pass single expression heare
+but in node affinity we can pass multiple matchexpression heare          --------vimp
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pod affinity and anipod affinity
+
+user is trying to application - first request heating to FE - with the help of ingress - FE is going to BE - BE is going DB
+it will give the info - but u will see the lot of latancy heare to avoid that we used pod affinity 
+we will make gropu of FE AND BE , DB TO AVOID latency
+next time customer is trying to access - route will be tranfer FE-BE-DB  
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+antipod
+means just like deamonset -but not puerly - it make sure that no multiple pod on the same node | sprading pod across multiple node
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+node selector by WORKER NODE id
+
+ nodeSelector:
+        kubernetes.io/hostname: i-00a968443bbbdd1cf
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp01
+  name: myapp01
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp01
+  template:
+    metadata:
+      labels:
+        app: myapp01
+    spec:
+      containers:
+      - image: kiran2361993/kubegame:v2
+        name: kubegame
+      nodeSelector:
+        kubernetes.io/hostname: i-00a968443bbbdd1cf
+
+apply it
+ku gets pods
+tych node vr pod crete hotil
+
+ ku scale deployment nyapp0l --roplicas 10
+scale kelyavr pn tych node vr hotil
+
+delete all
+----------------------------------------------------------------------------------
+
+
+node selector by label
+
+kubectl label node i-08cb4fadSc2fd467e high-perf-cpu=yes
+kubectl label node i-0d255ef313a497963 low-perf-cpu=yes
+kubectl label node i-0dcf19a32f70443af low-perf-cpu=yes
+
+
+ nodeSelector:
+        high-perf-cpu: "yes"
+
+
+first lable dyv lagel
+
+kubectl label node i-08cb4fadSc2fd467e high-perf-cpu=yes
+kubectl label node i-0d255ef313a497963 low-perf-cpu=yes
+kubectl label node i-0dcf19a32f70443af low-perf-cpu=yes
+
+kubectl describe node i-08cb4fad5c2fd467e | grep -i high
+kubectl describe node i-0d255ef313a497963 | grep -i med
+kubectl describe node i-0dcf19a32f70443af | grep -i low
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp02
+  name: myapp02
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: myapp02
+  template:
+    metadata:
+      labels:
+        app: myapp02
+    spec:
+      containers:
+      - image: kiran2361993/kubegame:v2
+        name: kubegame
+      nodeSelector:
+        high-perf-cpu: "yes"
+
+apply it
+ku get pods -o wide
+2 node la 1 ch same lable ahe
+
+ku scale deployment myapp02 --replicas 10
+delete all
+------------------------------------------------------------------------------------------------------------------
+node affinity
+reqired
+prefered
+
+
+reqired
+
+kubectl label node i-08cb4fad5c2fd467e env=one
+kubectl label node i-0d255ef313a497963 env=two
+kubectl label node i-0dcf19a32f70443af env=three
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: required-hard
+  name: required-hard
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      run: required-hard
+  template:
+    metadata:
+      labels:
+        run: required-hard
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: env
+                operator: In
+                values:
+                - one
+                - two
+      containers:
+      - image: nginx:latest
+        name: required-hard
+
+apply it
+ku get pods -o wide --no-headers
+
+hya 2 vr depoly honar 
+node i-08cb4fad5c2fd467e env=one
+node i-0d255ef313a497963 env=two
+------------------------------------------------------------
+prefered
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: preferred-soft
+  name: preferred-soft
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      run: preferred-soft
+  template:
+    metadata:
+      labels:
+        run: preferred-soft
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 40
+            preference:
+              matchExpressions:
+              - key: env
+                operator: In
+                values:
+                - one
+          - weight: 30
+            preference:
+              matchExpressions:
+              - key: env
+                operator: In
+                values:
+                - two
+          - weight: 30
+            preference:
+              matchExpressions:
+              - key: env
+                operator: In
+                values:
+                - three
+      containers:
+      - image: nginx
+        name: deploy01
+
+1. 3 la 10 privority dych
+2. 2 and 3rd same same 30 privority - equel ch ghet
+---------------------------------------------------------------------------------------------------------------
+
+taint and  tolration
+
+
+
+
+
+
+
+
+
+
+
 
 
 
