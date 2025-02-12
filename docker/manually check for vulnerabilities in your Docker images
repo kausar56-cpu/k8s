@@ -1,0 +1,135 @@
+If you don’t want to use **security scanning tools**, you can manually check for vulnerabilities in your Docker images by following these **manual best practices**:
+
+---
+
+## **1. Use Minimal Base Images**
+Large base images often have unnecessary packages that increase the attack surface.  
+✅ **Use minimal images like:**  
+- **Alpine** instead of Ubuntu/Debian  
+  ```dockerfile
+  FROM alpine:latest
+  ```
+- **Distroless** (Google’s secure image)
+  ```dockerfile
+  FROM gcr.io/distroless/base
+  ```
+
+---
+
+## **2. Check for CVEs in the Base Image**
+You can manually check if your base image has known **CVE vulnerabilities** by:  
+1. Visiting the **Docker Hub page** of the image (e.g., [Ubuntu Official Docker Image](https://hub.docker.com/_/ubuntu)).  
+2. Searching for **CVE reports** for the image version:
+   ```bash
+   curl -s https://security-tracker.debian.org/tracker/ | grep "<image-version>"
+   ```
+3. Checking **Common Vulnerabilities and Exposures (CVE) databases**:
+   - [CVE Details](https://www.cvedetails.com/)
+   - [National Vulnerability Database (NVD)](https://nvd.nist.gov/)
+
+---
+
+## **3. Update the Base Image and Packages**
+Ensure you are using the latest secure version of the base image and dependencies:
+```dockerfile
+RUN apt-get update && apt-get upgrade -y
+```
+For Alpine:
+```dockerfile
+RUN apk update && apk upgrade
+```
+
+---
+
+## **4. Reduce Attack Surface**
+✅ **Remove unnecessary dependencies** after installation:  
+```dockerfile
+RUN apt-get update && apt-get install -y curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+```
+This prevents **cached package lists** from being stored in the image.
+
+---
+
+## **5. Run as Non-Root User**
+By default, Docker runs as **root**, which is dangerous.  
+✅ **Create and switch to a non-root user** in the Dockerfile:
+```dockerfile
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+```
+
+---
+
+## **6. Scan Installed Packages Manually**
+Run inside a container:
+```bash
+dpkg -l   # For Debian/Ubuntu-based images
+rpm -qa   # For RedHat-based images
+apk info  # For Alpine-based images
+```
+Then manually check for outdated versions in **CVE databases**.
+
+---
+
+## **7. Check for Unnecessary Ports and Exposed Services**
+Avoid exposing unnecessary ports:
+```dockerfile
+EXPOSE 8080
+```
+Instead of exposing multiple ports, **restrict them to the required ones only**.
+
+---
+
+## **8. Verify Container Runtime Security**
+Inside a running container, check:
+```bash
+ps aux
+```
+Ensure no unnecessary processes are running.
+
+---
+
+## **9. Validate Entrypoint Security**
+✅ Use **exec form** instead of shell form to prevent command injection:
+```dockerfile
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+```
+Instead of:
+```dockerfile
+ENTRYPOINT nginx -g 'daemon off;'
+```
+
+---
+
+## **10. Regularly Check for Kernel and Docker Updates**
+✅ **Check Docker version for security patches**:
+```bash
+docker --version
+```
+✅ **Update Docker if needed**:
+```bash
+sudo apt-get update && sudo apt-get upgrade docker-ce -y
+```
+
+---
+
+### **Summary:**
+| **Step** | **What to Do** |
+|----------|--------------|
+| **1. Use Minimal Images** | Use Alpine or Distroless instead of Ubuntu |
+| **2. Check CVE Databases** | Search for vulnerabilities in the base image |
+| **3. Update Packages** | Always update base image and installed packages |
+| **4. Remove Unnecessary Packages** | Don’t keep extra tools that increase attack surface |
+| **5. Run as Non-Root User** | Avoid running containers as root |
+| **6. Scan Installed Packages** | Manually check for outdated libraries |
+| **7. Restrict Open Ports** | Avoid exposing unnecessary ports |
+| **8. Check Running Processes** | Ensure no suspicious processes exist in the container |
+| **9. Secure Entrypoint** | Use `exec` form to prevent injection |
+| **10. Keep Docker Updated** | Regularly update Docker and the Linux kernel |
+
+---
+
+This method requires **manual effort**, but it can help **reduce security risks without using tools**.  
+
+**Do you need any specific steps in more detail? 🚀**
