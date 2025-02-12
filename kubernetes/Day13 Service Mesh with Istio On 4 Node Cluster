@@ -1,1 +1,221 @@
+routing mesh
+
+2 master node and 3 worker node 
+out of 3 node 2nd node drained - but still if u tried to application access by 2nd node - it will acceble - becoz internely routing mesh 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+sevish mesh mainly work on microservice artitechture for internal securing communicarion 
+it is statergy where u going to implement with help of istio
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+This guide will walk you through setting up a Service Mesh using Istio. The app consists of five microservices:
+
+User Service - Handles user information
+Restaurant Service - Manages restaurant data
+Order Service - Processes orders
+Delivery Service - Coordinates delivery
+Payment Service - Manages payments
+
+Before Service Mesh, each microservice communicated directly with others using REST APIs or gRPC over HTTP.
+However, this approach required each service to handle its own security, retries, and monitoring, which made 
+the system complex and hard to manage. Developers had to write a lot of custom code to handle these tasks.
+
+problem with rest api
+1. security
+2. traking
+3. retrice
+-----------------------------------------------------------------------------------------------------------
+
+Enter Istio: A service mesh that automatically manages communication between services. Istio handles:
+
+Security: Ensures services communicate securely.
+Retries: Automatically retries failed requests.
+Traffic Control: Monitors and manages traffic between services.
+With Istio, developers can focus on building features rather than managing communication.
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+servish mesh need
+
+it will automaticaly take care security
+if anything happen in between - its going to ty again 
+traffic controlling
+it keep track of who is comminicate to whom 
+devolper dont need about wrting complex code  to have communication tracking between services | they can concentrate only on new fetures or new realese
+----------------------------------------------------------------------------------------------------------------------------------------------
+1. Install Istio
+Install Istio by running the following commands:
+
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.18.0 sh -
+cp istio-1.18.0/bin/istioctl /usr/local/bin/
+istioctl --version
+
+cp istio-1.18.0/bin/istioctl /usr/local/bin/
+
+nano /tmp/istio-ingressgateway.yml
+
+profile: empty असल्याने संपूर्ण Istio कंट्रोल प्लेन इंस्टॉल होत नाही, फक्त Gateway बसतो.
+
+
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: istio-ingressgateway
+spec:
+  profile: empty # Do not install CRDs or the control plane
+  components:
+    ingressGateways:
+    - name: ingressgateway
+      namespace: istio-system
+      enabled: true
+      k8s:
+        serviceAnnotations:
+          service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      label:
+        istio: ingressgateway
+  values:
+    gateways:
+      istio-ingressgateway:
+        injectionTemplate: gateway
+
+
+istioctl install --set profile=minimal -f istio-ingressgateway.yml
+
+Switch to istio namespace
+
+Install Prometheus for Monitoring
+Deploy Prometheus in the Istio namespace:
+
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.16/samples/addons/prometheus.yaml
+
+Enable ISTIO on Default Namespace:
+kubectl label namespace default istio-injection=enabled
+
+
+
+Install Kiali and Jaeger for Visualization and Tracing
+Deploy Kiali (for dashboard) and Jaeger (for tracing) in the Istio namespace:
+
+# Kiali
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.16/samples/addons/kiali.yaml
+
+# Jaeger
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.16/samples/addons/jaeger.yaml
+
+
+
+Deploy the Voting Application
+Deploy your voting application in the default namespace, ensuring that you create the necessary secrets for private Docker images.
+
+# kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n istio-system
+# kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n default
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway #Similar to Kubernetes Ingress
+metadata:
+  name: app-gateway
+spec:
+  selector:
+    istio: ingressgateway # label of ingressgateway deployed above
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "vote.cloudvishwakarma.in"
+    - "result.cloudvishwakarma.in"
+    - "www.cloudvishwakarma.in"
+    tls:
+     httpsRedirect: true
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "vote.cloudvishwakarma.in"
+    - "result.cloudvishwakarma.in"
+    - "www.cloudvishwakarma.in"
+    tls:
+      credentialName: my-tls-secret # this should match with Certificate secretName
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vote
+spec:
+  hosts:
+  - "vote.cloudvishwakarma.in"
+  - "www.cloudvishwakarma.in"
+  gateways:
+  - app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: vote
+        port:
+          number: 80
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: result
+spec:
+  hosts:
+  - "result.cloudvishwakarma.in"
+  gateways:
+  - app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80
+
+
+apply it
+-----------------------
+
+Create TLS keys:
+
+nano tls.key
+nano tls.crt
+
+kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n istio-system
+kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n default
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
