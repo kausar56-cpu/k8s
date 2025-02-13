@@ -48,3 +48,407 @@
 
 --------------------------------------------------------------------------------------
 
+pagerduty - whenever alert is trriger -eg root volume consuming more cpu - at the time oif configuring pager duty we will give
+employee details no, email - this employee reciving mail when trigger is happen and notification sending into slack 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+cd /user/locak/bin
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod +x get_helm.sh
+./get_helm.sh
+
+helm help us to deploy prom and grafna along with services ---------------------------imp
+
+kubectl create namespace prom
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install prometheus prometheus-community/kube-prometheus-stack -n prom
+
+kubectl get services -n prom
+
+node expoerter - memory, cpu                         ----------------------------------imp
+kube state-martix - pod, cluster, node level
+
+-----------------------------------------------------------------------------------------------------------------------
+
+kubectl port-forward -n prom svc/prometheus-kube-prometheus-prometheus 9090:9090
+
+kubectl port-forward -n prom svc/prometheus-grafana 3000:80
+
+cat ~/.kube/config
+access both prom and grafna
+--------------------------------
+name - prom-tesing
+at grfna - add data source - prom - http://prome theus-kube-prometheus-prometheus. prom. svc.cluster. local:9000 
+ku run podl --image kiran2361993/troubleshootingtools:v1
+ku exec -it podl -- bash
+nslookup prometheus-kube-prometheus-prometheus
+http://prome theus-kube-prometheus-prometheus. prom. svc.cluster. local:9000  ---full quta domain name
+
+we are exopsing prom anf graf with helf of cluster ip that why we cant use host url
+we shold tell grafna where we have to collect matrix -------------------vim
+
+right corner + butten - import dhashboard -11663 -load - promo-testing -import
+dhashboard mde - serch seprate -pod , node
+--------------------------------------------------------------------------------
+Create a deployment with 6 replicas
+go to the dashboard and Monitor the pods
+Or you can also use custon dashboard
+Import Dshboard 10000 -
+
+ku
+create deployment appl --image kiran2361993/kubegame:v2 --replicas 6
+
+# NOW WHAT ABOUT LOGS COLLECTIONS? I WANTED ALL THE LOGS TO BE MANAGED CENTRALLY FOR THAT 
+a deploy elastic search. ynl create NS first kube-Logging deploy kibana 
+adeployfluent-D is actually aanLO redirector. 
+I propose flutes for generating the bops, 
+• access Kibana with the service ns
+Allow the port
+31
+
+ku expose deployment appl --port 80 --target-port 80 --type NodePort
+access it - pull log in EFK
+SG
+-------------------------------------------------------------------------
+ku create ns kube-logging
+cd/tmp/
+
+# create ns first 
+# ku create ns kube-logging
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch
+  namespace: kube-logging
+  labels:
+    app: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  clusterIP: None
+  ports:
+    - port: 9200
+      name: rest
+    - port: 9300
+      name: inter-node
+---      
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: es-cluster
+  namespace: kube-logging
+spec:
+  serviceName: elasticsearch
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+        resources:
+            limits:
+              cpu: 1000m
+            requests:
+              cpu: 100m
+        ports:
+        - containerPort: 9200
+          name: rest
+          protocol: TCP
+        - containerPort: 9300
+          name: inter-node
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+        env:
+          - name: cluster.name
+            value: k8s-logs
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: discovery.seed_hosts
+            value: "es-cluster-0.elasticsearch,es-cluster-1.elasticsearch,es-cluster-2.elasticsearch"
+          - name: cluster.initial_master_nodes
+            value: "es-cluster-0,es-cluster-1,es-cluster-2"
+          - name: ES_JAVA_OPTS
+            value: "-Xms512m -Xmx512m"
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+      - name: increase-vm-max-map
+        image: busybox
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      - name: increase-fd-ulimit
+        image: busybox
+        command: ["sh", "-c", "ulimit -n 65536"]
+        securityContext:
+          privileged: true
+      volumes:
+      - name: data
+        emptyDir: {}
+
+
+apply iy
+
+# ku expose deploy kibana -n kube-logging --port=8601 --target-port=5601 --type=NodePort --name kibanaint
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: kube-logging
+  labels:
+    app: kibana
+spec:
+  ports:
+  - port: 5601
+    nodePort: 31212
+  selector:
+    app: kibana
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: kube-logging
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:7.2.0
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m
+        env:
+          - name: ELASTICSEARCH_URL
+            value: http://elasticsearch:9200
+        ports:
+        - containerPort: 5601
+
+apply it
+
+#https://github.com/fluent/fluentd-kubernetes-daemonset/issues/434
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluentd
+  namespace: kube-logging
+  labels:
+    app: fluentd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fluentd
+  labels:
+    app: fluentd
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fluentd
+roleRef:
+  kind: ClusterRole
+  name: fluentd
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: fluentd
+  namespace: kube-logging
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: kube-logging
+  labels:
+    app: fluentd
+spec:
+  selector:
+    matchLabels:
+      app: fluentd
+  template:
+    metadata:
+      labels:
+        app: fluentd
+    spec:
+      serviceAccount: fluentd
+      serviceAccountName: fluentd
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: fluentd
+        #image: fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
+        image: fluent/fluentd-kubernetes-daemonset:v1.11.5-debian-elasticsearch7-1.1
+        env:
+          - name:  FLUENT_ELASTICSEARCH_HOST
+            value: "elasticsearch.kube-logging.svc.cluster.local"
+          - name:  FLUENT_ELASTICSEARCH_PORT
+            value: "9200"
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: "http"
+          - name: FLUENTD_SYSTEMD_CONF
+            value: disable
+          - name: FLUENT_CONTAINER_TAIL_EXCLUDE_PATH
+            value: /var/log/containers/fluent*
+          - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+            value: /^(?<time>.+) (?<stream>stdout|stderr)( (?<logtag>.))? (?<log>.*)$/
+        resources:
+          limits:
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+
+apply it
+ku get svc
+access kibana and fluent d
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
