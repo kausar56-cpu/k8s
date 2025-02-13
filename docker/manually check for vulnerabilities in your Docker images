@@ -17,6 +17,8 @@ Large base images often have unnecessary packages that increase the attack surfa
 ---
 
 ## **2. Check for CVEs in the Base Image**
+Common Vulnerabilities and Exposures.
+
 You can manually check if your base image has known **CVE vulnerabilities** by:  
 1. Visiting the **Docker Hub page** of the image (e.g., [Ubuntu Official Docker Image](https://hub.docker.com/_/ubuntu)).  
 2. Searching for **CVE reports** for the image version:
