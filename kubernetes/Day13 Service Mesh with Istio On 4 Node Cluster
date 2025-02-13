@@ -193,6 +193,201 @@ nano tls.crt
 kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n istio-system
 kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n default
 
+create record - alias network lb - us-east-1 
+1.vote
+2.www
+3.result
+4.tools
+--------------------------------------------------------------------------------------------
+# kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n istio-system
+# kubectl create secret tls my-tls-secret --key="tls.key" --cert="tls.crt" -n default
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway #Similar to Kubernetes Ingress
+metadata:
+  name: app-gateway
+spec:
+  selector:
+    istio: ingressgateway # label of ingressgateway deployed above
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "vote.cloudvishwakarma.in"
+    - "result.cloudvishwakarma.in"
+    - "www.cloudvishwakarma.in"
+    tls:
+     httpsRedirect: true
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "vote.cloudvishwakarma.in"
+    - "result.cloudvishwakarma.in"
+    - "www.cloudvishwakarma.in"
+    tls:
+      credentialName: my-tls-secret # this should match with Certificate secretName
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vote
+spec:
+  hosts:
+  - "vote.cloudvishwakarma.in"
+  - "www.cloudvishwakarma.in"
+  gateways:
+  - app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: vote
+        port:
+          number: 80
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: result
+spec:
+  hosts:
+  - "result.cloudvishwakarma.in"
+  gateways:
+  - app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: result
+        port:
+          number: 80
+
+deploy it in default namespace
+
+---------------------
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: tools-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "tools.cloudvishwakarma.in"
+    tls:
+     httpsRedirect: true
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "tools.cloudvishwakarma.in"
+    tls:
+      credentialName: my-tls-secret # this should match with Certificate secretName
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kiali
+  namespace: istio-system
+spec:
+  hosts:
+  - "tools.cloudvishwakarma.in"
+  gateways:
+  - tools-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /kiali
+    route:
+    - destination:
+        host: kiali
+        port:
+          number: 20001
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: tracing
+  namespace: istio-system
+spec:
+  hosts:
+  - "tools.cloudvishwakarma.in"
+  gateways:
+  - tools-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /jaeger
+    route:
+    - destination:
+        host: tracing
+        port:
+          number: 80
+
+apply it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
