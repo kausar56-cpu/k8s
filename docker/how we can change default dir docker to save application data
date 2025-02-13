@@ -37,14 +37,46 @@ for that crete bridge network allocate it to container and ping each other by na
 containers are stateless -
 ping by using ip not good it may be change
 
---------------------------------------------------------------------------
-we crete 1 custom networl - allocate to 2 conatoner 3 and 4
-by using name its success ping
-but now i cated bridge network 1 and 2
-now i want ping 3 to 1 
-docker network connect custom app1  ------most imp command
-docker inspect custom
-login 3 and ping for 1
+
+--------------------------------------------------------------------------------------------------------------
+Scenario: Connecting a Container from a Custom Network to a Bridge Network
+You have created:
+
+A custom network (custom) with containers 3 and 4.
+A default bridge network (bridge) with containers 1 and 2.
+Now, you want container 3 (in custom) to ping container 1 (in bridge).
+--------------------------------------------------------------------------------------------------------------
+docker network ls
+docker network inspect custom
+docker network inspect bridge
+
+ Connect Container 3 to the Bridge Network
+By default, custom networks and the bridge network are isolated, 
+so you need to connect container 3 to the bridge network. 1
+
+docker network connect bridge container3     --------------------------------imp
+Now, container3 is part of both networks (custom and bridge).
+
+docker exec -it container3 sh
+ping container1
+docker inspect container3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ------------------------------------------------------------------------------
 
 docker run --rm -d --name nodeexporter --network host prom/node-exporter
