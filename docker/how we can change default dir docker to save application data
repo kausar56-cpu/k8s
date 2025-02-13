@@ -7,6 +7,48 @@ To prevent this, we can store all our Docker data in a separate directory.
 /var/lib/docker/conainers/ hya path la jo data store hote to as root volume mde store hoto  -----imp
 -------------------------------------------------------------------------------------------------------------------------------------
 
+sudo mkdir -p /kausar
+sudo mv /var/lib/docker /kausar
+sudo vim /etc/docker/daemon.json
+
+{
+  "data-root": "/kausar"
+}
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+Check if Docker is now using /kausar as the data root:
+
+docker info | grep "Docker Root Dir"
+Docker Root Dir: /kausar
+--------------------------------------------------------------------------------------------------------------------------
+
+docker networking
+on which  ip my conatine running to see command 
+docker inspect container name ---- in that ip present
+docker inspect frontend | grep -i 172.17.0.2
+---------------------------------------------------------------------------------
+i want ping c1 to c2 
+docker exec -it frontend bash
+ping ip
+but i want ping by name its not possible here   ---------imp
+for that crete bridge network allocate it to container and ping each other by name   ----vim
+containers are stateless -
+ping by using ip not good it may be change
+
+--------------------------------------------------------------------------
+we crete 1 custom networl - allocate to 2 conatoner 3 and 4
+by using name its success ping
+but now i cated bridge network 1 and 2
+now i want ping 3 to 1 
+docker network connect custom app1  ------most imp command
+docker inspect custom
+login 3 and ping for 1
+------------------------------------------------------------------------------
+
+docker run --rm -d --name nodeexporter --network host prom/node-exporter
+
 
 ### Step-by-Step Process:
 
@@ -121,6 +163,22 @@ sudo systemctl status docker --no-pager
   
 ps aux | grep -i docker | grep -v grep
 ---------------------------------------------------------------------------------------------------------------------------
+sudo mkdir -p /kausar
+sudo mv /var/lib/docker /kausar
+sudo vim /etc/docker/daemon.json
+
+{
+  "data-root": "/kausar"
+}
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+Check if Docker is now using /kausar as the data root:
+
+docker info | grep "Docker Root Dir"
+Docker Root Dir: /kausar
+--------------------------------------------------------------------------------------------------------------------------
 
 docker networking
 on which  ip my conatine running to see command 
