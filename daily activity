@@ -1,0 +1,7 @@
+can u integrate database to k8s application  - this an external database not from other resion
+this database access all teams becoz 
+
+  in real-time container will not have each and every ppackage whateverwe require t
+why create one troubleshooting container which contain all dependencies or packages
+
+  ingress controller in backen NLB create 
