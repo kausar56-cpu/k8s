@@ -1,44 +1,44 @@
-user - vote and result - frentend
-user - send -request - vote -it will return into redies - it will writte to worker (.net)- 
-worker based on result wite to database - database sotre - result -user
+user - vote and result - frontend 
+user - send -request - vote -it will return into redies - it will write to worker (.net)-  
+worker based on result wite to database - database store - result -user 
 
 ------------------------------------------------------------------------------------------------------------------------------------
-1. To Generate Secure Key and cert... Do we really use `certbot` command in Realtime ????  or any Other alternative approach ??
+1. To Generate Secure Key and cert... Do we really use the `certbot` command in time????  or any Other alternative approach ?? 
 2. If we use microservice architecture, do we create separate certs and key or only one cert and key is enough???
 
-Good Question , actually in real time they will be having licensed keys, .crt and .key. The only thing what we have to do is  , 
-we have to follow the process what I showed in video .
-Else there will be one common location they run the key in that particular location.
+Good Question, actually in real-time they will have licensed keys, .crt, and .key. The only thing we have to do is,  
+we have to follow the process that I showed in the video. 
+Otherwise, there will be one common location where they run the key in that particular location. 
 
-Nonwe don’t use , only one.  We have 28 services we  use a single SSL key for all 28 services by configuring 
+Now we don’t use, only one.  We have 28 services we  use a single SSL key for all 28 services by configuring  
 a load balancer or reverse proxy with the SSL certificate.
 The load balancer then handles SSL termination and forwards traffic to the microservices.
 
 
 --------------------------------------------------------------------------------------------------------------
-genrating TLS KEYS
+ggeneratingTLS KEYS 
 .crt and . key 
 -------------------------------
-keep all imges in private repo 
+keep all images in a private repo  
 we pass docker cred in secret k8s
 ------------------------------------
-make sure our application able to download private images from private repo
+Make sure our application able to download private images from a private repo. 
 ------------------------------------------------------------------------------
-if u want change domain name - then u have to change all subdomain also - sglya microserver che ssl cirtificate change krave lagtil
+If u want to change the domain name - then u have to change all subdomains also - ugly microserver che ssl certificate change krave legal. 
 
-tyasati configure alb krav lagel each and evry microservies pashi
-suppose mla ajun 2 microservise add krychet tr ajun 2 lb configure krav lagel
-ani he sgle manualy ahe and cost effective
-ani yek lb update kela ani bakiche ny kel tr application bust hoil bakiche all server insecre hotil
+ttasteconfigure alb krav label each and every microservicespatioi 
+suppose mla Jun 2 mmicroserviceadd crochet tr Jun 2 lb configure krav legal 
+and he single manually ahe and cost-effective 
+ani yeuk lb update kela ani backache ny kel tr application bust hoilbackachee all serveinsecurehoteltil 
 -----------------------------------------------------------------------------------------------------------------------------------------
-when u configure ingress controllar in backen NLB crete - NLB integrate with domain -
+When u configure the ingress controller in backen NLB create - NLB integrate with a domain - 
 
 ingress controller
-its pice of software where u going to install on k8s cluster - it will writr request to ingress resourse -
-based on request - its going to route it - appropatily - to your application 
+It is a piece of software that u going to install on the k8s cluster - it will write requests to ingress resources - 
+based on request - it's going to route it -appropriately - to your application  
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
-create 2 instance 1 for cluster creating and 2. for ssl genrating
+create 2 instances 1 for cluster creating and 2. for sslgeneratingg 
 1 ec2 - t2.medium  2. ec2 - t2 micro
 
 ---------------------------------------------------------------------------------------------------------------
@@ -48,28 +48,28 @@ take access 2.ec2
 sudo snap install --classic certbot
 ------------------------------------------------------------------------------------------------------------------
 sudo certbot certonly --manual \
---preferred-challenges dns \
+--preferred-challenges DNS \ 
 --key-type rsa \
 --email saikiran.mujawark56@gmail.com \
 --server https://acme-v02.api.letsencrypt.org/directory \
---agree-tos \
+--agree-to \ 
 -d "*.kausarmujawar.shop"
 
 ----------------------------------------------------------------------------------------------------------------
-press 2time enter then it will give us 2 cirtificate 
+Press 22 times enter then it will give us 2 certificate  
 ACME-CHALLANGE 
 3mQ_Jx6arEg_rUFMd107c{JDNs01Y-tu9busqheyt jo ----text record
-COPY acme-change cirtificate go to rout53 --hosted zones--create it by domain--click on creted hosted zone---crete record  A  & add ACME-CHALLANGE heare ----
+COPY acme-change certificate go to rout53 --hosted zones--create it by domain--click on created hosted zone---crete record  A  & add ACME-CHALLANGEheree ---- 
 record name -ACME-CHALLANGE
 record type -TXT
 value - copy -text record-pest
 simple routing
-wait up to status insync
+wait up to status in sync
 
 ----------------------------------------------------------------------------------------------------------
-after go terminal see cirtificate succussfully recived 
-cert -we got cirtificate saved location ---/etc/letsencrypt/live/cloudvishwakarma.in/fullchain.pem
-key saved at --- /etc/letsencrypt/live/cloudvishwakarma.in/privatekey.pem
+After go the terminal see the certificate successfully received  
+cert -we got the certificate saved location ---/etc/letsencrypt/live/cloudvishwakarma.in/fullchain.pem 
+key saved at --- /etc/letsencrypt/live/cloudvishwakarma.in/private key.pem 
 cat - cert 
 cat key
 
@@ -78,7 +78,7 @@ on master
 deploy ingress controller
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/aws/deploy.yaml
 cd /tmp
-nano tls.cert 
+nano tls .cert  
 copy cert and pest
 nano tls.key
 copy pest key
@@ -94,11 +94,11 @@ tis.crt:
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
 docker pull kiran2361993/testing:latestappresults
-now push image private docker repository
-so crete private 1 firstly
-docker tag kiran2361993/testing:latestappresults kausar1011/votingapp:results
-            public repo                                      privete repo
-firstly i have to mention public one then private repostry then tag----------imp
+now push the image private docker repository 
+so create private 1 firstly 
+docker tag kiran2361993/testing:latestappresults kausar1011voting ap:results 
+            public repo                                    private repo 
+firstly I have to mention the public one then the private repository then tag----------imp 
 docker push kausar1011/votingapp:results
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ docker push kausar1011/votingapp:vote
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
-now pull BE image
+now pull the BE image 
 docker pull kiran2361993/testing:latestappworker
 docker tag kiran2361993/testing:latestappworker kausar1011/votingapp:worker
 docker push kausar1011/votingapp:worker
@@ -122,7 +122,7 @@ docker rmi $(docker images -aq) --force
 # Delete the existing deployment
 kubectl delete deployment <your-deployment-name>
 
-# Create Docker registry secret
+# Create a Docker registry secret 
 kubectl create secret docker-registry docker-pwd \
     --docker-username=kausar1011 \
     --docker-password="a2F1c2FyMTAxMTpkY2tyX3BhdF9fRXhIUXJpRm02V3FzOGlFWU44Z0ttcGppczQ=" \
@@ -131,19 +131,19 @@ kubectl create secret docker-registry docker-pwd \
  cat ~/.docker/config.json
 to see token 
 
-deploy yaml file
+Deploy yaml file 
 --------------------------------------------------
 # redis
 --- 
 apiVersion: v1
 kind: Service
 metadata: 
-  labels: 
+  Labels:  
     app: redis
   name: redis
-spec: 
-  clusterIP: None
-  ports:
+Spec:  
+  cluster: None 
+  Ports: 
   - name: redis-service
     port: 6379
     targetPort: 6379
@@ -154,21 +154,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
-  labels:
+  Labels: 
     app: redis
-spec:
+Spec: 
   replicas: 1
-  selector:
+  Selector: 
     matchLabels:
       app: redis
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: redis
-    spec:
-      containers:
+    Spec: 
+      Containers: 
       - name: redis
-        image: redis:alpine
+        image: redis: alpine 
         ports:
         - containerPort: 6379
           name: redis
@@ -178,12 +178,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata: 
-  labels: 
+ Labels:  
     app: db
   name: db
-spec: 
-  clusterIP: None
-  ports: 
+Spec:  
+  cluster: None 
+  Ports:  
   - name: db
     port: 5432
     targetPort: 5432
@@ -194,32 +194,32 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: db
-  labels:
+  Labels: 
     app: db
-spec:
+Spec: 
   replicas: 1
-  selector:
+  Selector: 
     matchLabels:
       app: db
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: db
-    spec:
-      containers:
+    Spec: 
+      Containers: 
       - name: db
         image: postgres:9.4
         env:
         - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
+          value: /var/lib/postgresql/data/bigdata 
         - name: POSTGRES_USER
-          value: postgres
+          value:Postgress 
         - name: POSTGRES_PASSWORD
-          value: postgres
+          value: Postgres 
         ports:
         - containerPort: 5432
           name: db
-        volumeMounts:
+        volume mounts: 
         - name: db-data
           mountPath: /var/lib/postgresql/data
       volumes:
@@ -234,7 +234,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   resources:
-    requests:
+   Requests: 
       storage: 1Gi
 
 # result
@@ -243,11 +243,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: result
-  labels:
+  Labels: 
     app: result
-spec:
+Spec: 
   #type: LoadBalancer
-  ports:
+  Ports: 
   - port: 80
     targetPort: 80
     name: result-service
@@ -259,19 +259,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: result
-  labels:
+  Labels: 
     app: result
-spec:
+Spec: 
   replicas: 1
-  selector:
+  Selector: 
     matchLabels:
       app: result
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: result
-    spec:
-      containers:
+    Spec: 
+      Containers: 
       - name: result
         image: kausar1011/votingapp:results
         ports:
@@ -285,11 +285,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vote
-  labels:
+  Labels: 
     apps: vote
-spec:
+Spec: 
   #type: LoadBalancer
-  ports:
+  Ports: 
     - port: 80
       targetPort: 80
       name: vote-service
@@ -300,16 +300,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vote
-  labels:
+  Labels: 
     app: vote
-spec:
+Spec: 
   replicas: 2
-  selector:
+  Selector: 
     matchLabels:
       app: vote
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: vote
     spec:
       containers:
@@ -326,31 +326,31 @@ spec:
 apiVersion: v1
 kind: Service
 metadata: 
-  labels: 
+  Labels:  
     apps: worker
   name: worker
-spec: 
-  clusterIP: None
-  selector: 
+Spec:  
+  cluster: None 
+  Selector:  
     app: worker
 --- 
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  labels: 
+  Labels:  
     app: worker
   name: worker
-spec: 
+Spec:  
   replicas: 1
-  selector:
+  Selector: 
     matchLabels:
       app: worker
-  template: 
-    metadata: 
-      labels: 
+  Template:  
+    Metadata:  
+      Labels:  
         app: worker
-    spec: 
-      containers: 
+    Spec:  
+      Containers:  
       - image: kausar1011/votingapp:worker
         name: worker
       imagePullSecrets:
@@ -358,10 +358,10 @@ spec:
 --------------------------------------------------------------------------------------------------------------------------------
 
       ------------------------------------------------------------------------------------------------------------------------------
-     go to rout53 - crete recored A - simple recored -recored name www-  alias - network lb watch vedio
+     Go to rout53 - crete recorded A - simplerecordd -recorded name www-  alias - network lb watchvideoo 
 
      ----------------------------------------------------------------------------------------------------
-     depoly ingress.yaml
+     deploy ingress.yaml 
 
      apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -369,21 +369,20 @@ metadata:
   name: result-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    spec.ingressClassName: nginx
-#  changed - as it is depracted "kubernetes.io/ingress.class"
-spec:
-  tls:
+    spec.ingressClassName: nginx 
+#  changed - as it is deprecated "kubernetes.io/ingress.class" Specc: 
+  ts: 
   - hosts:
-    - "result.cloudvishwakarma.in"
-    secretName: nginx-tls-default
+    - "result.c loudvishwakarma.in" 
+    secret name: nginx-tls-default 
   rules:
-  - host: result.cloudvishwakarma.in
+  - host: result .cloudvishwakarma.in 
     http:
-      paths:
+    Pathshs: 
       - path: /
-        pathType: Prefix
+        pathotype: Prefix 
         backend:
-          service:
+         Servicee: 
             name: result
             port:
               number: 80
@@ -394,33 +393,33 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vote-ingress
-  annotations:
+  Annotations: 
     nginx.ingress.kubernetes.io/rewrite-target: /
     spec.ingressClassName: nginx
-spec:
-  tls:
+Spec: 
+  ts: 
   - hosts:
-    - "vote.cloudvishwakarma.in"
+    - "vote.c loudvishwakarma.in" 
     - "www.cloudvishwakarma.in"
-    secretName: nginx-tls-default
+    secret name: nginx-tls-default 
   rules:
-  - host: vote.cloudvishwakarma.in
+  - host: vote .cloudvishwakarma.in 
     http:
-      paths:
+    Pathshs: 
       - path: /
-        pathType: Prefix
+        pathotype: Prefix 
         backend:
-          service:
+         Servicee: 
             name: vote
             port:
               number: 80
   - host: www.cloudvishwakarma.in
     http: 
-      paths:
+      Paths: 
       - path: /
-        pathType: Prefix
+        pathotype: Prefix 
         backend:
-          service:
+         Servicee: 
             name: vote
             port:
               number: 80
