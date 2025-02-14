@@ -1,0 +1,24 @@
+### **Kubernetes Operator**  
+A **Kubernetes Operator** is an extension of Kubernetes that automates the management of complex applications. It uses **Custom Resource Definitions (CRDs)** and **Controllers** to manage applications just like Kubernetes manages pods and deployments.  
+
+### **Why Use an Operator?**  
+- Automates deployment, scaling, and operations of applications.  
+- Helps manage **stateful applications** like databases (e.g., MySQL, PostgreSQL).  
+- Reduces manual intervention by continuously monitoring and taking actions.  
+
+### **How an Operator Works**  
+1. **Custom Resource Definition (CRD)** → Defines a new type of Kubernetes resource.  
+2. **Controller** → Watches changes and takes actions (e.g., deploying a database).  
+3. **Reconciliation Loop** → Ensures the actual state matches the desired state.  
+
+### **Example Operators in Kubernetes**  
+- **Prometheus Operator** → Manages Prometheus monitoring in a cluster.  
+- **Kafka Operator** → Automates the deployment of Apache Kafka.  
+- **PostgreSQL Operator** → Simplifies PostgreSQL database management.  
+
+### **Command to List Installed Operators**  
+```sh
+kubectl get crds | grep operator
+```
+
+Do you need an example of writing your own Kubernetes Operator? 🚀
