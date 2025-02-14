@@ -6,15 +6,15 @@ types of sidecar container
 --------------------------------------------------------------------------------------------
 1. init -  
 
-suppose 3containersr out of 2 init and 1 main -  
-all init containeshouldud be complete before re main container 
-once this container is good to go - if they give the reen signal endpoint and services whatever task we have given working well then 
+suppose 3containers out of 2 init and 1 main -  
+all init containe should be complete before runing main container 
+once this container is good to go - if they give the green signal endpoint and services whatever task we have given working well then 
 our main container is good to go 
 no restriction to creating to container init 
 --------------------------------------------------------------------------------------------------------------------------------------
 2. adapter 
- it'ss not likthe e the init  
-it's notservantt to anyone 
+ it's not like the init container  
+it's not servant to anyone 
 simultaneously it going to run along with your main container  
 mainly used for logi , tracing, collecting matrix 
 --------------------------------------------------------------------------------------------------------------------------------------
