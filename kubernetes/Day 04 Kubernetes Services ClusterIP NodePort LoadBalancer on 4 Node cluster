@@ -26,12 +26,22 @@ it contains product info
 customer feedback 
 reviews
 ---------------------
-adv. of integrating database to k8s is databasehavinghostnamem , unique URL  
-database admin - he came back toDevOpss guy - we are migrating the database server to another server  
-next timeURLl and hostname are integrated with many applications 29 -After after migration hostname and URL will change -  
-devops engg don't need to change the manual 29 application hostname and URL 
-simple devops engg change the host name and URL in the external name 
-it will be applied rest all application 
+The main advantage of integrating a database with Kubernetes is that the database 
+gets a hostname (unique URL), making it easier to manage across multiple applications.
+
+Scenario: Migrating a Database Server
+
+The Database Admin informs the DevOps Engineer that the database server is being migrated to a new server.
+Normally, this would require manually updating the database hostname and URL across all applications.
+
+Advantage with Kubernetes
+Using ExternalName Service:
+
+Instead of updating multiple application configurations, the DevOps engineer only needs
+to update the ExternalName Service in Kubernetes, which points to the new database hostname.
+
+Once updated, all applications using this ExternalName will automatically connect to the
+new database server without manual changes in each application.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 cluster IP 
 
