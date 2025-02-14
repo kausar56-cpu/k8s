@@ -17,4 +17,5 @@ kubectl delete all --all
 
   kubectl delete pod,deploy --all
 
-  
+
+kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
