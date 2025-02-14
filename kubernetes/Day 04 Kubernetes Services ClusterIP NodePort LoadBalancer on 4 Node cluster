@@ -1,40 +1,39 @@
-cluster ip
+cluster IP 
 
-devopler give an task to test application local env 
-cluster ip does have also capability routing traffic to diff diff pods 
-it can balnce load accurdingly it follows round robin method 
+developer gives an task to test the application's local env  
+Cluster IP does have also the capability to rout traffic to different pods  
+it can balance load accordingly it follows round the Robin method  
 route traffic across multiple pods by using iptables
 -----------------------------------------------------------------------------------------
 node port
 
-if we crete node port dont thing cluster ip not there cluster ip present at backend
-uniq host port will cretate between 30000:32667
-we can crte anyone special yes we can during manifest yaml file
-nodeport do nating internally once this part done it will writing to cluster ip
+if we create a node port think cluster IP, not cluster IP present at backend 
+uniq host port will create between 30000:32667 
+we can create anyone special yes we can during manifest yaml file 
+deport do dating internally once this part is done it will write to the cluster IP 
 ------------------------------------------------------------------------------------------
-node port is not use case for production application
-load balncing is good for production
-custermer/user - we cannot give public ip:port
-evry thime they are going to remember this
+node port is not a use case for production application 
+load balancing is good for production customer/users - we cannot give public IP: port 
+Every time they are going to remember this 
 ------
-so we are suppose give proper DNS name - domain name 
+So we are supposed to give the proper DNS name - domain name.  
 ------------------------------------------------------------------------------------------------
 external name     --------------------------vimp
 
-i am working on k8s application - suddenly product maneger came - can u integrate database to k8s application  - this an external database not from other resion
-this database access all teams becoz 
+I am working on k8s application - and suddenly product manager came - can u integrate the database into the K8s application  - this is an external database not from another region 
+this database accesses all teams because 
 it contains product info
-custmer feedback
+customer feedback 
 reviews
 ---------------------
-adv. of integrating database to k8s is database haing host name , uniq URL 
-dtabase admin - he came back to devops guy - we are migrating database sever to another server 
-next time url and host name intergated with many application 29 - aftermigration host name and url will change - 
-devops engg dont need to change manuall 29 application host name and url 
-simple devops engg change host name and url in external name
-it will be apply rest all application
+adv. of integrating database to k8s is databasehavinghostnamem , unique URL  
+database admin - he came back toDevOpss guy - we are migrating the database server to another server  
+next timeURLl and hostname are integrated with many applications 29 -After after migration hostname and URL will change -  
+devops engg don't need to change the manual 29 application hostname and URL 
+simple devops engg change the host name and URL in the external name 
+it will be applied rest all application 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-cluster ip
+cluster IP 
 
 
 kubectl create deployment app1 --image kiran2361993/loadbalncerimage:v1 --replicas 3 --dry-run -o  y
@@ -43,21 +42,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app1
-  labels:
+  Labels: 
     app: app1
-spec:
+Spec: 
   replicas: 3
-  selector:
+  Selector: 
     matchLabels:
       app: app1
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: app1
-    spec:
-      containers:
-        - name: loadbalancerimage
-          image: kiran2361993/loadbalancerimage:v1
+    Spec: 
+      Containers: 
+        - name: load balancer image 
+          image: kiran2361993/load balancer image:v1 
 apply it
 --------------------------------
 expose it 
@@ -65,13 +64,13 @@ kubectl expose deployment app1 --port 80 --target-port 80 --type ClusterIp
 
 kubectl run troubleshooting --image=kiran2361993/troubleshootingtools:v1
 
-login in that and access pod with help of cluster ip 
+login in that and access the pod with the help of cluster IP  
 
 kubectl exec -it troubleshooting -- bash
 
 nslookup app1
 
-to check it is doing balncing or not
+to check if it is doing balancing or not 
 while true; do 
   curl -sL http://appl | grep -i 'IP Address'; 
   sleep 1; 
@@ -80,31 +79,29 @@ done
 ku delete svc app1
 delete deployment
 -------------------------------------------------------------
-in real time container will not be having each and every pakege whaterver we required thats
-why creat one trobleshoting conatiner which conatin all dependency or pakeges    ---------------resume point
-ctl+siftp ---fomat doc in vs code
+in real-time container will not have each and every ppackage whateverwe require t
+why create one troubleshooting container which contain all dependencies or packages    ---------------resume point 
+ctl+siftp --formatt doc in vs code 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-nodeport 
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------ 
+node port  
+ 
 ku create deployment app1 --image kiran2361993/kubegame:v2 --replicas 3 --dry-run -o yaml
 
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: appl
-  labels:
-    app: appl
-spec:
+metadata: 
+  name: appl Labelsels: 
+    app: appl 
+Spec: 
   replicas: 3
-  selector:
+  Selector: 
     matchLabels:
       app: appl
-  template:
-    metadata:
-      labels:
-        app: appl  # Ensure label matches the selector
+  Template: 
+    Metadata: 
+      Labels: 
+        App: appl  # Ensure the label matches the selector 
     spec:
       containers:
         - name: kubegame
@@ -119,35 +116,33 @@ configure sg
 access it 
 delete svc only 
 ---------------------------------------------------------------------------------------------------------------------------------------
-load balncer
+load balancer 
 
 kubectl expose deployment appl --port 80 --target-port 80 --type LoadBalancer
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-opn rote53 - attach dns name it - crte record - simple routing - www - ip4 - load balncer - us-east-1 - 
+open rote53 - attachments name it - create record - simple routing - www - ip4 - load balancer - us-east-1 -  
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-nlb
-  labels:
+  name: app 
+  Labels: 
     app: app1
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enable: "true"
-    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enable: "true"
-    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: "30"
-spec:
-  type: LoadBalancer
-  selector:
+  Annotations: 
+    service.beta.kubernetes.io/aws-load-balancer-type: "lb" 
+    service.beta.kubernetes.io/aws-load-balancer-ccross-zoneload-balancing-enable: "true" 
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: "true" 
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: "30" Specc: 
+  type: LoadBalancer 
+  Selector: 
     app: app1
-  ports:
+  Ports: 
     - port: 80
       targetPort: 80
       protocol: TCP
-
 
 
 
