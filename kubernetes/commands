@@ -2,6 +2,7 @@ To check all objects or resurce version
 kubectl api-resources --namespaced=true 
 
 --dry-run -o yaml  ------ yaml file betel
+kubectl -n alpha port-forward pod/alphal 8000:80
 
 kubectl explain pod 
 kubectl explain pod.metadata
