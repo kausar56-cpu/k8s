@@ -8,6 +8,7 @@ kubectl explain pod
 kubectl explain pod.metadata
 
 kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
+kubectl expose deployment testpod1 --name svc1 --port 8000 --target-port 80 --type NodePort
 
 watch kubectl get pods
 
