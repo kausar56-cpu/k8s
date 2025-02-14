@@ -133,17 +133,16 @@ to see token
 
 Deploy yaml file 
 --------------------------------------------------
-# redis
---- 
+# Redis Service & Deployment
+---
 apiVersion: v1
 kind: Service
-metadata: 
-  Labels:  
+metadata:
+  labels:  
     app: redis
   name: redis
-Spec:  
-  cluster: None 
-  Ports: 
+spec:
+  ports:
   - name: redis-service
     port: 6379
     targetPort: 6379
@@ -154,72 +153,71 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
-  Labels: 
+  labels:
     app: redis
-Spec: 
+spec:
   replicas: 1
-  Selector: 
+  selector:
     matchLabels:
       app: redis
-  Template: 
-    Metadata: 
-      Labels: 
+  template:
+    metadata:
+      labels:
         app: redis
-    Spec: 
-      Containers: 
+    spec:
+      containers:
       - name: redis
-        image: redis: alpine 
+        image: redis:alpine
         ports:
         - containerPort: 6379
           name: redis
-
-# db
---- 
+          
+# PostgreSQL Service & Deployment
+---
 apiVersion: v1
 kind: Service
-metadata: 
- Labels:  
+metadata:
+  labels:  
     app: db
   name: db
-Spec:  
-  cluster: None 
-  Ports:  
+spec:
+  ports:
   - name: db
     port: 5432
     targetPort: 5432
-  selector: 
+  selector:
     app: db
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: db
-  Labels: 
+  labels:
     app: db
-Spec: 
+spec:
   replicas: 1
-  Selector: 
+  selector:
     matchLabels:
       app: db
-  Template: 
-    Metadata: 
-      Labels: 
+  template:
+    metadata:
+      labels:
         app: db
-    Spec: 
-      Containers: 
+    spec:
+      containers:
       - name: db
         image: postgres:9.4
         env:
         - name: PGDATA
-          value: /var/lib/postgresql/data/bigdata 
+          value: "/var/lib/postgresql/data/bigdata"
         - name: POSTGRES_USER
-          value:Postgress 
+          value: "postgres"
         - name: POSTGRES_PASSWORD
-          value: Postgres 
+          value: "postgres"
         ports:
         - containerPort: 5432
           name: db
-        volume mounts: 
+        volumeMounts:
         - name: db-data
           mountPath: /var/lib/postgresql/data
       volumes:
@@ -234,44 +232,42 @@ spec:
   accessModes:
     - ReadWriteOnce
   resources:
-   Requests: 
+    requests:
       storage: 1Gi
-
-# result
+---------------------------------------------------------------------------------------------------------------------------------------
+# Result Service & Deployment
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: result
-  Labels: 
+  labels:
     app: result
-Spec: 
-  #type: LoadBalancer
-  Ports: 
+spec:
+  ports:
   - port: 80
     targetPort: 80
     name: result-service
   selector:
     app: result
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: result
-  Labels: 
+  labels:
     app: result
-Spec: 
+spec:
   replicas: 1
-  Selector: 
+  selector:
     matchLabels:
       app: result
-  Template: 
-    Metadata: 
-      Labels: 
+  template:
+    metadata:
+      labels:
         app: result
-    Spec: 
-      Containers: 
+    spec:
+      containers:
       - name: result
         image: kausar1011/votingapp:results
         ports:
@@ -279,20 +275,20 @@ Spec:
           name: result
       imagePullSecrets:
       - name: docker-pwd
-# vote
+
+# Vote Service & Deployment
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: vote
-  Labels: 
-    apps: vote
-Spec: 
-  #type: LoadBalancer
-  Ports: 
-    - port: 80
-      targetPort: 80
-      name: vote-service
+  labels:
+    app: vote
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    name: vote-service
   selector:
     app: vote
 ---
@@ -300,16 +296,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vote
-  Labels: 
+  labels:
     app: vote
-Spec: 
+spec:
   replicas: 2
-  Selector: 
+  selector:
     matchLabels:
       app: vote
-  Template: 
-    Metadata: 
-      Labels: 
+  template:
+    metadata:
+      labels:
         app: vote
     spec:
       containers:
@@ -321,40 +317,30 @@ Spec:
       imagePullSecrets:
       - name: docker-pwd
 
-# worker
---- 
-apiVersion: v1
-kind: Service
-metadata: 
-  Labels:  
-    apps: worker
-  name: worker
-Spec:  
-  cluster: None 
-  Selector:  
-    app: worker
---- 
+# Worker Deployment (No Service Needed)
+---
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
-  Labels:  
-    app: worker
+metadata:
   name: worker
-Spec:  
+  labels:
+    app: worker
+spec:
   replicas: 1
-  Selector: 
+  selector:
     matchLabels:
       app: worker
-  Template:  
-    Metadata:  
-      Labels:  
+  template:
+    metadata:
+      labels:
         app: worker
-    Spec:  
-      Containers:  
-      - image: kausar1011/votingapp:worker
-        name: worker
+    spec:
+      containers:
+      - name: worker
+        image: kausar1011/votingapp:worker
       imagePullSecrets:
       - name: docker-pwd
+
 --------------------------------------------------------------------------------------------------------------------------------
 
       ------------------------------------------------------------------------------------------------------------------------------
@@ -362,8 +348,7 @@ Spec:
 
      ----------------------------------------------------------------------------------------------------
      deploy ingress.yaml 
-
-     apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: result-ingress
@@ -430,4 +415,3 @@ Spec:
 
 
 
-ingress resource
