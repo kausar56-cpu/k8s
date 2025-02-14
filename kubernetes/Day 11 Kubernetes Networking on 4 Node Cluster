@@ -123,7 +123,12 @@ spec:
   - Ingress
   - Egress
 
----
+
+Pod1 can access Pod2 ✅
+Pod2 can access Pod1 ✅
+No other namespace can access these pods ❌
+
+--------------------------------------------------------
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
@@ -134,6 +139,10 @@ spec:
   policyTypes:
   - Ingress
   - Egress
+
+✅ dev namespace मधील कोणताही Pod बाहेरच्या नेटवर्कशी जोडला जाऊ शकत नाही.
+✅ बाहेरच्या कोणत्याही Pod कडून dev namespace मधील Pods ला request पाठवता येणार नाही.
+❌ म्हणजेच संपूर्ण dev namespace isolate केला जाईल.
 
 ---
 kind: NetworkPolicy
@@ -148,8 +157,14 @@ spec:
   - Egress
 
 
+✅ qa namespace मधील Pods बाहेरच्या कोणत्याही सर्व्हरशी किंवा इतर namespace शी कनेक्ट होऊ शकणार नाहीत.
+✅ इतर namespace मधील Pods qa मधील Pods ना request पाठवू शकणार नाहीत.
+❌ म्हणजेच संपूर्ण qa namespace isolate होईल.
+
 apply it
 again apply above command
+
+
 -----------------------------------------------------------------------------------------------------------------------------------
 ata 3 namespace ahet tyamdhe acess nko ahe pn single ns mdil pod mde hvy
 
@@ -213,7 +228,7 @@ spec:
     - podSelector:
         matchLabels:
           ns: dev
-
+--------------------------------------------------------------------------------------------------------------------------------------------------
 #Allow Egress Traffic From dev To prod applied at dev Namespace
 ---
 kind: NetworkPolicy
@@ -235,6 +250,9 @@ spec:
     - podSelector:
         matchLabels:
           ns: prod
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
 apply it
 ku exec -it dev1 --bash
