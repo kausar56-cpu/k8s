@@ -1,3 +1,12 @@
+
+
+✅ Generated certs for user1 & user2 using ca.crt & ca.key
+✅ Created kubeconfig for both users
+✅ Defined Role (namespace-specific) & RoleBinding
+✅ Assigned correct permissions (e.g., get, list, create)
+✅ Tested access with kubectl auth can-i
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 1 ] dev - user1 - 1. ca.crt 2. ca.key
     prod - user2 -  1. ca.crt 2. ca.key
      1. ca.crt 2. ca.key with help of this keys i will create 2 user
