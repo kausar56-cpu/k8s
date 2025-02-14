@@ -1,4 +1,11 @@
+What is kubectx?
+kubectx is a CLI tool that simplifies switching between multiple Kubernetes contexts in a kubeconfig file. 
+Instead of using kubectl config use-context, you can use a short and quick command.
 
+🔹 Why Use kubectx?
+✅ Quickly switch between Kubernetes contexts
+✅ Easier than using kubectl config use-context
+✅ Lists available contexts for easy selection
 
 ✅ Generated certs for user1 & user2 using ca.crt & ca.key
 ✅ Created kubeconfig for both users
@@ -349,6 +356,10 @@ cd /usr/local/bin/
 wget https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubectx_v0.9.5_linux_x86_64.tar.gz
 tar -xvzf kubectx_v0.9.5_linux_x86_64.tar.gz
 kubectx
+
+Yes! ✅ Merging is needed because managing 100 separate kubeconfig files is difficult. It makes switching between users easier. 🚀
+
+
 --------------------------------------------------------------------------------------------------------------------------
 
 Portainer Kubernetes GitHub
