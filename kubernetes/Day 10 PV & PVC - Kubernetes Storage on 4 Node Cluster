@@ -20,9 +20,22 @@ and docker is on host machine
 if suppose i trying to give command in conatiner docker pas its not possible dirctly
 so hostpath comes in picure
 
+--------------------------------------------------------------------------------------------------------------------------------------
 by default when u configuring docker API is going to expose uniq socket at /var/run/docker.sock
 if want communication betwwen them them mount hostpath volume between conatiner and /var/run/docker.sock this path
+
+ Docker daemon runs on the host machine, containers inside a Kubernetes cluster cannot directly interact with it.
+
+Docker API Socket: By default, Docker exposes its API through a Unix socket at /var/run/docker.sock.
+
+Why Can't a Pod Directly Run docker ps?
+The container inside the pod does not have direct access to the host's Docker daemon.
+
+Solution – HostPath Volume
+By mounting /var/run/docker.sock from the host into the container, the container gains access to the Docker daemon.
+This allows the container to execute Docker commands like docker ps, docker run, etc.
 --------------------------------------------------------------------------------------------------------------------------------------------
+
 EBS
 POD - CO1  - in that mongodb - application -running - customer trying upload images/files - all datat - store at db - some reson
 conatiner is down - when it up data will loss - co1 is stateless - to rescure data - ebs
