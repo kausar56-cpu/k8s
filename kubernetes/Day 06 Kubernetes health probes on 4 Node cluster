@@ -1,5 +1,5 @@
 suppose 3 containers out of 1 down compression 
-kubelet will try to restartcontainerr  
+kubelet will try to restart container 
 in BE how does Kubelet know this container is not working  
 there should be a core component that passes info to Kubelet  
 that there is a container that not serving traffic properly 
@@ -7,8 +7,8 @@ health probes     --vamp
 ------------------------------------------------------
 readiness - is making sure to send traffic  
            it is also responsible for stopping traffic but 
-          it cant restart to the particular container 
-lives - it is similar to readiness but it can restartcontainerr 
+          it can't restart to the particular container 
+lives - it is similar to readiness but it can restart containerr 
 
 startup - is used for many legacy applications - it takes mainly  
 4 + min to starcontainerer 
@@ -46,7 +46,12 @@ Spec:
             initialDelaySeconds: 5
          period secondsnds: 10 
 
-
+🔹 Readiness Probe – कंटेनर तयार आहे का हे तपासण्याची यंत्रणा.
+🔹 HTTP Get – कंटेनरमध्ये HTTP रिक्वेस्ट पाठवून स्थिती तपासते.
+🔹 path: /index.html – /index.html या मार्गावर विनंती पाठवते.
+🔹 port: 80 – 80 नंबरच्या पोर्टवर विनंती केली जाते.
+🔹 initialDelaySeconds: 5 – कंटेनर सुरू झाल्यानंतर 5 सेकंदांनी पहिल्यांदा तपासणी होईल.
+🔹 periodSeconds: 10 – त्यानंतर दर 10 सेकंदांनी तपासणी केली जाईल.
 
 
 ---------------------------------------------------------------------------------------------------------------------------
@@ -121,7 +126,7 @@ Spec:
 
           # Liveness Probe (Ensures app is running, restarts if it fails)
           livenessProbe:
-         HTTP getGet: 
+         HTTP get: 
               path: /index.html
               port: 80
             initialDelaySeconds: 15
