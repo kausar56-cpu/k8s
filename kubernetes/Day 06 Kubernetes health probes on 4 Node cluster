@@ -1,20 +1,20 @@
-suppose 3 conatiners out of 1 down someresion
-kubelet will try to restart conatiner 
-in BE how does kubelet know this conatiner is not working 
-there should be core component which is passing info to kubelet 
-that there is conatiner that not sevring traffic properly
-health probes     --vimp
+suppose 3 containers out of 1 down compression 
+kubelet will try to restartcontainerr  
+in BE how does Kubelet know this container is not working  
+there should be a core component that passes info to Kubelet  
+that there is a container that not serving traffic properly 
+health probes     --vamp 
 ------------------------------------------------------
-readness - it is make sure sending traffic 
-           it is also responsible to sotping traffic but
-          it cant restart to the perticular conatiner
-livenes - it is similar to readness but it can restart conatiner
+readiness - is making sure to send traffic  
+           it is also responsible for stopping traffic but 
+          it cant restart to the particular container 
+lives - it is similar to readiness but it can restartcontainerr 
 
-startop - it used for manily legacy application - it take mainly 
-4 + min to start conatiner
-eg. windows base application
-if u implementing startuf prob it will not work we have to implement
-other 2 probe also
+startup - is used for many legacy applications - it takes mainly  
+4 + min to starcontainerer 
+eg. Windows base application 
+if u implement a startup prob it will not work we have to implement 
+other 2 probes also 
 --------------------------------------------------------------------
 ku create deployment app1 --image kiran2361993/kubegame:v2 --replicas 3 --dry-run -o yaml
 
@@ -22,29 +22,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app1
-  labels:
+ Labelss: 
     app: appl
-spec:
+Spec: 
   replicas: 3
-  selector:
+  Selector: 
     matchLabels:
       app: appl
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: appl
-    spec:
-      containers:
+    Spec: 
+      Containers: 
         - name: app1
-          image: kiran2361993/kubegame:v2  # Removed space after `:`
+          image: kiran2361993/cube game:v2  # Removed space after `:` 
           ports:
             - containerPort: 80
-          readinessProbe:
-            httpGet:
+         readiness probe: 
+          HTTP get 
               path: /index.html
               port: 80
             initialDelaySeconds: 5
-            periodSeconds: 10
+         period secondsnds: 10 
 
 
 
@@ -60,7 +60,7 @@ kubectl describe pod <pod-name>
 
 2️⃣ **Access the Pod Shell:**  
 ```bash
-kubectl exec -it appl-69f47d6787-ph869 -- bash
+kubectl exec apply apply-69f47d6787-ph869 -- bash 
 ```
 
 3️⃣ **Navigate & Delete Files:**  
@@ -95,14 +95,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: appl
-spec:
+Spec: 
   replicas: 3
-  selector:
+  Selector: 
     matchLabels:
       app: appl
-  template:
-    metadata:
-      labels:
+  Template: 
+    Metadata: 
+      Labels: 
         app: appl
     spec:
       containers:
@@ -112,17 +112,17 @@ spec:
             - containerPort: 80
           
           # Readiness Probe (Ensures app is ready before accepting traffic)
-          readinessProbe:
-            httpGet:
+          readiness probe: 
+           HTTP get: 
               path: /index.html
               port: 80
             initialDelaySeconds: 5
-            periodSeconds: 10
+          period seconds 10 
 
           # Liveness Probe (Ensures app is running, restarts if it fails)
           livenessProbe:
-            httpGet:
+         HTTP getGet: 
               path: /index.html
               port: 80
             initialDelaySeconds: 15
-            periodSeconds: 20
+            period seconds: 20
