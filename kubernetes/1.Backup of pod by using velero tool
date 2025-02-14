@@ -1,22 +1,13 @@
 1.Backup of pod by using velero tool
 
 
-
-Owned by kausar Mujawar
-
-Last updated: Jan 19, 2025
-5 min read
-
-See how many people viewed this
- 
-
 aws configure
 
 snap install aws-cli --classic
 
 root@ip-172-31-21-68:~# aws configure
-AWS Access Key ID [None]: AKIAWFIPS3N56NFDWMVB
-AWS Secret Access Key [None]: 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
+AWS Access Key ID [None]: 
+AWS Secret Access Key [None]: U
 Default region name [None]: us-east-1
 Default output format [None]:
 
