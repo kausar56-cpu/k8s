@@ -35,3 +35,742 @@ sg - inbound all trafic ahe outbond band ahe tr access hoil ka
 ky value chya base vr cluoud watch trigger ks hoil
 private ani public ahe kshyavrun olkhych
 
+
+
+1. What is the role of IAM roles and policies?
+2. Can you explain the Terraform plan and its purpose?
+3. What is AWS Lambda, and how does it work?
+4. How do you invoke a Lambda function, and where do you configure it?
+5. Can you describe how Lambda handles scaling and event-based invocations?
+6. What is Amazon CloudWatch, and have you configured any custom metrics?
+7. What metrics are available on your CloudWatch dashboard?
+8. How do you configure CPU utilization on your CloudWatch dashboard?
+9. How do you attach an SSL certificate to an S3 bucket?
+10. What type of encryption have you implemented in your project?
+11. If an S3 bucket has a read-only policy, can you modify objects in the bucket?
+12. Why did you choose Terraform over Boto3 for infrastructure provisioning?
+13. What is a Content Delivery Network (CDN), and how does it work?
+14. Have you created a Jenkins pipeline for your project?
+15. How do you attach policies to IAM users, either individually or by group?
+16. What type of deployment strategies are you using in your project?
+17. Have you used any tools to create customized Amazon Machine Images (AMIs)?
+18. What is connection draining, and how does it work?
+19. How does an Elastic Load Balancer (ELB) distribute traffic?
+20. What is auto-scaling, and how does it work?
+21. Can you describe the different types of Load Balancers and provide examples?
+22. What is the maximum runtime for a Lambda function?
+23. What is the maximum memory size for a Lambda function?
+24. How can you increase the runtime for a Lambda function?
+25. What automations have you performed using Lambda in your project?
+26. Why did you choose Terraform over Boto3 for infrastructure provisioning?
+27. What modules have you used in your Lambda function?
+28. Have you created an SNS topic for your project?
+29. If you've exhausted IP addresses in your VPC, how would you provision new resources?
+30. What is Groovy, and how is it used in Jenkins?
+31. Why do you use Groovy in Jenkins, and where do you save Jenkins files?
+32. What is Ansible, and what is its purpose?
+33. What language do you use in Ansible?
+34. Where do you run Terraform code, remotely or locally?
+35. What is the purpose of access keys and secret keys in AWS?
+36. What are Terraform modules, and have you used any in your project?
+37. What environments have you set up for your project?
+38. Do you use the same AWS account for all environments?
+39. Do you have separate Jenkins servers for each environment?
+40. Where do you write and save your Lambda function code? 
+
+
+
+
+Q) How DNS resolves the request?
+
+Q) If EC2 instance doesn't have public IP but it is in public subnet and attached to internet gateway, does request going to flow from internet to EC2 server? or EC2 server will be able to access internet?
+
+Q) What is ingress internet gateway?
+
+Q) What is Alias record in route 53?
+
+Q) Best practice for creating Dockerfile
+
+Q) How multi-stage dockerfile reduces the size of docker image
+
+Q) What is multi-stage dockerfile?
+
+Q) What is the difference between nginx and apache web server and what do you prefer to use?
+
+Q) What are the alternative ways to access or connect with private subnet instance other than NAT gateway?
+
+Q) What is NAT instance and NAT gateway? What is the difference between NAT instance and NAT gateway? What will you use between the two?
+
+Q) What is VPC peering and what are the alternative of VPC peering?
+
+Q) What advantages docker-compose provide? why do we use docker-compose and how is it different from using shell script?
+
+
+CloudKeeper interview questions
+
+Q) D/B CMD and EntryPoint
+
+Q) 10.0.0.0/24 what does 24 stands for in this IP range and what will be the first and last ip of this cidr range
+
+Q) What is 403 error and 404 error
+
+Q) What is Public and Private subnet
+
+Q) Write a Dockerfile
+
+Q) What is AAAA record and A record
+
+Q) What is CNAME record?
+
+Q) What are listeners in ELB
+
+Q) What is Bucket Policy in S3
+
+Q) What is IAM role
+
+Q) What is Transit Gateway?
+
+Q) What is VPC peering?
+
+Q) What is $1 means?
+
+Q) Can we assign single inline policy to multiple users in IAM?
+
+
+SquareOps Interview Questions
+
+Q) How to troubleshoot slow query logs in RDS and how to check it?
+
+Q) What is 500 internal server error and what steps you will take to troubleshoot it as a DevOps engineer?
+
+Q) How to extented timeout session on cloudfront?
+
+Q) D/B CMD and RUN command
+
+Q) DevOps best practice to reduce docker image size?
+
+Q) What is multi-stage dockerfile?
+
+Q) D/B role and Policy in IAM
+
+Q) What are IAM best practice in aws?
+
+Q) What are the CI/CD steps to deploy an application?
+
+Q) What is deamonsets in kubernetes?
+
+Q) What happens when you do terraform init?
+
+Q) What is ingress controller?
+
+Q) D/B ClusterIP, NodePort and LoadBalancer
+
+Q) What are provisioners?
+
+
+SECOND ROUND
+
+
+Q) Write dockerfile to run python
+
+Q) what is cp and sync in s3
+
+Q) what is raid in s3
+
+Q) What is 502 Bad Gateway and do you troubleshoot it? what is 503 error and how do you troubleshoot it
+
+Q) IAM best practice
+
+Q) Where to define allow and deny rule for nacl
+
+Q) D/B NACL and NAT gateway
+
+Q) My ec2 instance is in different account and my S3 bucket is in different account how will my ec2 access my s3 and my s3 access my ec2
+
+Q) What is lifecycle policy in s3?
+
+Q) what is bucket policy in s3?
+
+Q) Targets are unhealthy in target groups what is the cause of the unhealthy and how will you troubleshoot the error?
+
+Q) How do I fetch the existing ec2 instance using terraform?
+
+Q) I want to fetch ami-id A from mumbia region and ami-id B from N. verginia how will I do that using terraform?
+
+Q) How do you measure disk utilization in linux server?
+
+Q) My RDS instance is in private subnet and my application is in Public subnet how will my ec2 instance will access my rds instance 
+
+Q) What is lamda function?
+
+Q) What are inodes in linux?
+
+Q) 
+
+
+Antino Labs Interview Questions
+
+Q) In a worker node one pod has been destroyed and deleted in kubernetes cluster and run a new pod but that pod is in pending state and not coming into the running state what is the reason and how to troubleshoot it?
+
+Q) D/B NACL and Security Group
+
+Q) Kubernetes Architecture
+
+Q) Write multi-stage Dockerfile
+
+Q) D/B CMD and ENTRYPOINT
+
+Q) Write a shell script to install nginx and run/start nginx if it is not running?
+
+Q) How to maintain different environment like dev, stagging, testing and production using terraform?
+
+Q) There are multiple application running on worker nodes and Pods what is the best solution for users to access those applications?
+
+Q) What is CNI in kubernetes?
+
+Q) CNI vs Docker Networking?
+
+Q) My application is running inside the docker container and my database is running on the same host server, how will my application running inside the docker container communicate with database running on host server?
+
+
+K3G Interview Questions
+
+Q) Architecture of kubernetes
+
+Q) If there is a CDN? How request will flow after user request? Which means does request goes to CDN or to load balancer first?
+
+Q) Firewall options/services in AWS cloud?
+
+Q) What is backend state file in terraform?
+
+Q) What is state file in Terraform?
+
+Q) What is assumed role?
+
+Q) D/B role and policy
+
+Q) In which format policy is written or language of policy in IAM?
+
+Q) Application is runing on docker container and database is on host machine how will application access or connect with database running on host machine?
+
+Q) How to retrive ssh key if it is lost or deleted? How will you connect with EC2 instance if the key is lost? 
+
+
+Techila Interview Questions
+
+Q) Is it possible to connect with EC2 instance without exposing any port?
+
+Q) How we can define or use different versions of providers in Terraform
+
+Q) How ECS is different from EKS?
+
+Q) What is master slave architecture in jenkins?
+
+Q) How did you used shell scripting as your daily task?
+
+Q) What is explicit and implicit in terraform?
+
+
+Sourcefuse Interview Question
+
+Q) Difference between VMware and Docker
+
+Q) What are ALARMS and how will you configure the alarms?
+
+Q) Kubernetes Architecture?
+
+Q) How will you create terraform module for RDS and how will you use it for different envrionments you have like dev, QA, testing 
+
+Q) What is terraform lock file?
+
+Q) What are the different types of controller in kubernetes?
+
+Q) How to import manually created resources on aws cloud using terraform code?
+
+Q) 
+
+Other Company 
+
+
+Q) What is HPA ( Horizontal Pod Autoscaling ) and how to write HPA manifest file
+
+Q) What is trivy?
+
+Q) Write a shell script that will kill all the process which is taking 90% or above 90% of CPU utilization and restart those process by taking care that it is a production envrionment?
+
+Q) How to exit and kill docker container without using docker stop or docker rm?
+
+Q) What is dangling volumes in docker? How to remove dangling volumes in docker?
+
+Q) What is HAProxy?
+
+Q) Docker current version?
+
+Q) Kubernetes current version?
+
+Q) How you will implement security on on-premises servers?
+
+Q) Ansible tower?
+
+Q) What is helm chart?
+
+
+To take the backup of the data you don't have to connect to it you can take a snapshot, but if you want a dump file then use the below command.
+
+mysqldump -u your_username -p --all-databases > alldb_backup.sql
+
+
+
+
+ere's the grill!!!
+1. what is the difference between a deployment daemonset and statefulset in Kubernetes?
+2. Can you share your screen and write the manifest file Deployment?
+3. how do you configure a Jenkins pipeline for a containerized application?
+4. how do you manage a state in Terraform?
+5. What are the Terraform models, sir, and why are they used?
+6. What files you mention in the modules?
+7. What is,an Ansible playbook and how it is structured?
+8. How do you set up alerting in a Prometheus?
+9. Can you explain how Grafana integrates with Prometheus, for visualization?
+10. Do you have any experience in bash script?
+11. What what about Python?
+12. Jenkins pipeline is stuck on a particular stage. How do you debug it?
+13. Your terraform apply command is failing. Okay. What are the steps to prepare for troubleshooting?
+14. An EC2 instance is unable to connect to an RDS database. What could be the issue?
+15. How you will update the version in RDS? In terraform.
+16. how you handle the situation where the deployment fails in production?
+17. What about the Bluegreen deployment?Have you ever come up with it? how we switch the traffic?
+18. Can you explain the role of Docker in your CICD pipelines? Like, how do you ensure the security of containers in your workflow?
+19. Can you provide an example where you identified and fixed the security vulnerability using these tools within the pipeline?
+20. Can you expand your experience with the AWS services.
+
+
+1. Could you give an introduction yourself and your daily activities as a DevOps engineer?
+2. In Terraform, I’ve created a database with sensitive information like a password, and I don't want it to appear in the output. How can I do that?
+3. Which parameter do I need to pass in Terraform to avoid displaying sensitive information like a password in the output?
+4. In a Dockerfile, which user performs what action, and how can I specify the user?
+5. What are the different networking types in Docker?
+6. What is the difference between a bridge network and an overlay network in Docker?
+7. How does a user access an application deployed in a Kubernetes cluster? What is the process?
+8. Let’s say there’s an application deployed in AWS, and we want it to be highly available. How can we achieve high availability?
+9. In Terraform, there is a database password in my configuration. How can I ensure that the password does not appear in the output? Which parameter should I use?
+10. What is the difference between SLO (Service Level Objective) and SLA (Service Level Agreement)?
+11. What is the difference between PV (Persistent Volume) and PVC (Persistent Volume Claim)?
+12. Explain the Kubernetes architecture used in your project.
+13. Are you using stateful or stateless applications in your project?
+14. What is a StatefulSet in Kubernetes?
+15. Scenario-based questions related to PVC (Persistent Volume Claim) and PV (Persistent Volume).
+16. How is a Persistent Volume (PV) created in Kubernetes?
+17. What is a Persistent Volume (PV)?
+18. What is the difference between a Persistent Volume (PV) and a Persistent Volume Claim (PVC)?
+19. How do you map ports in a Dockerfile?
+20. If there is one port 80 and another port 8000, how do you map them in Docker?
+21. What are the different services in Kubernetes, and which services have you worked on?
+22. Which ingress controller are you using in your project?
+23. What is the difference between a rollback, a canary deployment, and a blue-green deployment in Kubernetes?
+24. Scenario-based questions related to deployments in Kubernetes.
+25. Let’s take a scenario: I am creating an EC2 instance and attaching it to a VPC. How can I ensure the VPC is created first and then the EC2 instance?
+26. How do you ensure that a VPC is created before an EC2 instance in AWS using Terraform?
+27. What is Ansible, and why do we use it?
+
+
+
+1. Provided with a log file, need to get error 502 logs  & which are more than 24 hours old. Write a shell script to achieve this.
+2. How do you secure docker images.
+3. How do you manage persistent volume in docker.
+4. How do you create jenkins pipelines in jenkins explanation the flow.
+5. How do you setup infrastructure with Terraform from scratch.
+6. How do you secure to not delete a resource with terraform destroy command.
+7. How can we store backend statefile in terraform? 
+8. How S3 is High available?
+9. How can you manage S3 permissions?
+10. What is IAM Role, use cases.
+11. How do you create a secure scalable High available environment in AWS.
+12. What is VPC flow logs.
+13. How do you deploy an application with jenkins?
+14. How do you reduce docker image size.
+15. How can we reduce jenkins environment resources?
+16. How do you deploy an application in eks?
+17. What is replicaset and what  services types in k8s.
+18. How do you deploy an application CD for jenkins .
+19. How can you monitor applications.
+20. What are the common errors in k8s trouble shooting.
+21. How can you run an application on a particular node in jenkins?
+22. What is the advantage of Master-node architecture in jenkins ?
+23. How do you connect ec2 apps a private subnet?
+24. How do you set up an auto scaling group.
+25. What happens when I change the docker file instruction.
+26. How do you manage secrets & configure map in k8s.
+27. What are terraform modules use cases.?
+28. What is versioning in S3?
+29. How do you secure a terraform statefile?
+30. How do you create resources without downtime while deleting existing resource with terraform delete ?
+31. How does one module use values from another module?
+32. How do you secure your terraform scripts in git?
+
+
+
+PDI**first_round**
+1. what are your roles and responsibilities?
+2. How do you integrate ansible to deploy your application.
+3. How where do you store statefile and write script for backend dynamodb and S3 ?
+4. I have created 5 instance with terraform, manually deleted two resources . How many resources will terraform create once we apply terraform?
+5. We have created a terraform resources file to create 50 resources but due to some issues it failed to create all resources. What happens when we reapply ? Will it create additional resources or will it recreate from the start?
+6. What is taint in terraform?
+7. How can you bring existing resources to manage with terraform?
+8. How do you run an application while recreating instance.
+9. How can you check the application status creating along with terraform?
+8. Write a Jenkins pipeline used in your current project.
+9. How do you secure jenkins ?
+10. Write a shell script to find an error pattern in a file and send an email?
+11. Write a script to delete last 7 days old and more than 100 mb files.
+12. Write script to schedule a job to run backup file?
+13. Write a script to get back to save with time stamp?
+12. Write a script to check if the nginx service is working or not.
+13. How do you trouble shoot applications running.
+14. What is image pull back error and how do you trouble shoot in k8s
+15. How is the application high available in eks ?
+16. Where to you deploy the load balancer front end, back end?
+17. On which layer SSL/TLS certificates are attached.
+18. What is the architecture of the current project in eks ?
+19. How do you connect to private subnet instances?
+20. How do you configure an  EC2  connect S3 bucket?
+21. What happens when you don't provide variables in terraform files? How will it take variables?
+22. How do you override existing environment variables in terraform?
+23. How do you deploy an application in EC2 Instance without jenkins.
+24. Explain how you configure ansible to  deploy an application with jenkins?
+
+
+
+
+
+1. In a cluster with two nodes, one with pods and the other without, which node will a new pod be scheduled to?
+
+2. If an application running in a container encounters an OOM (Out-of-Memory) error, will the container restart, or will the entire Pod be recreated?
+
+3. Can application configurations such as environment variables or ConfigMap updates be applied dynamically without recreating the Pod?
+
+4. Is a Pod stable once created, even if the user takes no further action?
+
+5. Can a Service of type ClusterIP ensure load balancing for TCP traffic?
+
+6. How should application logs be collected, and is there a risk of losing logs?
+
+7. If an HTTP Server Pod’s liveness probe is functioning correctly, does it mean the application is problem-free?
+
+8. How can an application scale to handle traffic fluctuations?
+
+9. When you execute 𝘬𝘶𝘣𝘦𝘤𝘵𝘭 𝘦𝘹𝘦𝘤 -𝘪𝘵 <𝘱𝘰𝘥> -- 𝘣𝘢𝘴𝘩, are you logging into the pod?
+
+10. How would you troubleshoot if a container in a Pod repeatedly exits and restarts?
+
+
+
+[1:30 PM, 2/3/2025] kausar Mujawar: 🔹 𝐁𝐚𝐬𝐢𝐜 𝐋𝐢𝐧𝐮𝐱 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬
+✔️ How do you check the Linux kernel version? (uname -r)
+✔️ How do you find a file in Linux? (find /path -name "filename")
+✔️ How do you check disk usage? (df -h / du -sh <directory>)
+✔️ How do you search for a pattern in a file? (grep "pattern" filename)
+✔️ How do you check the last system reboot time? (last reboot)
+✔️ How do you check logged-in users? (who / w)
+✔️ How do you find the current logged-in user? (whoami)
+✔️ How do you check system performance statistics? (vmstat)
+🔹 𝐏𝐫𝐨𝐜𝐞𝐬𝐬 & 𝐅𝐢𝐥𝐞 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭
+✔️ How do you list running processes? (ps aux / top)
+✔️ How do you kill a process? (kill -9 <PID>)
+✔️ How do you change file permissions? (chmod 755 filename)
+✔️ Difference between soft link & h…
+
+
+
+
+ 1. What is the role of IAM roles and policies?
+2. Can you explain the Terraform plan and its purpose?
+3. What is AWS Lambda, and how does it work?
+4. How do you invoke a Lambda function, and where do you configure it?
+5. Can you describe how Lambda handles scaling and event-based invocations?
+6. What is Amazon CloudWatch, and have you configured any custom metrics?
+7. What metrics are available on your CloudWatch dashboard?
+8. How do you configure CPU utilization on your CloudWatch dashboard?
+9. How do you attach an SSL certificate to an S3 bucket?
+10. What type of encryption have you implemented in your project?
+11. If an S3 bucket has a read-only policy, can you modify objects in the bucket?
+12. Why did you choose Terraform over Boto3 for infrastructure provisioning?
+13. What is a Content Delivery Network (CDN), and how does it work?
+14. Have you created a Jenkins pipeline for your project?
+15. How do you attach policies to IAM users, either individually or by group?
+16. What type of deployment strategies are you using in your project?
+17. Have you used any tools to create customized Amazon Machine Images (AMIs)?
+18. What is connection draining, and how does it work?
+19. How does an Elastic Load Balancer (ELB) distribute traffic?
+20. What is auto-scaling, and how does it work?
+21. Can you describe the different types of Load Balancers and provide examples?
+22. What is the maximum runtime for a Lambda function?
+23. What is the maximum memory size for a Lambda function?
+24. How can you increase the runtime for a Lambda function?
+25. What automations have you performed using Lambda in your project?
+26. Why did you choose Terraform over Boto3 for infrastructure provisioning?
+27. What modules have you used in your Lambda function?
+28. Have you created an SNS topic for your project?
+29. If you've exhausted IP addresses in your VPC, how would you provision new resources?
+30. What is Groovy, and how is it used in Jenkins?
+31. Why do you use Groovy in Jenkins, and where do you save Jenkins files?
+32. What is Ansible, and what is its purpose?
+33. What language do you use in Ansible?
+34. Where do you run Terraform code, remotely or locally?
+35. What is the purpose of access keys and secret keys in AWS?
+36. What are Terraform modules, and have you used any in your project?
+37. What environments have you set up for your project?
+38. Do you use the same AWS account for all environments?
+39. Do you have separate Jenkins servers for each environment?
+40. Where do you write and save your Lambda function code
+
+
+1. What is IAM role.
+2. What is IAM user and role difference.
+3. Can we attach a running instance volume to another instance?
+4. How do you connect instatnce from our PC?
+3. Write a policy for S3 full access.
+4. Write a policy to create an IAM role with the provided AMI and instance type t3.micro and t3.medium.
+5. Can we attach a role to users and groups?
+3. What are service account roles.
+4. How do you establish a connection between two VPCs, explain the procedure.
+5. How private subnet resources connect externally.
+6. How do you configure the application to make it high scalable availability in two different AWS accounts.
+7. What are S3 storage classes and their uses?
+8. Which service helps to get logs history of APIs?
+9. Write a query to fetch logs of the cloud trail.
+10. Where the logs of ec2 of instances.
+10. What are default metrics available for ec2 instances.
+11. How do you configure instances to make scalable.
+12. What are different storage types in S3.
+13. How do you configure cloud watch alarms.
+14. Why do we need logging and metrics ?
+15. What is VPC endpoint service?
+16. What is the loading service and how it switches the traffic.
+17. What is the difference between an application and a network load balancer ?
+16. Can we attach SSL certificates to Network load balancers?
+17. Write a custom module for vpc in terraform ?
+18. Write backend dynamodb configuration terraform module.
+19. Write docker file for Nodejs application.
+20. How many layers does the docker file create?
+21. What is the entry point in docker?
+22. How do you setup VPC explain steps?
+23. How do we dent incoming traffic to an application ?
+24. Why 
+24. What is the difference between NACL and Security Group.?
+25. How do you run terraform to apply only one resource out of multiple resources in a single file.
+26. How do you create resources in multiple environments?
+27. How can you create resources in a different environment without workspaces.
+28. What is VPC peering how to establish connection, uses?
+29. How do you store secrets in terraform?
+30. Write shell script to fetch 10 high memory consuming processes.
+31. Write shell script to delete more than 7 days old logs.
+32. How will you replace a word in a file ?
+33. What are networking trouble shooting steps followed?
+34. What is the current version of eks ?
+35. What is the current version of k8s.
+36. How do you set up monitoring for eks?
+37. How do you create service control policies.
+38. What is null resources and use cases?
+39. Count and for each difference in terraform?
+40. What are ansible roles?
+41. What is the difference between Ansible and the chef.
+
+1. ive me your Self Intro
+2. How you will check disk utilization in Linux?
+3. How will you troubleshoot regarding running processes?
+4. What is the /etc directory?
+5. I am able to ping from machine to another machine but not able connect, how can you troubleshoot it?
+6. What is the exact flow for finding a large file using a shell scripting with error handling?
+7. Explain the exact command to get letter 'd' in your name?
+8. What is difference between softlink and hardlink?
+9. How will you do network issues troubleshooting, what are the commands you use?
+10. How to find log files in a directory which are not used from the given rentention time period?
+11. How will you create backup for all logs and explain the process?
+12. what is the exact command to archeive logs?
+13. If your cpu utlization very high then how will you troubleshoot it?
+14. If it is exceeding 80% of CPU utilization, how can you send alerts in Linux?
+15. How will you get first 1000 line from a file?
+16. If your system is unresponsive then what are the troubleshooting steps you do for to solve this issue?
+17. Give me exact command to create a symlink to refer?
+18. what are the commands you use for mounting and unmounting purposes?
+19. How will you make enable of passwordless authentication between two systems?
+20  What the INODE in linux?
+21. If a system is not responding after a restart, what could be reason and how will you troubleshoot it?
+22. What are the shell scripts used during your projects?
+23. Explain the complete flow of a shell script which is you mostly used in your proejct in a end-to-end manner?
+24. How will you handle the memory management in python?
+25. Can you explain the role of CICD and how would do it with using python?
+26. Explain how would do error handling in python?
+27. Can you tell me what is the deep and shadow copy in python?
+28. What is docker compose and how it is differ from a Dockerfile?
+29. How can manage the sensitive data like passwords in docker?
+30. How docker handles the resource utilizations such as cpu and memory?
+31. What is the command to export docker image?
+32. Where are docker volumes store in docker?
+33. What is the purposes of docker checkpoint?
+34. How will encure container-1 runs before container-2 run in docker compose?
+35. How you update the docker container without losing the data?
+36. In K8s a critical application is failing and logs not providing any kind of information.
+    What steps you take to troubleshoot this kind of issues?
+37. A critical application is running on one of the nodes, It is not working properly.
+    How would you monitor suck kind of applications in k8s?
+38. What is the role of Kube Proxy in cluster?
+39. If you have a pod that is struck in a CrashLoppBackOff error, how do you troubleshoot it?
+40. If your application which is running on k8s cluster which is facing huge traffic and slowdown then how would to scale up the resources for that pod?
+41. Suppose you deployed a new version of an application, but users are experiencing some issues with that new version.
+    How do you rollback to the previous version?
+42. Suppose your application is deployed in k8s, after scale up that pods and applications are still not performing well,
+    the cpu usage is high and memory usage reaching the limits, how do you handle this kind of issues?
+43. In your k8s cluster master and worker nodes are suddenly failed, then what will happen?
+44. If only master node fail means what will happen?
+45. If worker nodes fails what will happen?
+46. Suppose your application is using pvc but the pvc is struck in the pending state. So how would you troubleshoot it?
+47. You have configured a networkpolicy to restrict the traffic between the pods, but some pods are still able to communicate, so how would you troubleshoot it?
+
+
+
+[10:45 AM, 1/25/2025] kausar Mujawar: 1. Can you tell me about yourself and your day to day activities in your project?
+2. Lets suppose I am trying to terminate a namespace but it's unable to do it. 
+What would be reason for it and how you handle the things?
+3. Even though I have deleted all resources still that namespace is not gets deleted and its in terminating state. 
+How to deal with it?
+4. Let's suppose i spin up a new pod then it's going to CrashloopBackOff Error, what could be the reasons?
+5. I want to move container logs to a S3 bucket with out using any thrid party tools from a K8s environment. 
+How can I do this?
+6. Let's suppose I have configured a container with a Request CPU is 1 and Limit CPU is 2.
+If pod is consuming the 2 CPU then what will be issue like what will be the state of that pod? 
+How can we troubleshoot it and what are the steps we need to follow on that?
+7. Lets suppose same scenario with the Memory Request is 1Gi and Limit is 2Gi, 
+then what will happen and what is the state?
+8. Let suppose I have 10 pods in a node and one pod is assume more resources,
+If you know the term file descriptor, it is utilizing more file descriptors than others and it effecting to other 9 pods ok?
+So how will you handle that situation?
+9. How we can isolate that particular pod from others?
+10. Lets suppose I want to configure if an application is failed then only pod gets restarted?
+what are the steps to configure that one and there are multiple steps, but you can tell me atleast 1 or 2 ?
+11. Lets suppose I have multiple nodes and but on one node has always having disk space issue it is not the logs.
+It is related to k8s and docker then you will tackle the situation? What will be your toubleshooting steps?
+12. Let suppose for one application I am receiving the 502 error? What could be error and what are the possibilities?
+13. Did you take a part in upgrade avtivity on K8s like if your organization wanted to upgrade the k8s, 
+Did you take part in such kind of activity?
+14. What are the Terraform Life Cycles?
+15. How I can identify the changes from the previous one in terraform?
+16. Lets suppose in terraform I need to use sensitive data like password or any token, API key?
+What is the option in terraform?
+17. I have two resources one ec2 and s3 bucket and I have a condition that ec2 should be created when s3 is 
+successfully created. How you will handle this?
+18. I want to create a reusable terraform module, I can use it in multiple times and multiple environments.
+How you can you use make this structure of this reusable module?
+19. We are many members in team and everyone running terraform. 
+How will you make sure that my statefile is do not have any conflicts and it should be up to date. 
+How will you manage this?
+20. I want to deploy an ec2 instance and it should be scalable, lets suppose I having mutiple requests
+then it should auto scale like scale and scale down based the traffic, like how we can acheive that one?
+21. Lets suppose I am storing data in S3 and wanted to replicated it ina different region, 
+So how can you use to do that?
+22.What is RDS backup strategy, How you will do that?
+23. Lets suppose I have two VPCs in two different regions and I wanted to enable communication in between those two.
+How I can achieve that one?
+24. Lets suppose I have one Image it has size of 1GB, like your manager asked you to reduce that size.
+Then how you will do that?
+25. By deafult if you run the docker run command it might be logged as a root user right? 
+My requirement is to restrict that user as normal user, how can you do this?
+26. Do you know what port docker daemon is running?
+27. I wanted to run a job in every 30sec, how would you do that one?
+28. On AWS howmany years of experience you have, and K8s and Terraform?
+29. I already deployed the application and i have modified the code and trying to redeploy that application?
+But my changes are not reflecting, what could be the reasons for that?
+30. How would you rate yourself out of 10 in K8s, AWS, Terraform and Docke
+[10:47 AM, 1/25/2025] kausar Mujawar: 1. Git merge and rebase difference.
+2. How do you create create and change to the new branch at a time.
+3. How do you switch to particular commit out of 50 commit in git.
+4. What is git stash and git sqash.
+5. How do you delete delete multiple branches.
+6. What is stateful and daemon sets in k8s 
+7. What  terraform init command do.
+8. What will be output with terraform plan.
+9. How do you correct indentation in terraform.
+10. Write terraform code to create 2 instances..
+11. How do u over ride default values in terraform.
+12. How do you make the  resources from AWS cloud to management with terraform.
+13. How can you validate a condition that if region is east-us-1 .
+14. What are null resources in terraform and use cases.
+15. What are work space and how to change another workspace in terraform.
+16. How do you create dev, test, pro environments at a time.
+17. What is fargate profiles in eks.
+18. Explain the steps to configure 3 tier architecture deployment and service connectionto externally.
+19. What are different services available in k8s.
+20. What do you configure to select a particular node.
+21. How do you avoid to not schedule a pod in k8s.
+22. What is load balancer and auto scaling groups.
+23. How do you secure data in s3.
+
+[10:44 PM, 1/21/2025] kausar Mujawar: ere are first round HITACHI interview questions:
+1. There are different religions how to create an instance in each region with terraform.
+2. How to upload a file from EC2 which is in private to S3 bucket.
+3. How to reduce S3 bucket size 
+4. What are modules in terraform. 
+5. What are ACL and bucket policies.
+6. Why shell scripting?
+7. If we have added some of the rules in sg manually and want to bring them to terraform management. How to do.
+8. What is  import  command in terraform.
+9. What is lifecycle management rules in terraform.
+10. What are AWS organisations.
+11. How to connect one AWS account to another AWS account.
+12. Which pipelines are used in jenkins.
+13. What is multi branch pipelines.
+14. How do you backup jenkins.
+15. How to optimise jenkins pipelines.
+16. How do you trouble shoot the application running on layer 7 with 4xx error.
+17. How do you block a user or range of ip addresses.
+[10:47 PM, 1/21/2025] kausar Mujawar: *Hitachi*2nd round interview questions.
+1. How do you manage AWS organisations
+2. How do you trouble shoot Jenkins pipeline failure.
+3. How can I make a dash board in Jenkins for build status and failure..
+4. Terraform State file is failed how do you import 500 resources available in terraform.
+5. How do you check if there are errors in the terraform code.
+6. How can detect if there are any values provided ex we have provided ip address manually along the script.
+7. How do you test terraform code.
+8. How can you connect AWS to external users.
+9. How AWS accounts and the user in Azure can establish a whyconnection
+10. How do you establish Jenkins master slave architecture.
+11. How do you automate GitHub code changes to build pipelines.
+12. How do you create build that should be completed another build and stop the pipeline if the first fails in Jenkins.
+13. How do you create credentials to establish a secured  communicated with Jenkins.
+14. If we are getting one error repeated after creation of certain resources what can we do.
+15. How can we create dev, test, pro environment in terraform
+16. How to provide variable value to over ride the existing values file in terraform.
+
+
+1. Git merge and rebase.
+2. How to handle node failures.
+3. Can one docker can communicate with another docker.
+4. How to copy file to running container.
+5. How to check network ports in another server.
+6. Master and slave architecture.
+7. What are AWS cloud watch logs monitor metrics.
+8. Write shell script for ex [1,24,8,9] to get total 9.
+9. What is cidr ip range for 10.0.0.0/28.
+10. How to get pod logs.
+11. How do you backup jenkins.
+12. What are ALB & NLB, use casses, SSL/TLS
+13. How to copy the existing jenkins from one another server.
+14. What are dongling images in docker.
+15. What is DNS and how to troubleshoot.
+16. What are S3 storage services.
+17. What is agent any and none.
+18. What are networking types in docker & kubernetes.
+19. What is crash loopbackoff error and how to troubleshoot.
+20. What are storage class available in AWS.
+21. What is pv and pvc in k8s.
+22. What are building tool worked, maven life cycle.
+23. How to write two instances running in diff sub domains with terraform.
+24. Vpc peering
+25. If we are working on one branch and moved to another branch and add the changes to new branch to main how to get the changes to the another branch.
+26. How to run parallel builds in jenkins.
+27. Explain k8s architecture.
+28. How app installed in private subnet communicate with externally.
+29. How to bring manually changed resource to bring under terraform config.
+30. What are user, group and roles can we attach role to the role to users and groups?
