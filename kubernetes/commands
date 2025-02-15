@@ -18,5 +18,10 @@ kubectl delete all --all
 
   kubectl delete pod,deploy --all
 
+how to do mountain 
+kubectl taint node i-08cb4fad5c2fd467e high-cpu-
+kubectl taint node i-0d255ef313a497963 med-CPU- 
+kubectl taint node i-0dcf19a32f70443af low-cpu-
+
 
 kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
