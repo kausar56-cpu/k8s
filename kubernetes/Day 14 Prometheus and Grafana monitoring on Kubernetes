@@ -50,7 +50,12 @@
 
 pagerduty - whenever alert is trriger -eg root volume consuming more cpu - at the time oif configuring pager duty we will give
 employee details no, email - this employee reciving mail when trigger is happen and notification sending into slack 
---------------------------------------------------sudo useradd \
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+You're setting up ELK (Elasticsearch, Logstash, Kibana) or EFK (Elasticsearch, Fluentd, Kibana) for centralized log collection
+in your Kubernetes cluster. Based on your YAML configurations, you're using EFK because you deployed Fluentd instead of Logstash.
+-------------------------------------------------------------------------------------0----------------------------------------------------
+sudo useradd \
     --system \
     --no-create-home \
     --shell /bin/false prometheus
