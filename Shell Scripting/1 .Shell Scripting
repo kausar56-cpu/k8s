@@ -1,1 +1,8 @@
+If you're trying to print the date every second for 10 seconds, you should use the following correct Bash loop:
+
+for i in {1..10}
+do
+  echo $(date)
+  sleep 1
+done
 
