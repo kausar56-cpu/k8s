@@ -25,3 +25,9 @@ kubectl taint node i-0dcf19a32f70443af low-cpu-
 
 
 kubectl create deployment testpod1 --image=kiran2361993/kubegame:v2 --replicas=6
+
+journalctl -u node_exporter -f --no-pager
+
+sudo vim /etc/prometheus/prometheus.yml
+
+promtool check config /etc/prometheus/prometheus.yml
