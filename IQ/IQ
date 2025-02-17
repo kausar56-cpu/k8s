@@ -1,3 +1,262 @@
+
+1. Write a Terraform code to create multiple S3 buckets
+2. How you managed statefile
+3. So how are you managing the conflict? State file conflicts
+4. what you did with Jenkins?
+5. How are you integrating the SonarQube with the Jenkins server?
+6. How were you authenticating Jenkins to push docker image to registery?
+7. Have you worked on the Kubernetes?So what deployment strategy are you following?
+8. So how are you implementing the blue green deployment?
+9. Do you know what is HPA?
+10. suppose you deploy one application okay and you found some issue, you wanted to roll back using the kubernetes how you roll back to the particular version, what is the command?
+11. What is the stateful set in the Kubernetes?
+12. Have you worked on the AWS, right?
+13. So how many types of policy, IAM policy are there? IAM policies?
+14. So what is the difference between the S3 bucket policies and acls?
+15. what is the dynamic auto scaling?
+16. What is the difference between Security groups and NACL?
+
+
+21. how will you manage this and see your information like credentials and API keys in Docker containers?
+22. how do you ensure high availability and scalability for applications deployed in Kubernetes?
+23. How do you configure artifactory for both Maven and Docker repositories? 
+24. How do you handle challenges in meeting deadlines and managing dependencies across various teams?
+25. How do you manage branching and merging strategies?
+26. how do you secure sensitive data credentialing data repositories? In the GitHub repositories?
+27. What is your experience with the GitHub Actions?
+28. How do you integrate, code quality checks?
+29. What kind of custom metrics did you monitor using CloudWatch, and how did you help you proactively identify issues?
+30. Have you used AWS event bridge with lambda and what was it for?
+31. What are some best practices you follow to ensure that your DevOps pipelines are scalable, maintainable, and efficient?
+32. what is, one of the biggest challenges you faced in automating CICD and infrastructure provisioning, and how did you overcome it?
+33. Explain the difference between the EC 2 instances instance types.
+34. How do you troubleshoot the failing pod in Kubernetes?
+35. How do you document your infrastructure and automation scripts? 
+36. How do you use, Ansible Vault to connect secrets?
+37. how do you store your secrets in AWS secret manager?
+38. how do you stay updated with the new dev tools and technologies, and how do you decide which ones to integrate into your workflows?
+39. Can you explain a situation where you had to lead a project or an initiative within a DevOps team?
+
+
+1. what is the difference between a deployment daemonset and statefulset in Kubernetes?
+2. Can you share your screen and write the manifest file Deployment?
+3. how do you configure a Jenkins pipeline for a containerized application?
+4. how do you manage a state in Terraform?
+5. What are the Terraform models, sir, and why are they used?
+6. What files you mention in the modules?
+7. What is,an Ansible playbook and how it is structured?
+8. How do you set up alerting in a Prometheus?
+9. Can you explain how Grafana integrates with Prometheus, for visualization?
+10. Do you have any experience in bash script?
+11. What what about Python?
+12. Jenkins pipeline is stuck on a particular stage. How do you debug it?
+13. Your terraform apply command is failing. Okay. What are the steps to prepare for troubleshooting?
+14. An EC2 instance is unable to connect to an RDS database. What could be the issue?
+15. How you will update the version in RDS? In terraform.
+16. how you handle the situation where the deployment fails in production?
+17. What about the Bluegreen deployment?Have you ever come up with it? how we switch the traffic?
+18. Can you explain the role of Docker in your CICD pipelines? Like, how do you ensure the security of containers in your workflow?
+19. Can you provide an example where you identified and fixed the security vulnerability using these tools within the pipeline?
+20. Can you expand your experience with the AWS services.
+
+
+1. How good are you with the Docker?
+2. Do you know what is Docker file and how to write the Docker file?
+3. Could you tell me about your project experience? Like, have you have you deployed using Compass format to the existing or clusters or any Virtual machine somewhere?
+4. Do you know about multi staging?
+5. What is the purpose of using multi stage to go from?
+6. Using the docker file, how you break up the image?
+7. Do you know about the Docker volume?
+8. Let's say you have a container. This is attached with docker volume.If the container goes down. Will the volume get deleted or what?
+9. Have you brought out the containers or services with the Docker Swarm?
+10. Could you explain about the difference btwn pod and Statefullset
+11. How do you control the source usage of a pod?
+12. Could you tell me about the services in Kubernetes? What are the registries?
+13. your case, as you said, that, you do what it is as a load balancer. Have you used to the AWS? Used AWS?
+14. Could you tell me what is Ingress?
+15. I'm writing a deployment file. Mhmm. And then, I want the volume for the pod. How do you do it?
+16. let's say, without storage class can be able to create a PVC and pv?
+17. Let's say you are managing a Kubernetes cluster. Okay. But the number of request to your application is increasing steadily. Mhmm. Okay. So how do you scale the application to handle the group?
+18. So how do you ensure that the data persistent? You know, even after pod restarts, right, on deletion?
+19. how does web application connect with my secret database, which is running it back end? How can you connect.
+20. What command do you use to check? How much does the port has used the CPU usage and the usage? How do you check?
+21. If it is multiple How do you check which pod is running in which node?
+22. are you aware of, Terraform? Like, have you worked with Terraform before?
+23. Can you please, like, describe the work we could do using Terraform?
+24. which cloud you work on?
+25. Do you configure any agents in the Jenkins master, like, maybe some dynamic, cloud in it, like, so that, like, whenever we build something, it will run on some your Docker container or Kubernetes forward?
+26. Are you aware of, Ansible scripts?
+27. One question. Have you ever been part of, certificate managements?Like, renewing the certificates?
+28. in your organization, how will you guys pick up the UI for the application using AWS?
+29. Was those created manually or using CloudFormation out there?
+30. let's say you have VPC.Okay? You have pub subnets and private subnets. And in both subnet, you have some machines running. Okay. Private subnet machines does not have a Internet connection.So
+ how do you make sure that, you wanna download something?How does that machine get Internet connection?
+
+
+11. I have a Terraform stored, the state bank stored in my local itself. Okay. Okay. Now I need to move my Terraform local, to, s 3. Okay.
+Do you know how I'll be able to migrate it? and what will happen to the existing one.
+12. In your /temp dir 1 file, which is of, like, you know, 50 GB file. Mhmm. Okay. You just need to find out the errors in that file and send it to me. How will you be able to do that? 
+13. you know how to set up the call how to set up the alerts in the, any kind of monitoring tool? Like, your microservices, grafana. Right?
+14. SonarQube is set at 80% of, you can see passing criteria, you know, to set it from 80% to 70% only?
+15. if your, SonarQube is, not letting you, merge any code, what you will do, to improve the quality of the code so that your the code will get passed to the, SonarQube.
+
+
+1. Let's say, like, when you got some issue at night, 1 o'clock at 2 o'clock or something. And the issue states that, you know, that one of our application is down due to some network connectivity issue. you don't have any dashboard handling. If it's just like a market architecture just a normal application
+2. Let's say you have a application, or maybe, say, let's say, you have a dashboard. Okay? And that's where the logs are coming. Now, the end-user or maybe your client reported to you that is in the logs. I can see the passwords mentioned in the log. Someone by mistake put the password in the log itself. And let's say I'm the client. I will report a message to you. Now you need to respond with how you will respond to me, plus how you will rectify this issue, plus you need to tell me that it should not happen anytime further soon. Okay. You need to fix the deployment that indicates that it should not happen, next time.
+3. For the usability purpose. They'll write in the code, but they forgot to delete it. Okay. So now the issue is not from your side. Okay. It's from the developer side. And that issue comes to you, like, around at night, 1 o'clock or 2 o'clock. So in that situation, what you do?
+4. Let's say, like, given you have a system, you are using some service or application in AWS, how you will make it more secure in AWS?
+5. I have a, password or a file with secret. Let's just load any AWS, ticket manager. Okay. Okay?
+And that password has a policy that it will get, lapsed in every 30 days. Okay. Okay? So after every 30 days, the password should change automatically. How you implement?
+6.So
+ let's say you have application which is experiencing a high latency issue. Okay. So what would be the probable reasons for that? Latency issues
+
+7. there are Let's say you received an alert from, cloudwatch that, you know, that API response time, Okay. It spiked over 2 seconds. And because of that, your application is running very slow. Okay.
+Okay. In general terms, there's a slowness in your application. Okay. Okay. Then, what you can do from your end to increase the, application, like, you know, to remove the application so slowness.
+8.  any kind of production deployment or, like, you know, any kind of deployment you have done?
+9.  in Terraform, like, you you already have, let's say, like, you have to get 2 node. Okay? So n g 1 and n g 2, you need to create. Okay. Okay? You written your code. Okay? And, because of your code, now n g 1 and n g 2 is created. Okay. K. That part is done. Now what is happening is, like, someone else went to the system and deleted one of the nodegroup manually. Okay. Okay. Now how your Terraform will know that one nodegroup is already deleted and one exists?
+10. I have 2 nodegroups created using Terraform and lets say the state file is deleted. what happens? how will terraform apply behave? 
+
+
+1. what tools do you use on a daily basis from the Linux perspective?
+2. What are inodes in Linux?
+3. any experience with, RAID configurations?
+4. Any experience with Docker?
+5. network connectivity that you can utilize in an authorized environment for, you know, communication between, different containers?
+6. Have you, created your own images for containers?What application was it?
+7. what were the security considerations that you have, taken?
+8. what's the difference between a stateful set and Daemon sets?
+9. where or why you used Statefull set. How does it help? 
+10. While creating a manifest file Mhmm. What are the 4 major, you know, points or things that you have to add in that manifest file.
+11. how was the Jenkins environment that you're using? What considerations have you done while you're doing that?
+12. What is, the default home directory for Jenkins for a master and for a slave?
+13. Were you using the root user to run the agent part of Jenkins in the slave servers?
+14. Have you worked on setting up, like, additional storage for your worker nodes in Kubernetes?
+15. What have you done on the, Prometheus Grafana part?
+16. How Kuber how Prometheus and Grafana or, like, how the logs or the monitoring would have been done in a Kubernetes cluster and how things were set up
+17. what does it require that so that Prometheus gets this details?
+18. Coming to, the Terraform, what was your role on that?
+19. What modules have you worked on?
+20. why was it required to create a custom module
+21. What is git squash?
+22. What is Gitstash? why is it used?
+23. What are the different types of, disks that is available in, AWS?
+24. How would you, like, ascertain, instance type when you have to deploy 1? What parameters would you, you know, take into consideration?
+25. What tools have you used to backup?
+26. Have you used s3?What was the purpose for? and classes?
+27. what other AWS services have you used?
+28. Have you used load balancing based on route 53?
+
+
+1. how do cloudfront knows that the files hosted in s3 are recent and deliver the recent update to Internet
+2. do we directly store aws iam user creds in the jenkins?
+3. how do you avoid hardcoding the credentials in pipeline.
+4. for the iam user to run the jenkins pipeline what permissions need to be assigned?
+5. since pods running in k8s cluster has their IP to communicate then why we need service?
+6. i have a domain abc.com and i want xyz.com to redirect to abc.com how to do it using route 53.
+7. how do i make sure, that i have different s3 backent bucket for different envs in terraform
+8. what is NAT gateway how does it works
+9. Can u explain ingress.
+10. how do you debug the Terraform code?
+
+
+1. were you able to write some code as well in Jenkins (asking that I am able to write the Jenkins pipeline).
+2. have you worked on AWS?
+3. let's say I have a single page application.
+Do you know how to post it in the S3 bucket?
+4. let's say that you have a S3 bucket.
+Within that, I just have to make one of the folder or object as a public or can be accessed by external user.
+What would you do?
+5. if you want to restrict running of some instances during weekends
+and holidays.
+How would you do?
+6. Have you used event bridges?
+7. Have you done any provisioning using MongoDB at last with Terraform?
+8. how do you structure a Terraform project and how do you handle different environments?
+9. Do you know something called the statefiles in Terraform?
+10. can you speak about what are the backends available for state storage?
+What are some of the best ones? and why?
+11. Was it also used a lock with DynamoDB? and why?
+12. if I use this Terraform refresh, what really happens?
+13. there is a database which is auto-operating its migration version.
+Okay. And we see it just over a month.
+Okay.
+How will you handle this situation?
+14. Do you know what is the purpose of Terraform import command and when can we use it?
+15. let's say we have an EC2 instance, which cannot be created without creating a VPC. How do you ensure that Terraform creates VPC first, before EC2?
+16. how do you optimize the Docker image?
+17. one last question is about, you know, deployment strategies.
+Like, if there's going to be a rolling update, how we do it, you know?
+18. Let's say you have a container crash.
+Like how do you debug the crash in container?
+19. For somebody who don't know Grafana and GLK, what will you describe these solutions as?
+
+
+
+1. Will start with Terraform, explain to me about the state file!
+2. where will you store the state file and why?
+3. If 2 developers or DevOps Engineers work on the same Terraform file and try to apply at the same time, what happens?
+4. How do you manage multiple environments in Terraform.
+5. What are the service types available in K8s.
+6. Let's say I have an app running in cluster and I want it's service to be clusterIp only, how will you make the app available over the internet?
+7. What different ingress resources you have worked on?
+8. let's say we have small 3 tier app having frontend, backend and a db, what are the services you use to deploy it AWS.
+9. Showed me a Dockerfile in screen and asked about instructions.
+10. How do you create an image from this file.
+11. Ok Now run this container.
+
+1. Explain Azure app insights.
+2. Explain Azure pipeline stages.
+3. How to troubleshoot an VM
+4. with AWS creds I can create resources in AWS cloud using a linux machine but with Azure creds I can't create resources in azure cloud, what's the reason??
+5. Best security practices to write the dockerfile.
+6. what is kub config file.
+7. You know about contexts?
+8. Explain about readiness and liveliness probes in K8s.
+9. what is the difference between managed identity and service principle.
+10. How will you create 5 instances or vms at once using Terraform.
+11. A team member changed or added a resource manually, how will Terraform know??
+
+
+
+1. Branch access policies used for the dev team.
+2. How to set up the pipeline (Azure)for deploying an application.
+3. How do you know, Maven/gradle to be used for Java code compilation and packaging.
+4. What Azure service/ resources are used for deployment in current organisation.
+5. Ado repo migration to GitHub
+6. How do you manage deployment to different envs in pipeline.
+7. How do you make sure the pipeline runs/running properly for different envs (dev, staging and prod).
+8. How many applications are hosted using Azure in the current organisation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - Self Intro 
 🔹 Ansible & Automation
 1. What are some routine tasks you have automated using Ansible playbooks?
