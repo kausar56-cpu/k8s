@@ -57,11 +57,74 @@ exit
 stop c
 crete again
 data will be as it ia
+
+------------------------------------------------------------------------------------------------------
+1. Bridge Network (--network bridge)
+Default behavior when no network is specified.
+
+✅ Has an IP Address: Yes, assigned from Docker’s bridge subnet.
+✅ Can communicate with other containers: Yes, if they are on the same bridge network.
+✅ Can communicate with the internet: Yes, through NAT (Network Address Translation).
+❌ Cannot be accessed directly from the host: Needs port mapping (-p 8080:80).
+
+
+
+2. None Network (--network none)
+🚫 Completely isolated from all networks.
+
+❌ Has an IP Address: No.
+❌ Can communicate with other containers: No.
+❌ Can communicate with the internet: No.
+❌ Cannot be accessed from the host.
+
+
+
+3. Host Network (--network host)
+🔗 Shares the host network interface.
+
+✅ Has an IP Address: Uses the host’s IP address.
+✅ Can communicate with other containers: Yes, via the host’s network.
+✅ Can communicate with the internet: Yes, same as the host.
+✅ Can be accessed directly from the host: Yes, no need for port mapping.
 -----------------------------------------------------------------------------------------------------------------------------------------
 docker bound -mount
 docker run --rm -d --name app1 --network none kiran2361993/troubleshootingtools:v1
 docker run --rm -d --name app1 -v /var/run/docker.sock:/var/run/docker.sock --network  none kiran2361993/troubleshootingtools:v1  ---vvimp
 none nework doesnt have any ip
+
+Why /var/run/docker.sock:/var/run/docker.sock?
+The first /var/run/docker.sock refers to the path on the host (Docker daemon socket).
+The second /var/run/docker.sock refers to the path inside the container where it will be mounted.
+
+
+2️⃣ Bind Mount (बाइंड माउंट)
+✅ होस्ट मशीनवरील कोणतीही डायरेक्टरी कंटेनरसोबत माउंट करता येते.
+✅ कंटेनर डिलीट केला तरी डेटा कायम राहतो (होस्ट मशीनवर तो उपलब्ध असतो).
+✅ पण सुरक्षिततेचा धोका असतो, कारण कंटेनर होस्टच्या फायली डायरेक्ट बदलू शकतो.
+
+📌 उदाहरण:
+
+docker run -d --name container1 \
+    -v /home/kausar/data:/app busybox
+
+🔹 /home/kausar/data हा फोल्डर होस्टवर असेल आणि कंटेनरच्या /app मध्ये माउंट होईल.
+🔹 कंटेनर बंद किंवा डिलीट केला तरी /home/kausar/data मध्ये डेटा राहील.
+-------------------------------------------------------------------------------------------
+3️⃣ Volume Mount (व्हॉल्यूम माउंट)
+✅ डॉकर आपोआप एक व्हॉल्यूम तयार करतो, जो /var/lib/docker/volumes/ मध्ये स्टोअर होतो.
+✅ जास्त सुरक्षित, कारण कंटेनरला थेट होस्ट डायरेक्टरी बदलण्याची गरज नसते.
+✅ एकाच व्हॉल्यूमला अनेक कंटेनर्सशी जोडता येते, त्यामुळे डेटा शेअर करणे सोपे होते.
+
+📌 उदाहरण:
+
+docker volume create mydata
+docker run -d --name container1 \
+    -v mydata:/app busybox
+docker run -d --name container2 \
+    -v mydata:/app busybox
+🔹 mydata हा डॉकरने तयार केलेला व्हॉल्यूम आहे.
+🔹 दोन्ही कंटेनर्स (container1 आणि container2) त्याच /app फोल्डरला एकाच व्हॉल्यूममध्ये डेटा शेअर करू शकतात.
+🔹 कंटेनर डिलीट केला तरी डेटा सुरक्षित राहतो (जोपर्यंत docker volume rm mydata चालवले जात नाही).
 -----------------------------------------------------------------------------------------------------------------------
 docker create volume create portainerdata
 
