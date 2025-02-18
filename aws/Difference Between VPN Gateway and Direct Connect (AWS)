@@ -1,5 +1,7 @@
 When connecting an on-premises network to AWS (or other cloud providers), two common options
 
+API Gatway type - communication between client and BE service
+
 VPN Gateway – Uses an encrypted tunnel over the internet.
 Direct Connect – Provides a private, dedicated network link between AWS and your data center.
 ------------------------------------------------------------------------------------------------------
