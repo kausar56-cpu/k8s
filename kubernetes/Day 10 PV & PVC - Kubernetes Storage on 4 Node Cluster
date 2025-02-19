@@ -378,7 +378,7 @@ metadata:
   name: task-pv-claim1
 spec:
   storageClassName: gp2
-  accessModes:
+  accessModes:ReadOnlyMany|ReadWriteMany
     - ReadWriteOnce
   resources:
     requests:
