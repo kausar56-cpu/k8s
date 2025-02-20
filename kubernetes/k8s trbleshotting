@@ -1,0 +1,36 @@
+Top EKS Troubleshooting Part= 02 
+1. You have an Nginx-based Ingress controller in your Kubernetes cluster that is responsible for routing traffic to 
+multiple services. Users are reporting intermittent 502 Bad Gateway errors.
+2. Your Kubernetes pods are stuck in a "Terminating" state for an extended period.
+How would you investigate and resolve this issue? 🚀
+3. You are managing an Amazon EKS cluster, and a developer reports that their application pods are stuck in the "Pending" 
+state. The developer has already verified that the application's YAML configuration is correct. As the cluster administrator, how would you troubleshoot and resolve this issue?
+4.You
+ notice that some pods in your EKS cluster are frequently restarting. The logs indicate that the application is running out of 
+memory. How would you troubleshoot and resolve this issue?
+5. You notice that a deployment in your EKS cluster is not updating properly. When you apply a new version of the deployment YAML, 
+the pods are not being recreated with the updated configuration. How would you troubleshoot and resolve this issue?
+6. You notice that a service in your EKS cluster is not routing traffic to the correct pods. The service is supposed to route traffic
+to pods with the label app=my-app, but it’s not working as expected. How would you troubleshoot and resolve this issue?
+7. You notice that a node in your EKS cluster is in a NotReady state. How would you troubleshoot and resolve this issue?
+8. You have configured an HPA for a deployment in your EKS cluster to scale based on CPU utilization. However, you notice that the HPA 
+is not scaling the pods as expected. The CPU utilization is high, 
+but the number of pods remains the same. How would you troubleshoot and resolve this issue?
+
+
+Top EKS Troubleshooting Part-01
+1. Your EKS cluster is running multiple microservices, and one of them is suddenly experiencing high latency and
+intermittent failures. How would you approach troubleshooting this issue?
+2. Your EKS cluster is using AWS ALB (Application Load Balancer) as an ingress controller. Users report that some requests are timing out while others succeed. 
+How would you troubleshoot and resolve this issue?
+3. Your EKS cluster is experiencing intermittent DNS resolution failures—some pods are unable to resolve external domains (e.g., google.com
+), while others work fine. How would you troubleshoot and fix this issue?
+4. Your EKS cluster has a high number of pod evictions, and some workloads are frequently getting evicted and rescheduled across 
+nodes. How would you troubleshoot and resolve this issue?
+5. One of your EKS pods is repeatedly getting OOMKilled (Out of Memory Killed). How would you troubleshoot and resolve this issue?
+6. One of your EKS pods is stuck in a CrashLoopBackOff state. How would you troubleshoot and resolve this issue?
+7. When a pod fails to resolve an external or internal domain, DNS resolution issues might be the root cause.
+Here's how to systematically debug and fix the problem.
+8. You notice that one of your pods in Amazon EKS is stuck in the ContainerCreating state for an extended period.
+How would you troubleshoot and resolve this issue?
+9. Your EKS worker nodes are in a NotReady state, and workloads are not running properly.
