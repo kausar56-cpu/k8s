@@ -1,0 +1,87 @@
+S3 Replication म्हणजे एक बकेटमधील (source) डेटा दुसऱ्या बकेटमध्ये (destination) कॉपी करणं.
+हे Cross-Region (CRR) किंवा Same-Region (SRR) मध्ये करता येतं.
+
+1️⃣ Cross-Region Replication (CRR) → वेगळ्या AWS Region मध्ये कॉपी करते.
+2️⃣ Same-Region Replication (SRR) → त्याच Region मध्ये दुसऱ्या बकेटमध्ये कॉपी करते.
+
+
+ S3 Replication कधी वापरायचं?
+✅ Backup आणि Disaster Recovery साठी.
+✅ डेटा डुप्लिकेट करायचा असेल तर.
+✅ विविध AWS Regions मध्ये डेटा ठेवायचा असेल तर.
+✅ Access Control वेगळा ठेवायचा असेल (Source आणि Destination बकेट).
+----------------------------------------------------------------------------------------------------------------
+### **How to Set Up S3 Replication?**  
+
+S3 Replication allows you to automatically copy objects from one S3 bucket (source) to another (destination). It can be configured as **Cross-Region Replication (CRR)** or **Same-Region Replication (SRR).**  
+
+---
+
+## **🛠 Steps to Set Up S3 Replication**  
+
+### **🔹 Using AWS Console:**  
+1️⃣ **Go to the AWS S3 Console** → Open the **source bucket**.  
+2️⃣ Navigate to the **Management** tab → Click on **Create Replication Rule**.  
+3️⃣ **Select Destination Bucket** (must be in the same or a different region).  
+4️⃣ **Enable IAM Role Permissions** (Allow S3 to replicate data).  
+5️⃣ **Save the Rule** → Replication starts automatically.  
+
+---
+
+### **🔹 Using AWS CLI:**  
+
+#### **Step 1: Create a Destination Bucket (if not already created)**  
+```bash
+aws s3api create-bucket --bucket my-destination-bucket --region us-west-1
+```
+
+#### **Step 2: Enable Versioning on the Source Bucket**  
+Replication requires **versioning** to be enabled on the source bucket.  
+```bash
+aws s3api put-bucket-versioning --bucket my-source-bucket --versioning-configuration Status=Enabled
+```
+
+#### **Step 3: Create an IAM Role for Replication**  
+- The IAM Role must allow **S3 to copy objects from the source bucket to the destination bucket.**  
+- Attach an IAM policy granting replication permissions.  
+
+#### **Step 4: Apply Replication Configuration**  
+Create a JSON file (`replication.json`) with the replication settings:  
+
+```json
+{
+    "Role": "arn:aws:iam::123456789012:role/S3ReplicationRole",
+    "Rules": [{
+        "Status": "Enabled",
+        "Priority": 1,
+        "DeleteMarkerReplication": { "Status": "Disabled" },
+        "Filter": {},
+        "Destination": {
+            "Bucket": "arn:aws:s3:::my-destination-bucket",
+            "StorageClass": "STANDARD"
+        }
+    }]
+}
+```
+
+Now, apply this replication configuration to the **source bucket**:  
+```bash
+aws s3api put-bucket-replication --bucket my-source-bucket --replication-configuration file://replication.json
+```
+
+---
+
+## **🚀 Benefits of S3 Replication**  
+✅ **Automatic backup and disaster recovery**  
+✅ **Faster access in multiple AWS regions**  
+✅ **Compliance and security by keeping copies in different locations**  
+
+---
+
+## **🔥 Summary:**  
+- **Enable Versioning** on the source bucket.  
+- **Set up IAM Role** with replication permissions.  
+- **Create a Replication Rule** via AWS Console or CLI.  
+- **Objects will be automatically copied** to the destination bucket.  
+
+💡 **Got it? Let me know if you need more details!** 😊
