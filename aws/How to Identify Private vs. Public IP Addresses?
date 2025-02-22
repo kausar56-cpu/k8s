@@ -1,0 +1,57 @@
+### **How to Identify Private vs. Public IP Addresses?**  
+
+IP addresses are classified into **private** and **public** ranges. You can identify whether an IP is private or public based on its range.  
+
+---
+
+## **📌 Private IP Address Ranges (RFC 1918):**  
+Private IPs are used inside local networks (LANs) and are **not routable on the internet.**  
+
+| **Class** | **Private IP Range** | **Subnet Mask** |
+|-----------|----------------------|-----------------|
+| Class A   | `10.0.0.0 – 10.255.255.255` | `255.0.0.0` |
+| Class B   | `172.16.0.0 – 172.31.255.255` | `255.240.0.0` |
+| Class C   | `192.168.0.0 – 192.168.255.255` | `255.255.0.0` |
+
+🚀 **Any IP falling within these ranges is a PRIVATE IP.**  
+
+---
+
+## **📌 Public IP Addresses:**  
+- Public IPs are **globally unique** and assigned by **ISPs (Internet Service Providers)**.  
+- They are **routable over the internet** and can be accessed globally.  
+- Example: `8.8.8.8` (Google DNS), `3.3.3.3` (AWS EC2 Instance).  
+
+👉 **Any IP that is NOT in the private ranges is a PUBLIC IP.**  
+
+---
+
+## **🔍 How to Check IP Type?**  
+
+### **🔹 Using Linux CLI:**  
+1️⃣ Check your system's private IP:  
+```bash
+ip a
+```
+or  
+```bash
+ifconfig
+```
+
+2️⃣ Check your public IP (Internet-facing):  
+```bash
+curl ifconfig.me
+```
+or  
+```bash
+curl icanhazip.com
+```
+
+---
+
+## **🔥 Summary:**  
+✅ **Private IPs** → Used inside networks, cannot access the internet directly.  
+✅ **Public IPs** → Used for internet communication, globally unique.  
+✅ **Check IP type** → Compare with private IP ranges.  
+
+💡 **Got it? Let me know if you need more details!** 😊
