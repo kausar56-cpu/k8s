@@ -1,11 +1,160 @@
+vim log.sh
+#!/bin/bash
+dir= "/root/" ----log path
+current_time= $((date+%s))
+current time-300sec=5min
+
+time_threshold = $((current_time -300))
+
+find "$dir" -type f -newermt "$(date-d @ $ time_threshold + '%Y-%M-%D-%H-%M-%S'- Delete)
+
+echo "files deleted sucessfully"
+
+
+
+find "$dir" -type f -newermt "$(date-d @ $ time_threhold + '%Y+%M')"
+
+
+find "$dir"
+"
+
+
+
+#!/bin/bash
+read -p "Enter first number: " num1
+read -p "Enter second number: " num2
+sum=$((num1 + num2))
+echo "The sum is $sum"
+
+
+
+
+
+
+#!/bin/bash
+file_name="example.txt"
+if [ -f $file_name ]; then
+    echo "File $file_name exists."
+else
+    echo "File $file_name does not exist."
+fi  
+
+
+
+
+
+
+### **The Script**
+```bash
+#!/bin/bash
+for i in {1..5}; do
+    echo "Number: $i"
+done
+```
+
+
+
+
+
+
+### Full Script:
+```bash
+#!/bin/bash
+# Check disk usage
+threshold=80
+usage=$(df / | grep / | awk '{ print $5 }' | sed 's/%//g')
+
+if [ $usage -gt $threshold ]; then
+  echo "Warning: Disk usage is over $threshold%. Current usage: $usage%"
+else
+  echo "Disk usage is under control. Current usage: $usage%"
+fi
+```
+
+if [$usage -gt $threshold ]; then
+echo "warning : disk usage is over $threshold%.
+else
+echo "disk usage is under control""
+
+-------------------------------------------------------------------------------------------
+
+
+
+#!/bin/bash
+
+# First condition: check if the first argument is "Foo"
+if [ "$1" = "Foo" ]; then
+  echo "bar"
+fi
+
+# Second condition: check if the second argument is "bar"
+if [ "$2" = "bar" ]; then
+  echo "foo"
+fi
+
+
+-------------------------------------------------------------------------
+
+#!/bin/bash
+read -p "Enter username: " username
+useradd -m "$username"
+echo "User '$username' created successfully!"
+-----------------------------------------------------------------------------------------------------------
+
+𝐬𝐜𝐫𝐢𝐩𝐭 𝐭𝐨 𝐟𝐢𝐧𝐝/𝐭𝐫𝐚𝐜𝐤 𝐚𝐰𝐬 𝐫𝐞𝐬𝐨𝐮𝐫𝐜𝐞𝐬 𝐮𝐬𝐚𝐠𝐞:
+aws_resource_track.sh
+
+#!/bin/bash
+###############################
+# Author: Swapnil
+# Date: 1st-Feb
+# Version: v1
+# This script will report the AWS resource usage
+###############################
+
+set -x
+
+# 𝐀𝐖𝐒 𝐒𝟑
+# 𝐀𝐖𝐒 𝐄𝐂𝟐
+# 𝐀𝐖𝐒 𝐋𝐚𝐦𝐛𝐝𝐚
+# 𝐀𝐖𝐒 𝐈𝐀𝐌 𝐔𝐬𝐞𝐫𝐬
+
+# 𝐥𝐢𝐬𝐭 𝐬𝟑 𝐛𝐮𝐜𝐤𝐞𝐭𝐬
+echo "Print list of s3 buckets"
+aws s3 ls
+
+hashtag#𝐥𝐢𝐬𝐭 𝐞𝐜𝟐 𝐢𝐧𝐬𝐭𝐚𝐧𝐜𝐞𝐬
+echo "list of ec2 instances are"
+aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId'
+
+# 𝐥𝐢𝐬𝐭 𝐨𝐟 𝐥𝐚𝐦𝐛𝐝𝐚 𝐟𝐮𝐧𝐜𝐭𝐢𝐨𝐧𝐬
+echo "Print list of lambda functions"
+aws lambda list-functions
+
+hashtag#𝐥𝐢𝐬𝐭 𝐨𝐟 𝐈𝐀𝐌 𝐮𝐬𝐞𝐫𝐬
+echo "Print list of IAM users"
+aws iam list-users
+
+########################################
+
+𝑵𝒐𝒘 𝒘𝒆 𝒄𝒂𝒏 𝒂𝒖𝒕𝒐𝒎𝒂𝒕𝒆 𝒕𝒉𝒊𝒔 𝒕𝒂𝒔𝒌 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒉𝒆𝒍𝒑 𝒐𝒇 𝒄𝒓𝒐𝒏𝒕𝒂𝒃/𝒄𝒓𝒐𝒏𝒋𝒐𝒃
+
+-> crontab -e
+-> 0 8 * * * /usr/bin/bash /home/ubuntu/aws_resource_track.sh >> tracker.log 2>&1
+
+𝑻𝒉𝒊𝒔 𝑪𝒓𝒐𝒏 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏 𝒘𝒊𝒍𝒍 𝒓𝒖𝒏 𝒕𝒉𝒆 𝒋𝒐𝒃 𝒆𝒗𝒆𝒓𝒚 𝒅𝒂𝒚 𝒂𝒕 8𝒂𝒎
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
 How to check if a user already exists in Linux.
 
-Here’s a **simple Bash script** to check if a user exists in Linux:  
-
----
-
 ### **Script:**  
-```bash
+
 #!/bin/bash
 
 # Define the username to check
@@ -17,28 +166,28 @@ if id "$USERNAME" &>/dev/null; then
 else
     echo "❌ User '$USERNAME' does not exist."
 fi
-```
 
----
+
+
 
 ### **How to Use:**  
 1. **Save the script** as `check_user.sh`:  
-   ```bash
+
    nano check_user.sh
-   ```
+ 
    Paste the script inside and save it (`Ctrl+X`, then `Y`, then `Enter`).
 
 2. **Give execute permission:**  
-   ```bash
+  
    chmod +x check_user.sh
-   ```
+  
 
 3. **Run the script:**  
-   ```bash
+ 
    ./check_user.sh
-   ```
+ 
 
----
+
 
 ### **What This Script Does:**  
 ✅ Checks if the given user exists in the system.  
@@ -49,12 +198,9 @@ Let me know if you need modifications! 🚀
 -------------------------------------------------------------------------------------------------------------------------------
 How to create users automatically using Bash scripting.
 
-Here’s a **simple Bash script** that automatically creates a user in Linux.  
-
----
 
 ### **Script:**
-```bash
+
 #!/bin/bash
 
 # Define the username
@@ -77,9 +223,9 @@ passwd --expire "$USERNAME"
 
 # Display success message
 echo "✅ User '$USERNAME' created successfully!"
-```
 
----
+
+
 
 ### **How to Use:**  
 1. Save the script as `create_user.sh`:  
@@ -106,13 +252,11 @@ echo "✅ User '$USERNAME' created successfully!"
 ✅ Sets a **default password**  
 ✅ Forces the user to **change password on first login**  
 
-Let me know if you need modifications! 🚀
+
 -------------------------------------------------------------------------------------------------------------------------------
 Random password generation with special characters.
 
-Here’s a **simple Bash script** to generate a random password with special characters:  
 
----
 
 ### **Script:**
 ```bash
@@ -156,7 +300,7 @@ echo "Generated Password: $PASSWORD"
 Generated Password: GkP!3tB7mZ#2
 ```
 
-Let me know if you need modifications! 🚀
+
 ------------------------------------------------------------------------------------------------------------------------------------
 How to force a password reset on the first login.
 
@@ -499,154 +643,37 @@ sudo bash script.sh
 
 This keeps it **minimal and effective**. 🚀
 --------------------------------------------------------------------------------------------------------------
-7.write script to check if the file whre live me so some file path esist it does display msg are disabled then next check to
+7.write script to check if the file whre live me so some file path esist it does display msg are disabled then
+next check to see if you can write tofile if you can display . you have permission to edit file path if you cannot
+display you do not have perrmission to edit the file path
 
-Here’s a **simple Bash script** to check if a file exists at a given path. If it exists, it displays a message and moves to the next check.  
+तुम्हाला असा Bash स्क्रिप्ट पाहिजे आहे, जो खालील गोष्टी तपासेल:
 
----
+1️⃣ दिलेल्या फाईलचा मार्ग (file path) अस्तित्वात आहे का?
 
-### **Script:**  
-```bash
-#!/bin/bash
+जर नाही, तर "File is missing" असा संदेश दाखवेल.
+2️⃣ जर फाईल अस्तित्वात असेल, तर ती writable (संपादित करता येईल का) आहे का?
 
-# Define the file path to check
-FILE_PATH="/path/to/your/file"
+जर होय, तर "You have permission to edit [file_path]" असा संदेश दाखवेल.
+जर नाही, तर "You do not have permission to edit [file_path]" असा संदेश दाखवेल.
 
-# Check if the file exists
-if [[ -f "$FILE_PATH" ]]; then
-    echo "✅ File exists: $FILE_PATH"
-else
-    echo "❌ File does not exist: $FILE_PATH"
-fi
-
-echo "Proceeding to the next check..."
-# Add additional checks or logic here if needed.
-```
-
----
-
-### **How to Use:**  
-1. Replace `/path/to/your/file` with the actual file path you want to check.  
-2. Save the script as `check_file.sh`.  
-3. Give execute permission:  
-   ```bash
-   chmod +x check_file.sh
-   ```
-4. Run the script:  
-   ```bash
-   ./check_file.sh
-   ```
-
----
-
-### **What This Script Does:**  
-✅ Checks if the file exists at the given path  
-✅ Displays a message accordingly  
-✅ Proceeds to the next check  
-
-Let me know if you need modifications! 🚀
-----------------------------------------------------------------------------------------------------------------
-8.see if you can write tofile if you can display . you have permission to edit file path if you cannot display you
-
-Here’s a **simple Bash script** to check if a file is writable. If writable, it displays a success message; otherwise, it informs the user that they lack permission.  
-
----
-
-### **Script:**  
-```bash
 #!/bin/bash
 
 # Define the file path
 FILE_PATH="/path/to/your/file"
 
 # Check if the file exists
-if [[ -e "$FILE_PATH" ]]; then
-    # Check if the file is writable
-    if [[ -w "$FILE_PATH" ]]; then
-        echo "✅ You have permission to edit $FILE_PATH."
-    else
-        echo "❌ You do not have permission to edit $FILE_PATH."
-    fi
+if [ -e "$FILE_PATH" ]; then
+    echo "File exists: $FILE_PATH"
 else
-    echo "❌ File does not exist: $FILE_PATH"
+    echo "File does not exist: $FILE_PATH"
+    exit 1
 fi
-```
 
----
-
-### **How to Use:**  
-1. Replace `/path/to/your/file` with the actual file path.  
-2. Save the script as `check_write_permission.sh`.  
-3. Give execute permission:  
-   ```bash
-   chmod +x check_write_permission.sh
-   ```
-4. Run the script:  
-   ```bash
-   ./check_write_permission.sh
-   ```
-
----
-
-### **What This Script Does:**  
-✅ Checks if the file exists  
-✅ Checks if the user has **write permission**  
-✅ Displays the appropriate message  
-
-Let me know if you need modifications! 🚀
---------------------------------------------------------------------------------------------------------
-9.do not have perrmission to edit the file path
-
-Here’s a **simple Bash script** that checks if you have permission to edit a file. If you **don’t have write access**, it will display a message stating that you don’t have permission.  
-
----
-
-### **Script:**  
-```bash
-#!/bin/bash
-
-# Define the file path
-FILE_PATH="/path/to/your/file"
-
-# Check if the file exists
-if [[ -e "$FILE_PATH" ]]; then
-    # Check if the file is writable
-    if [[ -w "$FILE_PATH" ]]; then
-        echo "✅ You have permission to edit $FILE_PATH."
-    else
-        echo "❌ You do NOT have permission to edit $FILE_PATH."
-    fi
+# Check if the file is writable
+if [ -w "$FILE_PATH" ]; then
+    echo "You have permission to edit: $FILE_PATH"
 else
-    echo "❌ File does not exist: $FILE_PATH"
+    echo "You do not have permission to edit: $FILE_PATH"
 fi
-```
-
----
-
-### **How to Use:**  
-1. Replace `/path/to/your/file` with the actual file path.  
-2. Save the script as `check_edit_permission.sh`.  
-3. Give execute permission:  
-   ```bash
-   chmod +x check_edit_permission.sh
-   ```
-4. Run the script:  
-   ```bash
-   ./check_edit_permission.sh
-   ```
-
----
-
-### **What This Script Does:**  
-✅ **Checks if the file exists**  
-✅ **Checks if you have write permission**  
-✅ **Displays an appropriate message**  
-
-If you **don’t have permission**, try running with `sudo`:  
-```bash
-sudo ./check_edit_permission.sh
-```
-
-Let me know if you need modifications! 🚀
-------------------------------------------------------------------------------------------------------------------------------
-
+==================================================================================================================
