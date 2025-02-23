@@ -2,3 +2,424 @@ How to check if a user already exists in Linux.
 How to create users automatically using Bash scripting.
 Random password generation with special characters.
 How to force a password reset on the first login.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+1.check the available free memory on the sytem and alert the user if it falls below a threshold en 10.
+
+#!/bin/bash
+
+THRESHOLD=10  # Set threshold in MB
+FREE_MEM=$(free -m | awk '/Mem:/ {print $7}')  # Get free memory in MB
+
+echo "Available Memory: $FREE_MEM MB"
+
+if [[ $FREE_MEM -lt $THRESHOLD ]]; then
+    echo "⚠️ WARNING: Low Memory!"
+fi
+
+-------------------------------------------------------------------------------------------------------------------------------
+2.to automate the creation of new user specific permission and home dir
+
+Here’s a **simple Bash script** to automate the creation of a new user with specific permissions and a home directory.  
+
+---
+
+### **Script:**
+```bash
+#!/bin/bash
+
+# Check if the script is run as root
+if [[ $EUID -ne 0 ]]; then
+   echo "❌ This script must be run as root."
+   exit 1
+fi
+
+# Set the username (Change as needed or take input)
+read -p "Enter the new username: " USERNAME
+
+# Create the user with a home directory
+useradd -m -s /bin/bash "$USERNAME"
+
+# Set a password for the user
+echo "Set password for $USERNAME:"
+passwd "$USERNAME"
+
+# Set specific permissions for the home directory
+chmod 750 /home/"$USERNAME"
+
+# Add user to a specific group (optional)
+usermod -aG sudo "$USERNAME"
+
+echo "✅ User $USERNAME created successfully with a home directory and permissions!"
+```
+
+---
+
+### **How to Use:**
+1. Save the script as `create_user.sh`
+2. Give execute permission:  
+   ```bash
+   chmod +x create_user.sh
+   ```
+3. Run as root:  
+   ```bash
+   sudo ./create_user.sh
+   ```
+4. Enter the username and set a password when prompted.
+
+---
+
+### **What This Script Does:**
+✅ Creates a new user with a home directory  
+✅ Sets a password for the user  
+✅ Grants **read, write, and execute** permissions to the user (750 permissions)  
+✅ Optionally adds the user to the **sudo** group  
+
+Let me know if you need changes! 🚀
+-----------------------------------------------------------------------------------------------------------------------------
+3.write shell script to find all large files greater than 1gb in dir move them another dir
+
+Here’s a **simple Bash script** to find all files larger than **1GB** in a directory and move them to another directory.  
+
+---
+
+### **Script:**
+```bash
+#!/bin/bash
+
+# Source directory (where to search)
+SOURCE_DIR="/path/to/source"
+
+# Destination directory (where to move large files)
+DEST_DIR="/path/to/destination"
+
+# Ensure destination directory exists
+mkdir -p "$DEST_DIR"
+
+# Find files larger than 1GB and move them
+find "$SOURCE_DIR" -type f -size +1G -exec mv {} "$DEST_DIR" \;
+
+echo "✅ All files larger than 1GB have been moved to $DEST_DIR."
+```
+
+---
+
+### **How to Use:**
+1. Save the script as `move_large_files.sh`
+2. Replace **`/path/to/source`** and **`/path/to/destination`** with actual paths.
+3. Give execute permission:  
+   ```bash
+   chmod +x move_large_files.sh
+   ```
+4. Run the script:  
+   ```bash
+   ./move_large_files.sh
+   ```
+
+---
+
+### **What This Script Does:**
+✅ Searches for files **larger than 1GB** in the specified directory  
+✅ Moves them to the **destination folder**  
+✅ Creates the destination folder if it doesn’t exist  
+
+Let me know if you need modifications! 🚀
+----------------------------------------------------------------------------------------------------------------
+4.write script that automatically update all instlled pakege on system and rebot system if needed
+
+Here’s a **simple Bash script** to automatically update all installed packages and reboot the system if needed.  
+
+---
+
+### **Script:**
+```bash
+#!/bin/bash
+
+# Check if the script is run as root
+if [[ $EUID -ne 0 ]]; then
+   echo "❌ This script must be run as root."
+   exit 1
+fi
+
+echo "🔄 Updating all installed packages..."
+apt update && apt upgrade -y
+
+# Check if a reboot is required
+if [ -f /var/run/reboot-required ]; then
+    echo "⚠️ Reboot required! Restarting system..."
+    reboot
+else
+    echo "✅ System is up-to-date. No reboot needed."
+fi
+```
+
+---
+
+### **How to Use:**
+1. Save the script as `update_and_reboot.sh`
+2. Give execute permission:  
+   ```bash
+   chmod +x update_and_reboot.sh
+   ```
+3. Run as root:  
+   ```bash
+   sudo ./update_and_reboot.sh
+   ```
+
+---
+
+### **What This Script Does:**
+✅ Updates all installed packages using `apt`  
+✅ Checks if a reboot is required (`/var/run/reboot-required`)  
+✅ Automatically reboots if necessary  
+
+---
+
+### **For CentOS/RHEL Users:**
+Replace `apt update && apt upgrade -y` with:  
+```bash
+yum update -y
+```
+
+Let me know if you need modifications! 🚀
+------------------------------------------------------------------------------------------------------------------------
+5.write script count no of line in all log files if spec dir
+
+Here’s a **simple Bash script** to count the number of lines in all `.log` files in a specified directory.  
+
+---
+
+### **Script:**  
+```bash
+#!/bin/bash
+
+# Directory containing log files
+LOG_DIR="/path/to/logs"
+
+# Check if directory exists
+if [[ ! -d "$LOG_DIR" ]]; then
+    echo "❌ Directory $LOG_DIR does not exist!"
+    exit 1
+fi
+
+# Count lines in all .log files
+echo "📄 Counting lines in log files..."
+find "$LOG_DIR" -type f -name "*.log" -exec wc -l {} +
+
+echo "✅ Line count completed."
+```
+
+---
+
+### **How to Use:**  
+1. Save the script as `count_log_lines.sh`  
+2. Replace **`/path/to/logs`** with the actual log directory  
+3. Give execute permission:  
+   ```bash
+   chmod +x count_log_lines.sh
+   ```
+4. Run the script:  
+   ```bash
+   ./count_log_lines.sh
+   ```
+
+---
+
+### **What This Script Does:**  
+✅ Checks if the specified directory exists  
+✅ Finds all `.log` files in the directory  
+✅ Counts the number of lines in each log file  
+✅ Displays the results  
+
+Let me know if you need modifications! 🚀
+-----------------------------------------------------------------------------------------------------------------
+6.write script that checks for presence of specific software on the sytem eg. docker, git install if it is missing
+
+Here’s a **simple** Bash script to check and install **Docker** and **Git** if missing:  
+
+```bash
+#!/bin/bash
+
+# Function to check and install a package
+install_if_missing() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "Installing $1..."
+        apt install -y "$1"
+    else
+        echo "$1 is already installed."
+    fi
+}
+
+# Run as root
+if [[ $EUID -ne 0 ]]; then
+    echo "Run this script as root!"
+    exit 1
+fi
+
+# Update package list
+apt update -y
+
+# Check and install Git and Docker
+install_if_missing git
+install_if_missing docker.io
+
+echo "✅ Installation check completed."
+```
+
+### **How to Run:**  
+```bash
+sudo bash script.sh
+```  
+
+This keeps it **minimal and effective**. 🚀
+--------------------------------------------------------------------------------------------------------------
+7.write script to check if the file whre live me so some file path esist it does display msg are disabled then next check to
+
+Here’s a **simple Bash script** to check if a file exists at a given path. If it exists, it displays a message and moves to the next check.  
+
+---
+
+### **Script:**  
+```bash
+#!/bin/bash
+
+# Define the file path to check
+FILE_PATH="/path/to/your/file"
+
+# Check if the file exists
+if [[ -f "$FILE_PATH" ]]; then
+    echo "✅ File exists: $FILE_PATH"
+else
+    echo "❌ File does not exist: $FILE_PATH"
+fi
+
+echo "Proceeding to the next check..."
+# Add additional checks or logic here if needed.
+```
+
+---
+
+### **How to Use:**  
+1. Replace `/path/to/your/file` with the actual file path you want to check.  
+2. Save the script as `check_file.sh`.  
+3. Give execute permission:  
+   ```bash
+   chmod +x check_file.sh
+   ```
+4. Run the script:  
+   ```bash
+   ./check_file.sh
+   ```
+
+---
+
+### **What This Script Does:**  
+✅ Checks if the file exists at the given path  
+✅ Displays a message accordingly  
+✅ Proceeds to the next check  
+
+Let me know if you need modifications! 🚀
+----------------------------------------------------------------------------------------------------------------
+8.see if you can write tofile if you can display . you have permission to edit file path if you cannot display you
+
+Here’s a **simple Bash script** to check if a file is writable. If writable, it displays a success message; otherwise, it informs the user that they lack permission.  
+
+---
+
+### **Script:**  
+```bash
+#!/bin/bash
+
+# Define the file path
+FILE_PATH="/path/to/your/file"
+
+# Check if the file exists
+if [[ -e "$FILE_PATH" ]]; then
+    # Check if the file is writable
+    if [[ -w "$FILE_PATH" ]]; then
+        echo "✅ You have permission to edit $FILE_PATH."
+    else
+        echo "❌ You do not have permission to edit $FILE_PATH."
+    fi
+else
+    echo "❌ File does not exist: $FILE_PATH"
+fi
+```
+
+---
+
+### **How to Use:**  
+1. Replace `/path/to/your/file` with the actual file path.  
+2. Save the script as `check_write_permission.sh`.  
+3. Give execute permission:  
+   ```bash
+   chmod +x check_write_permission.sh
+   ```
+4. Run the script:  
+   ```bash
+   ./check_write_permission.sh
+   ```
+
+---
+
+### **What This Script Does:**  
+✅ Checks if the file exists  
+✅ Checks if the user has **write permission**  
+✅ Displays the appropriate message  
+
+Let me know if you need modifications! 🚀
+--------------------------------------------------------------------------------------------------------
+9.do not have perrmission to edit the file path
+
+Here’s a **simple Bash script** that checks if you have permission to edit a file. If you **don’t have write access**, it will display a message stating that you don’t have permission.  
+
+---
+
+### **Script:**  
+```bash
+#!/bin/bash
+
+# Define the file path
+FILE_PATH="/path/to/your/file"
+
+# Check if the file exists
+if [[ -e "$FILE_PATH" ]]; then
+    # Check if the file is writable
+    if [[ -w "$FILE_PATH" ]]; then
+        echo "✅ You have permission to edit $FILE_PATH."
+    else
+        echo "❌ You do NOT have permission to edit $FILE_PATH."
+    fi
+else
+    echo "❌ File does not exist: $FILE_PATH"
+fi
+```
+
+---
+
+### **How to Use:**  
+1. Replace `/path/to/your/file` with the actual file path.  
+2. Save the script as `check_edit_permission.sh`.  
+3. Give execute permission:  
+   ```bash
+   chmod +x check_edit_permission.sh
+   ```
+4. Run the script:  
+   ```bash
+   ./check_edit_permission.sh
+   ```
+
+---
+
+### **What This Script Does:**  
+✅ **Checks if the file exists**  
+✅ **Checks if you have write permission**  
+✅ **Displays an appropriate message**  
+
+If you **don’t have permission**, try running with `sudo`:  
+```bash
+sudo ./check_edit_permission.sh
+```
+
+Let me know if you need modifications! 🚀
+------------------------------------------------------------------------------------------------------------------------------
+
