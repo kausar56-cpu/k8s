@@ -1,0 +1,15 @@
+REGION="us-east-1"
+aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId'
+
+ouput vpc id
+-------------------------------------------------------------------------
+we can remove ' and " by -r 
+--------------------------------------------------------------------
+vechya script ne apn 1 ch resion ch bgu shktoy nytr at mde jaun change krav lagel automation sati 
+resion takl ka info denar 
+usecase $1
+
+#!/bin/bash
+REGION=$1
+aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId'
+-----------------------------------------------------------------------------------------------------
