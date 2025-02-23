@@ -13,3 +13,106 @@ usecase $1
 REGION=$1
 aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId'
 -----------------------------------------------------------------------------------------------------
+$? 
+
+#!/bin/bash
+
+aws --version
+if [$? -eq  0]
+then
+REGION="$1"
+aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId' -r
+else
+echo "Incorrect command "
+fi
+----------------------------------------------------------------------------------------
+$? चा उपयोग कधी आणि का करावा?
+$? हे शेल स्क्रिप्टमध्ये मागील आदेशाचे (command) exit status तपासण्यासाठी वापरले जाते.
+याचा उपयोग स्क्रिप्टमध्ये त्रुटी (error) हाताळण्यासाठी आणि प्रक्रियेची यशस्वीता निश्चित करण्यासाठी केला जातो.
+
+📌 $? वापरण्याचे मुख्य Use Cases (प्रयोग)
+1️⃣ आदेश (Command) यशस्वी झाला का ते तपासणे
+
+#!/bin/bash
+
+mkdir /tmp/mydir
+if [ $? -eq 0 ]; then
+    echo "Directory created successfully."
+else
+    echo "Failed to create directory."
+fi
+---------------------------------------------------------------------------------------------------
+$@
+to pass multiple aurgument
+
+
+#!/bin/bash
+aws --version
+if (S? -eq ®); then
+   REGIONS=$@
+   for REGION in $(REGIONS); do
+        aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId' -r
+   done
+else
+  echo "incorrect command"
+fi
+------------------------------------------------------------------------------------------------------------------
+$*
+suppose total 4 aurgument pass kausar sara bira umar sai
+it will convert into 1 single argument
+-------------------------------------------------------------------------------------------------------------------------
+$#
+argument nsel tr pz pass arugemtn as takych
+karn 0 arg asel tr script run honar ny
+#!/bin/bash
+
+if [ $# -gt 0 ]
+then
+    if [ $? -eq 0 ]; then
+        REGIONS=$@
+        for REGION in $REGIONS; do
+            aws ec2 describe-vpcs --region "$REGION" | jq '.Vpcs[].VpcId'
+        done
+    else
+        echo "incorrect command"
+    fi
+else
+    echo "Please provide the correct arguments"
+fi
+----------------------------------------------------------------------------------------------------------------
+output redirect 
+>
+>>
+2> this is oprater
+
+>	नवीन file मध्ये output store करतो (जुना data उडतो)	ls > output.txt
+>>	Output file मध्ये जोडतो (Append mode, जुना data ठेवतो)	ls >> output.txt
+2>	Error file मध्ये store करतो (overwrite mode)	ls /wrongpath 2> error.txt
+2>>	Error file मध्ये add करतो (append mode)	ls /wrongpath 2>> error.txt
+&>	Output आणि Error दोन्ही एकाच file मध्ये store करतो	command &> output.txt
+/dev/null	Output discard करतो (Mute mode)	command > /dev/null 2>&1
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mkdir /tmp/mydir यशस्वी झाला तर $? = 0 राहील आणि "Directory created successfully." प्रिंट होईल.
+जर error आला (ex: permission denied) तर $? = 1 किंवा इतर मूल्य राहील, आणि "Failed to create directory." प्रिंट होईल.
+-----------------------------------------------------------------------------------------------------------------------
