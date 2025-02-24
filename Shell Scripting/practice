@@ -93,7 +93,7 @@ if [ "$2" = "bar" ]; then
 fi
 
 
--------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
 
 #!/bin/bash
 read -p "Enter username: " username
@@ -143,6 +143,24 @@ aws iam list-users
 -> 0 8 * * * /usr/bin/bash /home/ubuntu/aws_resource_track.sh >> tracker.log 2>&1
 
 𝑻𝒉𝒊𝒔 𝑪𝒓𝒐𝒏 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏 𝒘𝒊𝒍𝒍 𝒓𝒖𝒏 𝒕𝒉𝒆 𝒋𝒐𝒃 𝒆𝒗𝒆𝒓𝒚 𝒅𝒂𝒚 𝒂𝒕 8𝒂𝒎
+----------------------------------------------------------------------------------------------------
+
+#!/bin/bash
+
+# Check if Docker is running
+if ! systemctl is-active --quiet docker; then
+    echo "Docker is not running. Restarting..."
+    sudo systemctl restart docker
+    
+    # Verify if Docker restarted successfully
+    if systemctl is-active --quiet docker; then
+        echo "Docker restarted successfully."
+    else
+        echo "Failed to restart Docker."
+    fi
+else
+    echo "Docker is running."
+fi
 
 
 
