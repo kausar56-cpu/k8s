@@ -1,11 +1,11 @@
-If you're trying to print the date every second for 10 seconds, you should use the following correct Bash loop:
+If you're trying to print the date every second for 10 seconds, 
+you should use the following correct Bash loop:
 
 for i in {1..10}
 do
   echo $(date)
   sleep 1
 done
-
 -------------------------------------------------------------------------------------------------------------------------------
 for I in {1..10}; do 
     date | awk '{print $1, $2, $3, $4}';  
@@ -17,8 +17,9 @@ variable dlceation
 
 SG="KAUSAR"
 echo $SG
-hear we can give single or doble qutes 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+hear we can give single or doble qutes
+---------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
 
 x=10  # Assign value 10 to variable x
 
@@ -26,8 +27,7 @@ SG="saikiran-ops-$x"  # Correct way to assign a string with variable expansion
 
 echo $SG  # Print the value of SG
 saikiran-ops-10
-
-----------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
 
 x=10  # Assign value 10 to variable x
 
