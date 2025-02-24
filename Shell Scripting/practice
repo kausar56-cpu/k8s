@@ -195,6 +195,28 @@ fi
 ✅ Displays a success or failure message.  
 
 Let me know if you need modifications! 🚀
+--------------------------------------------------------------------------------------------------------
+
+#!/bin/bash
+
+# Define the old and new filenames
+old_name="oldfile.txt"
+new_name="newfile.txt"
+
+# Rename the file
+mv "$old_name" "$new_name"
+
+echo "File renamed from $old_name to $new_name"
+------------------------------------------------------------------------------------------------
+
+#!/bin/bash
+
+# Define the output
+output="k, m, f, o, p"
+
+# Print the output
+echo "$output"
+
 -------------------------------------------------------------------------------------------------------------------------------
 How to create users automatically using Bash scripting.
 
@@ -250,7 +272,9 @@ echo "✅ User '$USERNAME' created successfully!"
 ✅ Checks if the user **already exists**  
 ✅ Creates a **new user** with a home directory  
 ✅ Sets a **default password**  
-✅ Forces the user to **change password on first login**  
+✅ Forces the user to **change password on first login** 
+
+===========================================================================================================
 
 
 -------------------------------------------------------------------------------------------------------------------------------
