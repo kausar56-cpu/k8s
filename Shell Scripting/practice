@@ -147,21 +147,12 @@ aws iam list-users
 
 #!/bin/bash
 
-# Check if Docker is running
-if ! systemctl is-active --quiet docker; then
-    echo "Docker is not running. Restarting..."
-    sudo systemctl restart docker
-    
-    # Verify if Docker restarted successfully
-    if systemctl is-active --quiet docker; then
-        echo "Docker restarted successfully."
-    else
-        echo "Failed to restart Docker."
-    fi
-else
+if systemctl is-active --quiet docker; then
     echo "Docker is running."
+else
+    echo "Docker is not running. Restarting..."
+    sudo systemctl restart docker && echo "Docker restarted successfully." || echo "Failed to restart Docker."
 fi
-
 
 
 
