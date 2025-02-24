@@ -2,17 +2,19 @@ REGION="us-east-1"
 aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId'
 
 ouput vpc id
+
+
 -------------------------------------------------------------------------
 we can remove ' and " by -r 
---------------------------------------------------------------------
-vechya script ne apn 1 ch resion ch bgu shktoy nytr at mde jaun change krav lagel automation sati 
+-------------------------------------------------------------------------------------------------------
+vrchya script ne apn 1 ch resion ch bgu shktoy nytr at mde jaun change krav lagel automation sati 
 resion takl ka info denar 
 usecase $1
 
 #!/bin/bash
 REGION=$1
 aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId'
------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 $? 
 
 #!/bin/bash
@@ -47,23 +49,36 @@ to pass multiple aurgument
 
 
 #!/bin/bash
+
 aws --version
-if (S? -eq ®); then
+if [ $? -eq 0 ]; then  # Check if the last command (aws --version) succeeded
    REGIONS=$@
-   for REGION in $(REGIONS); do
-        aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId' -r
+   for REGION in $REGIONS; do  # No need for $(REGIONS)
+        aws ec2 describe-vpcs --region "$REGION" | jq -r '.Vpcs[].VpcId'
    done
 else
-  echo "incorrect command"
+  echo "Incorrect command"
 fi
+
 ------------------------------------------------------------------------------------------------------------------
 $*
 suppose total 4 aurgument pass kausar sara bira umar sai
 it will convert into 1 single argument
 -------------------------------------------------------------------------------------------------------------------------
 $#
+how many aug pass it wil check
 argument nsel tr pz pass arugemtn as takych
 karn 0 arg asel tr script run honar ny
+
+#!/bin/bash
+
+echo "Number of arguments passed: $#"
+
+-----------------------------------------------------------------
+$ bash script.sh arg1 arg2 arg3
+Number of arguments passed: 3
+
+---------------------------------------------------------------
 #!/bin/bash
 
 if [ $# -gt 0 ]
