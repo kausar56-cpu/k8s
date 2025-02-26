@@ -49,12 +49,12 @@ when u open it, u haven't access
 create route 53 full view access and give it to user 
 --------------------------------------------------------------------------------------------------------------
 
-inline policy
-
-user 1 and 2
-1 . Having EC2 access 
-2. having s3 If I go 1st policy inline and edit it to s3 policy, then I can easily access it 
-same for 2 
+inline policy 
+User 1: Initially has EC2 access.
+User 2: Initially has S3 access.
+If you edit the inline policy of User 1 to allow S3 access, then
+User 1 will gain access to S3.
+The same applies to User 2 if you modify their policy to allow EC2 access.
 ----------------------------------------------------------------------------------------------------
 permission boundary policy 
 
