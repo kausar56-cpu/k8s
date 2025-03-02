@@ -1,0 +1,13 @@
+lambda - python language - 
+we will write python code in lambda funtion and we will write module called boto3
+boto3 - it will talk to aws API 
+WE WILL write lambda funtion for seprete aws resource e.g EBS
+lets soppose - for EBS sanpshot we will write lambda funtion - python code -talk EBS sanpshot - it will get complete info
+sanpshot active - it will delete active sanp
+we can trigger lambda funtion using cloudwatch
+--------------------------------------------------------
+1. write lambda funtion in python code - this will talk with AWS API - 
+TO Fetch all ebs sanpshot - 
+to filter out sanpshot that are stale resource we will delete san
+default excution time lambda is 3 sec
+create iam role attach policy cost -optimization-policy|aws lambda basicexcution role
