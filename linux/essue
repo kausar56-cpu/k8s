@@ -1,0 +1,31 @@
+Last week, we faced a critical issue in our log processing pipeline. Our EC2 instance was supposed to upload logs to an S3 bucket, but suddenly, the Jenkins job started failing with:
+
+❌ 403 Forbidden – Access Denied
+
+At first, everything looked fine:
+✅ IAM role had s3:PutObject permissions.
+✅ S3 bucket existed, and the policy seemed correct.
+✅ Jenkins pipeline was properly configured.
+But still… ACCESS DENIED! 😤
+
+🔍 The Debugging Process::
+
+🛠 Step 1: Checked IAM Role Permissions → s3:ListBucket was missing!
+🛠 Step 2: Reviewed S3 Bucket Policy → The policy didn't explicitly allow access for the EC2 role.
+🛠 Step 3: Examined KMS Encryption → The bucket had KMS encryption, but the IAM role lacked kms:Encrypt and kms:Decrypt permissions.
+🛠 Step 4: Tested with AWS CLI → Running aws s3 ls s3://my-bucket confirmed Access Denied.
+
+💡 The Fix::
+
+✅ Updated the IAM Role Policy to include s3:ListBucket.
+✅ Modified the S3 Bucket Policy to explicitly allow EC2 access.
+✅ Added KMS permissions (kms:Encrypt & kms:Decrypt).
+✅ Retested the Jenkins job...SUCCESS! 🎉
+
+🚀 Key Takeaways
+
+🔹 Missing s3:ListBucket can break uploads, even if s3:PutObject is allowed.
+🔹 KMS encryption requires additional permissions—don't overlook them!
+🔹 Debugging with AWS CLI (aws s3 ls, aws s3 cp) helps pinpoint access issues fast.
+This issue took hours to debug, but the learnings will last a lifetime! 💡
+💬 Have you ever spent way longer than expected troubleshooting an AWS permissions issue? Let’s discuss in the comments! 🚀
