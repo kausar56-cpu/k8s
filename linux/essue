@@ -29,3 +29,117 @@ But still… ACCESS DENIED! 😤
 🔹 Debugging with AWS CLI (aws s3 ls, aws s3 cp) helps pinpoint access issues fast.
 This issue took hours to debug, but the learnings will last a lifetime! 💡
 💬 Have you ever spent way longer than expected troubleshooting an AWS permissions issue? Let’s discuss in the comments! 🚀
+
+
+
+
+Imagine this: 
+It’s a Friday evening, the team is wrapping up a major release, and suddenly… BOOM! A teammate accidentally runs:
+
+git push --force origin main
+
+In an instant, several production commits vanished! The CI/CD pipeline broke, deployments failed, and rollback options looked grim. 
+Panic set in. 🚨
+
+How We Recovered (in Real-Time):
+
+🔹 Checked git reflog and GitHub commit history – Found the lost commits!
+🔹 Reverted the damage using git reset --hard and git push --force-with-lease.
+🔹 Enabled GitHub Branch Protection – No more force pushes to main.
+🔹 Added Git Pre-Push Hooks – Now, developers get a warning before force pushing.
+🔹 Mandated PR-based merges – Direct commits to main are now history.
+
+Biggest Lessons Learned:
+🚫 Never allow force pushes on critical branches.
+🔄 Always have a rollback strategy (git reflog, GitHub backups, audit logs).
+📌 Git best practices are a must—one small mistake can cause massive outages!
+This could have been a major production outage, but we caught it in time. Have you faced a GitHub disaster like this? How did you handle it? Let’s discuss! 👇
+
+
+
+
+🚀 How GitHub Solved a Critical Deployment Challenge! 🔥
+Few months back I have faced a major issue in production while deploying a microservices-based application. The problem? A last-minute bug that slipped through testing due to a misconfigured feature flag. 😨
+✅ How GitHub Helped Us Recover Quickly:
+1️⃣ GitHub Branching Strategy:
+We follow a GitFlow approach, ensuring changes go through feature branches.
+The bug originated in a hotfix, which needed an urgent patch.
+2️⃣ GitHub Actions for CI/CD:
+A rollback pipeline was already set up using GitHub Actions, so we quickly reverted to the last stable release.
+We also improved our pre-merge testing automation to catch such issues earlier.
+3️⃣ GitHub Security & Code Reviews:
+Secret scanning ensured no API keys were exposed.
+Code owners feature made sure the right reviewers were tagged for approvals.
+4️⃣ Infrastructure as Code with Terraform:
+All infrastructure changes were version-controlled in GitHub, making rollbacks smooth and predictable.
+💡 Key Takeaway:
+GitHub is not just a code repository—it's a critical tool for collaboration, automation, and security in modern DevOps workflows. A well-structured GitHub workflow can save hours of downtime!
+💬 Have you faced similar GitHub challenges? How did you solve them? Let’s discuss in the comments! 👇
+
+
+
+
+📌 Scenario: Your Maven builds are slow because dependencies are downloaded every time.
+✅ Solution: Use a local repository cache and enable parallel builds for faster execution.
+🔗 Quick Fix:
+1️⃣ Configure Maven to use a local repository (settings.xml):
+
+<localRepository>/home/user/.m2/repository</localRepository>
+
+2️⃣ Run builds in parallel for multi-module projects:
+
+mvn -T 4 clean install
+
+🎯 Result: Drastically reduced build time, making your CI/CD pipelines more efficient!
+How do you optimize Maven builds in your projects? Drop your thoughts below! 👇
+hashtag#Maven hashtag#DevOps hashtag#BuildOptimization hashtag#Performance hashtag#CICD hashtag#Java hashtag#SoftwareEngineering
+
+
+
+
+Ever encountered a port conflict while managing multiple services on a single server? 🤔 It’s a common scenario where two applications compete for the same port, and the solution often involves changing one service’s port. I wanted to share a quick, structured guide!
+Here’s how to change Jenkins’ default port (8080) to ensure smooth operations:
+Step-by-Step Process:
+
+1️⃣ Check Jenkins Status:
+Run 
+systemctl status jenkins 
+to ensure the service is active. If not, start it with :
+sudo systemctl start jenkins.
+2️⃣ Identify the Current Port:
+Navigate to the Jenkins service file location:
+
+cd /usr/lib/systemd/system 
+ 
+Locate the file:
+
+ls -lrth | grep jenkins.service 
+
+Check the current port:
+
+cat jenkins.service 
+
+3️⃣ Update the Port:
+Open the service file for editing:
+
+sudo vi /usr/lib/systemd/system/jenkins.service 
+Modify --httpPort=8080 to your desired port (e.g., --httpPort=9090).
+4️⃣ Reload and Restart Jenkins:
+Reload system configurations:
+
+sudo systemctl daemon-reload 
+Restart the Jenkins service:
+
+sudo systemctl restart jenkins.service 
+
+5️⃣ Verify the Changes:
+Check if Jenkins is running on the new port:
+
+sudo netstat -nltp | grep java 
+Access Jenkins via the updated port (e.g., http://localhost:9090).
+6️⃣ Update Inbound Rules:
+Don’t forget to allow traffic on the new port in your firewall or cloud provider’s security group.
+
+Key Takeaway ::
+Changing the default Jenkins port is straightforward and can prevent unnecessary service conflicts. A small tweak can make your systems more reliable and scalable! 🔧
+Have you faced similar challenges with port conflicts? I’d love to hear your experiences or tips in the comments! 💬
