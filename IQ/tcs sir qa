@@ -16,9 +16,11 @@ Royal Cyber
 4.In EBS what is the size oF block 10 gb of ebs volume?
 5.Algorithm behind load balancer?
 
-6.If there are 5 master node and 10 worker node is running and due to some issue 3 goes down could you tell me my k8s cluster will run of not?
+6.If there are 5 master node and 10 worker node is running and due to some issue 3 goes 
+down could you tell me my k8s cluster will run of not?
 7.How will you upgrade k8s cluster ?
-8.Now lets take there is new user which is recently joined whose name is soham and i want to create that user and also i want create a role for him how can i do that?
+8.Now lets take there is new user which is recently joined whose name is soham and i want to create that user and
+\also i want create a role for him how can i do that?
 9.which one is stable version in kubernetes?
 10.k8s architecture?
 11.In kubernetes how will you expose your application to external world so user can access it?
