@@ -16,7 +16,7 @@ on-premises network and AWS over the public internet using IPSec VPN or OpenVPN.
 How it Works?
 
 A VPN tunnel is created between your on-premises network and the AWS VPN Gateway.
-Traffic is encrypted using IPSec (AES-256 encryption) before being sent over the internet.
+Traffic is encrypted using IPSec (Advanced Encryption Standard) (AES-256 encryption) before being sent over the internet.
 AWS decrypts the data and routes it to your VPC (Virtual Private Cloud).
 
 
