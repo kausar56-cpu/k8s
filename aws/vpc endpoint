@@ -10,14 +10,58 @@ go to add routs -select destination - nat gatway
 throught his we can access it but we dont need go through internet we have make connection s3 and private subnet
 so now we have delete nat
 ----------------------------------------------------------------------------------------------------------------------------
-creat endpoint - select private route table and crete it 
-successs
-add iam rule ec2 -  ssmmangedistancecore  ,  ssm
-update role
-click on seevise- mangement and goverment- system maneger - session manger - strat session - only public will show 
-crete 3 endpoint 1 ec2 message - select private subnet (ec2) - publicmgn-server-sg
-ssmmssages - 
-ssm
+It looks like you're trying to set up AWS Systems Manager (SSM) Session Manager for instances in a private subnet using VPC endpoints. Here's a structured approach to make sure it works:  
+
+### **Steps to Enable SSM in a Private Subnet**  
+
+#### **1. Create VPC Endpoints for SSM**  
+Since your instance is in a private subnet (without internet access), you need VPC endpoints for SSM services.  
+
+Go to **VPC > Endpoints > Create Endpoint**, and create the following:  
+
+1. **com.amazonaws.<region>.ssm** (For SSM API calls)  
+   - Select **Private Route Table**  
+   - Associate with **Private Subnet**  
+   - Use security group allowing traffic from private instances  
+   
+2. **com.amazonaws.<region>.ssm-messages** (For communication between instances and SSM)  
+   - Select **Private Subnet**  
+   - Attach Security Group that allows EC2 communication  
+
+3. **com.amazonaws.<region>.ec2messages** (For SSM Agent communication)  
+   - Select **Private Subnet**  
+   - Attach Security Group  
+
+#### **2. Attach IAM Role to EC2 Instance**  
+- Go to **IAM > Roles**  
+- Attach **AmazonSSMManagedInstanceCore** policy to the EC2 IAM Role  
+
+#### **3. Start a Session via SSM**  
+1. **Go to AWS Console**  
+2. **Navigate to**: Services > Management & Governance > Systems Manager > Session Manager  
+3. Click **Start Session**  
+4. Your private instance should now appear  
+
+If only public instances are showing, ensure:  
+✔ The EC2 instance has the correct IAM role  
+✔ The VPC endpoints are properly created and associated  
+✔ Security groups allow communication between EC2 and the endpoints  
+
+Let me know if you need any troubleshooting help! 😊
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+**SSM (AWS Systems Manager)** is an AWS service that helps manage and automate operational tasks
+on EC2 instances and other AWS resources.  
+
+### **Key Features of SSM:**  
+1. **Session Manager** – Connect to EC2 instances (even private ones) without SSH or Bastion hosts.  
+2. **Patch Manager** – Automate OS and software updates.  
+3. **Run Command** – Execute commands remotely on multiple instances.  
+4. **Inventory** – Collect system details like installed applications and configurations.  
+5. **Automation** – Create workflows to manage AWS resources.  
+
+Let me know if you need more details! 😊
 -------------------------------------------------------------------------------------------------------------------------
 types of gatwaypoint and interface 
 gatwaypoint - s3 and dynomodb
