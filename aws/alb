@@ -41,6 +41,34 @@ go to -lb - listenr and rule -http:80- edit rule -routing action - 2 option is t
 --------------------------------------------------------------------------------------------------------------------------------
 how to forwerd traffic to /home to /shops
 lb - https - name - add condition -path base - /movies/* - confirm - forward to target - select correct tg -privority -1  -
+
+To forward traffic from `/home` to `/shops` using an **Application Load Balancer (ALB)** in AWS, follow these steps:  
+
+---
+
+### **Steps to Configure Path-Based Routing in ALB**
+1. **Go to AWS Console → EC2 → Load Balancers**  
+2. **Select Your ALB** (Application Load Balancer)  
+3. **Click on "Listeners" → Edit Rules**  
+
+---
+
+### **Add a Forwarding Rule**  
+1. Click **Add Rule** → **Insert Rule**  
+2. Click **"Add Condition"** → **Path-based routing**  
+   - Enter `/home/*` as the path pattern  
+3. Click **"Add Action"** → **Forward to target group**  
+   - Select the target group for `/shops`  
+4. Set **Priority** (e.g., `1`, if no other conflicting rules exist)  
+5. Click **Save Rule**  
+
+---
+
+### **How It Works?**  
+- Any request to `https://yourdomain.com/home/...`  
+- Will be forwarded to the target group handling `https://yourdomain.com/shops/...`  
+
+Let me know if you need more details! 🚀
 --------------------------------------------------------------------------------------------------------------------------------
 
 
