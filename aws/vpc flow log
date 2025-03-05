@@ -2,6 +2,15 @@ creat vpc - configure sg- creat s3- crete ec2 select vpc, sg
 crete flow logs aadd s3 ARN 
 go to ec2 take access install nginx
 copy dns
+
+Security Monitoring – Detect suspicious activity or unauthorized access.
+Troubleshooting – Identify connectivity issues and blocked traffic.
+Compliance & Auditing – Maintain logs for security and regulatory needs.
+Cost Optimization – Analyze data transfer and reduce unnecessary costs.
+
+
+
+
 root@ip-10-0-6-173:~# curl ec2-18-206-224-75.compute-1.amazonaws.com
 root@ip-10-0-6-173:~# while true
 > do
