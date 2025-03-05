@@ -1,3 +1,5 @@
+how to crete user in dockerfile?
+
 Google Distroless Images | Docker Multi Build |docker file
 ---------------------------------------------------------------
  SAST (Static Application Security Testing),sonar - build artifact maven - store at nexus -copy artifact by using dockerfile -build it -push ecr - 
