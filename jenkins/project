@@ -1,0 +1,109 @@
+
+
+By taking a T2.medium instance, Jenkins can be installed and accessed via port 8080 to run jobs.
+However, in real-time, this is not the case.
+Master-Agent Setup: The master controls Jenkins, while jobs execute on agent nodes.
+Jobs are distributed across different nodes based on labels (e.g., dev-node, prod-node).
+Instead of running everything on one instance, dedicated nodes are used for different environments.
+Production jobs require stable nodes, whereas development jobs can run on test nodes.
+Instance type selection matters for handling job loads and ensuring smooth execution.
+
+
+
+Multiple environments: Development, Prelims, and Production are in different regions.
+Job execution conditions:
+Development jobs → Run only on development nodes
+Prelims jobs → Run only on prelims nodes, not on the master
+Production jobs → Run only on production nodes (separate configurations)
+Resource allocation:
+Development & Prelims: t2.medium (test environments) with EC2 spot instances
+Production: m5.large for stable execution with required dependencies
+
+
+To ensure that jobs run on dedicated nodes, you can use node labels in Jenkins. 
+Assign specific labels to different nodes and configure jobs to run only on nodes with matching labels.
+
+Handling High Job Load Efficiently
+Running 50 jobs per day and handling 150 jobs in a batch requires proper resource allocation.
+A single medium-sized instance cannot handle this because different jobs need different dependencies like Docker, 
+Java 17, AWS CLI, and PowerShell, which require more resources.
+Optimized Node Configuration
+Development Node – 50GB gp3 volume
+Prelims Node – 70GB gp3 volume
+Production Node – 100GB gp3 volume
+
+
+To ensure jobs run on the correct nodes in Development, Prelims, and Production, follow these steps:
+
+Use Node Labels:
+
+Assign labels to agents (e.g., dev-node, prelims-node, prod-node).
+In job configuration, set "Restrict where this project can be run" and specify the relevant label.
+Use Jenkins Agents (Slaves):
+
+Configure separate Jenkins agents for each environment.
+Development & Prelims: Use t2.medium (50GB volume, 20GB for testing).
+Production: Use m5.large for better stability.
+Use ‘Master’ and ‘Always’ Directives:
+
+master: Ensures that jobs requiring central control run on the master node.
+always: Ensures specific jobs always run on designated nodes.
+Install and Configure Jenkins Agent on Each Node:
+
+Install the Jenkins agent and connect it to the Jenkins controller using port 884.
+Verify agent connectivity under "Manage Jenkins" → "Nodes" section.
+
+
+
+To ensure development and production jobs run on different nodes, follow these steps:
+
+Create and Label Nodes:
+
+Add a new node under "Manage Jenkins" → "Manage Nodes and Clouds".
+Assign labels:
+Development Node → dev-node
+Production Node → prod-node
+Configure Jobs to Run on Specific Nodes:
+
+In the job configuration, enable "Restrict where this project can be run".
+Enter the label name (e.g., dev-node for development jobs, prod-node for production jobs).
+Using Labels in Groovy (Pipeline Scripts):
+
+groovy
+
+pipeline {
+    agent { label 'dev-node' }  // Runs only on the development node
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building on development node'
+            }
+        }
+    }
+}
+Run Jobs Based on Branches:
+
+Modify the pipeline to trigger jobs only when changes come from specific branches:
+groovy
+
+when {
+    branch 'development'
+}
+With this setup, development jobs run only on dev nodes and production jobs run only on prod nodes, ensuring correct job distribution
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
