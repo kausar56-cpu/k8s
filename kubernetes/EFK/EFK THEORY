@@ -30,6 +30,25 @@ at backend of elasticserch- PVC is present
 kibana deploed by using deployment- it will provide UI - to monitor logs of application 
 --------------------------------------------------------------------------------------------------------------------------------------
 
+ELASTIC SERCH url configure in kibana yaml to intregate them
+kibana pod will expose as load balancer service so we can access kibana dhasboard outside of cluster
+
+elastic serch service = cluster ip
+kibana= LB
+----------------------------------------------------------------------------------------------------------------------
+access kibana through 5601- lb - in that discover option - there we need to crete index patern - to get logs of our applicayion
+index name = *
+click on next step
+time filter field name = @timestamp
+click crete index patern
+go back to discover option - hear we can monitor - clster logs and application logs aloso
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 
