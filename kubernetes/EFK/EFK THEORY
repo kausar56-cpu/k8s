@@ -1,0 +1,39 @@
+EFK is a centralized logging solution that consists of three open-source tools:
+
+Elasticsearch → Stores and indexes logs (Log Lake)
+Fluentd → Collects, processes, and ships logs - shift log from container to elastic serch database
+Kibana → Visualizes logs and provides analytics - provide grafical UI - to qury the logs from elastic serch
+
+• EFk stack provides centralized logging in order to identify problems with
+servers or applications
+ It allows you to search all the logs in a single place
+----------------------------------------------------------------------------------
+when we running application in production env multiple user accessing our application 
+there is chance of getting aception in our application 
+
+application running in multiple machine and multiple container 
+monitoring all log of container will be very difficulty task to avoid that problem 
+we need to segracate log of application , we should provide single platform to get all 
+logs of application that why efk stack comes in picture
+----------------------------------------------------------------------------------------------------------------------------------------
+our application is running multiple container 
+those container going to genrate logs - those logs should collet by fluent D - it will send logs to elastic serch-
+it will gives logs to kibana- we will use kibana dhasbord to get logs of application
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+in cluster we are going to install fluentd , elastic serch and kibana.
+fluent d install as deamon set -that should collect logs from all pods , all the node and give it to elastice serch 
+
+elastic sech deploed by using satefullset- it will maintain value of store that logs whic are given by fluent D 
+at backend of elasticserch- PVC is present
+
+kibana deploed by using deployment- it will provide UI - to monitor logs of application 
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
