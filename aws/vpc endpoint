@@ -9,6 +9,22 @@ creat nat gatway - selet public subnet
 go to add routs -select destination - nat gatway
 throught his we can access it but we dont need go through internet we have make connection s3 and private subnet
 so now we have delete nat
+-------------------------------------------------------------------------------------------------------------------------------
+AWS provides two types of VPC Endpoints:
+1. Interface Endpoints (AWS PrivateLink)
+Supports services like SSM, S3, DynamoDB, EC2, Lambda, CloudWatch Logs, Secrets Manager, etc.
+
+2. Gateway Endpoints
+Only available for S3 and DynamoDB.
+
+
+vpcendpoint - select aws servies- serch for s3 -vpc select- select private subnet -
+
+
+
+Exactly! 🎯 VPC Endpoint = Access only, No actions 🚫
+If you want to perform tasks, you need SSM (with an SSM VPC Endpoint if no internet).
+
 ----------------------------------------------------------------------------------------------------------------------------
 It looks like you're trying to set up AWS Systems Manager (SSM) Session Manager for instances in a private subnet using VPC endpoints. Here's a structured approach to make sure it works:  
 
