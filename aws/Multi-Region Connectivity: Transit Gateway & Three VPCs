@@ -29,3 +29,192 @@ allow satic routing  nv region
 go tgw route table nv - crete staic route - select - vpc-1 cidr ohio - select pwrring nv
 
 -------------------------------------------------------------------
+
+
+
+You're setting up **a multi-region AWS network using Transit Gateway (TGW) and VPC Peering** between **North Virginia (us-east-1) and Ohio (us-east-2).**  
+
+Here’s how you can do it step by step via the **AWS Management Console.**
+
+---
+
+## **🟢 Step 1: Setup in North Virginia (us-east-1)**
+### **1.1 Create Two VPCs**
+1. **Go to AWS Console** → **VPC Dashboard** → **Create VPC**
+2. **VPC1 (Dev/Testing)**  
+   - **Name:** `VPC1-NV`  
+   - **CIDR Block:** `10.0.0.0/16`  
+   - Click **Create VPC**
+3. **VPC2 (Dev/Testing)**  
+   - **Name:** `VPC2-NV`  
+   - **CIDR Block:** `192.168.0.0/16`  
+   - Click **Create VPC**
+
+---
+
+### **1.2 Create Subnets**
+1. **Go to VPC Dashboard → Subnets → Create Subnet**
+2. **For VPC1-NV (Public Subnet):**  
+   - **VPC:** `VPC1-NV`  
+   - **Name:** `VPC1-NV-Public`  
+   - **Subnet CIDR:** `10.0.1.0/24`  
+   - Click **Create Subnet**
+3. **For VPC2-NV (Private Subnet):**  
+   - **VPC:** `VPC2-NV`  
+   - **Name:** `VPC2-NV-Private`  
+   - **Subnet CIDR:** `192.168.1.0/24`  
+   - Click **Create Subnet**
+
+---
+
+### **1.3 Create Security Groups**
+1. **Go to EC2 Dashboard → Security Groups → Create Security Group**
+2. **For `VPC1-NV-SG`:**  
+   - **Allow ICMP** (ping) from `192.168.0.0/16`
+3. **For `VPC2-NV-SG`:**  
+   - **Allow ICMP** (ping) from `10.0.0.0/16`
+
+---
+
+### **1.4 Create Transit Gateway (TGW)**
+1. **Go to VPC Dashboard → Transit Gateways → Create Transit Gateway**
+2. **Settings:**  
+   - **Name:** `TGW-NV`  
+   - Click **Create Transit Gateway**
+
+---
+
+### **1.5 Create TGW Attachments (Connect VPCs to TGW)**
+1. **Go to VPC Dashboard → Transit Gateway Attachments → Create Attachment**
+2. **For VPC1-NV:**  
+   - **TGW:** `TGW-NV`  
+   - **VPC:** `VPC1-NV`  
+   - **Subnet:** `VPC1-NV-Public`
+   - Click **Create**
+3. **For VPC2-NV:**  
+   - **TGW:** `TGW-NV`  
+   - **VPC:** `VPC2-NV`  
+   - **Subnet:** `VPC2-NV-Private`
+   - Click **Create**
+
+---
+
+### **1.6 Edit Route Tables**
+1. **Go to VPC Dashboard → Route Tables**
+2. **For `VPC1-NV Route Table`:**  
+   - **Destination:** `192.168.0.0/16`  
+   - **Target:** `TGW-NV`
+3. **For `VPC2-NV Route Table`:**  
+   - **Destination:** `10.0.0.0/16`  
+   - **Target:** `TGW-NV`
+
+---
+
+### **1.7 Launch EC2 Instances**
+1. **Go to EC2 Dashboard → Instances → Launch Instance**
+2. **For `VPC1-NV EC2`:**  
+   - **Subnet:** `VPC1-NV-Public`  
+   - **SG:** `VPC1-NV-SG`
+3. **For `VPC2-NV EC2`:**  
+   - **Subnet:** `VPC2-NV-Private`  
+   - **SG:** `VPC2-NV-SG`
+
+---
+
+### **1.8 Test Connectivity**
+- **SSH into `VPC1-NV EC2`**
+- Run:  
+  ```bash
+  ping 192.168.1.X  # Replace with VPC2-NV EC2 Private IP
+  ```
+
+---
+
+## **🟡 Step 2: Setup in Ohio (us-east-2)**
+### **2.1 Create VPC in Ohio**
+1. **Go to Ohio AWS Console → VPC Dashboard → Create VPC**
+2. **VPC-Ohio:**  
+   - **Name:** `VPC-Ohio`  
+   - **CIDR Block:** `172.16.0.0/16`
+   - Click **Create VPC**
+
+---
+
+### **2.2 Create EC2 in Ohio**
+1. **Go to EC2 Dashboard → Launch Instance**
+2. **For `VPC-Ohio EC2`:**  
+   - **Subnet:** `Ohio VPC Subnet`
+   - **SG:** Allow ICMP and SSH
+
+---
+
+### **2.3 Create Transit Gateway (TGW) in Ohio**
+1. **Go to Ohio AWS Console → VPC Dashboard → Transit Gateways**
+2. **Create TGW**
+   - **Name:** `TGW-Ohio`
+   - Click **Create**
+
+---
+
+### **2.4 Attach VPC to `TGW-Ohio`**
+1. **Go to VPC Dashboard → Transit Gateway Attachments → Create Attachment**
+   - **TGW:** `TGW-Ohio`
+   - **VPC:** `VPC-Ohio`
+   - **Subnet:** Select one
+   - Click **Create**
+
+---
+
+### **2.5 Edit Route Tables in Ohio**
+1. **Go to VPC Dashboard → Route Tables**
+2. **For `VPC-Ohio Route Table`:**  
+   - **Destination:** `10.0.0.0/16, 192.168.0.0/16`  
+   - **Target:** `TGW-Ohio`
+
+---
+
+## **🟠 Step 3: Connect North Virginia and Ohio**
+### **3.1 Edit Route Tables in NV**
+1. **Go to VPC Dashboard → Route Tables**
+2. **For `VPC1-NV` and `VPC2-NV` Route Tables:**  
+   - **Destination:** `172.16.0.0/16` (Ohio)  
+   - **Target:** `TGW-NV`
+
+---
+
+### **3.2 Create TGW Peering**
+1. **Go to Ohio AWS Console → VPC Dashboard → TGW Peering Attachments**
+2. **Create TGW Peering Attachment**
+   - **Request From:** `TGW-NV`
+   - **Request To:** `TGW-Ohio`
+   - Click **Create Peering**
+3. **Go to North Virginia AWS Console → Accept TGW Peering**
+
+---
+
+### **3.3 Allow Static Routing in Ohio**
+1. **Go to TGW Route Table in Ohio**
+2. **Create Static Routes:**
+   - **Destination:** `10.0.0.0/16 (VPC1-NV)`
+   - **Target:** TGW Peering to NV
+   - **Destination:** `192.168.0.0/16 (VPC2-NV)`
+   - **Target:** TGW Peering to NV
+
+---
+
+### **3.4 Allow Static Routing in NV**
+1. **Go to TGW Route Table in NV**
+2. **Create Static Routes:**
+   - **Destination:** `172.16.0.0/16 (VPC-Ohio)`
+   - **Target:** TGW Peering to Ohio
+
+---
+
+## **🟢 Step 4: Final Testing**
+- **SSH into `VPC1-NV EC2`**
+- Try **pinging**:
+  ```bash
+  ping 172.16.X.X  # Replace with Ohio EC2 private IP
+  ```
+
+✅ **If successful, your setup is complete!** 🚀
