@@ -1,4 +1,4 @@
-b mde endpoint crete kela - copy dns - b mde vpc- edit routes - destination - rds vpc endpoint dns enter -
+b mde endpoint crete kela - copy dns - a mde vpc- edit routes - destination - rds vpc endpoint dns enter -
 ec2 - sg - oubond rule - rds vpc endpoint dns copy hear- b mde rds -
 sg - source private link vpc endpoint in accunt a port 3306 mysql- 
 mysql -h vpce-xxxx.rds.<region>.amazonaws.com -u myuser -p
