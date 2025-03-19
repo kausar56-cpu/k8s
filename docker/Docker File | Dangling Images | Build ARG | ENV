@@ -50,6 +50,26 @@ docker build -f dockerfile.dev .
 with tag
 docker build -t kiran2361993/custom:v1 -f dockerfile.dev .
 
+If you are asking for a **word-by-word meaning** of the command:
+
+```sh
+docker tag myapp:latest myrepo/myapp:v1.0
+```
+
+Here’s the breakdown:
+
+- **`docker`** → Refers to the Docker CLI (command-line interface).  
+- **`tag`** → The command used to assign a new name (tag) to an existing image.  
+- **`myapp:latest`** → The existing Docker image name:
+  - `myapp` → The repository name (image name).  
+  - `latest` → The tag of the existing image (default if no tag is specified).  
+- **`myrepo/myapp:v1.0`** → The new name (tag) assigned to the image:
+  - `myrepo` → The target repository (can be local or remote, like Docker Hub).  
+  - `myapp` → The name of the image.  
+  - `v1.0` → The version tag assigned to the image.  
+
+Would you like an even more detailed explanation? 😊
+
 docker run --rm -d --name app1 -p 8000:80 kiran2361993/custom:v1
 docker build -t kiran2361993/custom:v1 -f dockerfile.dev . --no-cache
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
