@@ -1,103 +1,74 @@
-Step 1: Verify IAM User/Role for the New Joiner
+Since the EKS API is private, the new joiner must be inside the VPC where the cluster is deployed.
+-------------------------------------------------------------------
 
- EKS authentication is IAM-based, first ensure the new user has the right IAM permissions. 
+✅ Step 1: Create an IAM User (AWS Console or AWS CLI)
+If the new joiner does not already have an IAM user, the administrator creates one.
 
-Create an IAM User 
-aws iam create-user --user-name new-user
+👉 Using AWS Console:
 
-Attach Required Policies
-aws iam attach-user-policy --user-name new-user --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
-
-Add User to a Group (If Using IAM Groups)
-aws iam add-user-to-group --user-name new-user --group-name eks-developers
------------------------------------------------------------------------------------------------------------
-Step 2: Add the User to the EKS Cluster’s Access Control (aws-auth ConfigMap)
-
-IAM permissions alone don’t give access to Kubernetes. You must map the IAM user or role to a Kubernetes RBAC role.
-
-Edit the aws-auth ConfigMap
-The aws-auth ConfigMap controls who can access the cluster. To grant access:
-kubectl edit configmap aws-auth -n kube-system
+Go to AWS IAM → Users → Add User
+Set User Name (e.g., new-joiner)
+Select Programmatic Access
+Attach AmazonEKSClusterPolicy
+Save the Access Key ID and Secret Access Key
+👉 Using AWS CLI:
 
 
-Add the new user or role under mapUsers
-apiVersion: v1
-kind: ConfigMap
+aws iam create-user --user-name new-joiner
+aws iam attach-user-policy --user-name new-joiner --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+✅ At this point, the user can authenticate with AWS CLI but does NOT have EKS access yet.
+
+✅ Step 2: Grant EKS Access (AWS Console or EKS Cluster Terminal)
+By default, IAM users are NOT allowed to access the EKS cluster. The administrator must explicitly grant access.
+
+
+
+
+
+✅ Step 4: Configure kubectl for the New Joiner
+The new joiner must configure their local machine to access EKS.
+
+1️⃣ Install AWS CLI and kubectl (if not already installed).
+2️⃣ Configure AWS CLI with the user's credentials:
+
+
+aws configure
+3️⃣ Update the kubeconfig for the new user:
+
+
+
+aws eks update-kubeconfig --region us-east-1 --name my-cluster --role-arn arn:aws:iam::123456789012:user/new-joiner
+4️⃣ Verify access to the cluster:
+
+
+
+
+kubectl get nodes
+✅ If successful, the new joiner can now interact with the EKS cluster.
+
+✅ Step 5: Restrict Access with RBAC (Optional)
+If you don’t want to give full access (system:masters), create a RoleBinding:
+
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
 metadata:
-  name: aws-auth
-  namespace: kube-system
-data:
-  mapRoles: |
-    - rolearn: arn:aws:iam::123456789012:role/EKSWorkerRole
-      username: system:node:{{EC2PrivateDNSName}}
-      groups:
-        - system:bootstrappers
-        - system:nodes
-  mapUsers: |
-    - userarn: arn:aws:iam::123456789012:user/new-user
-      username: new-user
-      groups:
-        - system:masters
-
- the new joiner has admin access to the cluster. If you want limited access, assign them to a custom Kubernetes role.
--------------------------------------------------------------------------------------------------------------------
-Step 3: Configure kubeconfig for the New Joiner
-
-API server is private, the new joiner needs a kubeconfig with the correct certificate.
-
-Share kubeconfig with the New User
-
-On their machine, run:
-aws eks update-kubeconfig --region <your-region> --name <your-cluster-name> --role-arn arn:aws:iam::123456789012:role/<EKS_ACCESS_ROLE>
-
-or manually configure ~/.kube/config with:
-apiVersion: v1
-clusters:
-- cluster:
-    server: https://<private-api-endpoint>
-    certificate-authority-data: <base64-encoded-ca-cert>
-  name: my-private-cluster
-contexts:
-- context:
-    cluster: my-private-cluster
-    user: new-user
-  name: new-user-context
-current-context: new-user-context
-kind: Config
-preferences: {}
-users:
-- name: new-user
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      command: aws
-      args:
-        - "eks"
-        - "get-token"
-        - "--region"
-        - "<your-region>"
-        - "--cluster-name"
-        - "<your-cluster-name>"
-
-This ensures they can authenticate securely.
-------------------------------------------------------------------------------------------------------------------------
-Assign Kubernetes RBAC Role
-If the new joiner doesn’t need full admin access, create a RoleBinding:
-
-Create a Role
- Bind the Role to the User
-kubectl apply -f role.yaml
+  name: dev-access
+  namespace: dev
+subjects:
+  - kind: User
+    name: new-joiner
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: view
+  apiGroup: rbac.authorization.k8s.io
+sh
+Copy
+Edit
 kubectl apply -f rolebinding.yaml
-
----------------------------------------------------------------------------------------------------------------------------
-Step 5: Assign Tasks to the New Joiner
-Once access is set up, assign tasks based on their role. Some common tasks include:
-
--Deploy applications using kubectl apply -f
-- Troubleshoot Pods with kubectl logs
-- Monitor services with kubectl get services
-
-
+✅ This gives the new joiner "view" access to the dev namespace only.
 
 
 
