@@ -18,3 +18,4 @@ forwarding, attaching EBS volumes, and managing container networking. In Kuberne
 Deployments, ReplicaSets, Network Policies, StatefulSets, RBAC, and Ingress.
 
 I am still learning Kubernetes, and that’s a brief about me.
+test application at local env
