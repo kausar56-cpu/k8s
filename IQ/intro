@@ -19,3 +19,6 @@ Deployments, ReplicaSets, Network Policies, StatefulSets, RBAC, and Ingress.
 
 I am still learning Kubernetes, and that’s a brief about me.
 test application at local env
+migrating db with k8s application by extername
+create one troubleshooting container which contain all dependencies or packages -------
+any devolpwer wants pv
