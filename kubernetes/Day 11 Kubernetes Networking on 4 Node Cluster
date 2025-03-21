@@ -208,6 +208,7 @@ kubens dev
 allpods
 
 #Allow Ingress Traffic From dev To prod applied at prod Namespace
+ही NetworkPolicy prod namespace मधील Pods ला dev namespace मधून inbound (Ingress) traffic allow करते.
 ---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
