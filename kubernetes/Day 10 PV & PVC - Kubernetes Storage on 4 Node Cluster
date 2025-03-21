@@ -12,6 +12,31 @@ when pod will crte with that default volume also crete calles empty dir
 co1 - /etc - 123..file
 c02 -/tmp - atomatically we can able to see heare this file
 we are crteing file on munted location 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared-volume-pod
+spec:
+  containers:
+    - name: writer-container
+      image: busybox
+      command: [ "sh", "-c", "echo 'Hello from Writer' > /shared-data/message; sleep 3600" ]
+      volumeMounts:
+        - name: shared-volume
+          mountPath: /shared-data
+
+    - name: reader-container
+      image: busybox
+      command: [ "sh", "-c", "cat /shared-data/message; sleep 3600" ]
+      volumeMounts:
+        - name: shared-volume
+          mountPath: /shared-data
+
+  volumes:
+    - name: shared-volume
+      emptyDir: {}
+
 --------------------------------------------------------------------------------------------------------------------------------
 2. host path
 
@@ -48,7 +73,7 @@ PV -PVC
 types
 1.static
 2.dynamic
----------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 1.static
 if my devoplper requre some 4 gb volume he caaot attact dirctly to node 
 he should be clame it 
