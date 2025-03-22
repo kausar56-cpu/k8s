@@ -1,0 +1,86 @@
+
+
+---
+
+### **1. Docker Installation & Version Check**  
+- `docker --version` → Check Docker version  
+- `docker info` → Get system-wide Docker information  
+
+---
+
+### **2. Docker Images**  
+- `docker pull <image>` → Download image from Docker Hub  
+- `docker images` → List all images  
+- `docker rmi <image>` → Remove an image  
+- `docker rmi -f $(docker images -aq)` → **Delete all images**  
+
+---
+
+### **3. Docker Containers**  
+- `docker run <image>` → Run a new container  
+- `docker ps` → List running containers  
+- `docker ps -a` → List all containers  
+- `docker stop <container>` → Stop a running container  
+- `docker start <container>` → Start a stopped container  
+- `docker restart <container>` → Restart a container  
+- `docker rm <container>` → Remove a container  
+- `docker rm -f $(docker ps -aq)` → **Delete all containers**  
+
+---
+
+### **4. Docker Logs & Monitoring**  
+- `docker logs <container>` → View logs of a container  
+- `docker stats` → Show real-time container statistics  
+- `docker top <container>` → Show running processes inside a container  
+- `docker inspect <container>` → Get detailed information about a container  
+
+---
+
+### **5. Docker Networks**  
+- `docker network ls` → List networks  
+- `docker network create <network>` → Create a new network  
+- `docker network inspect <network>` → Inspect network details  
+- `docker network connect <network> <container>` → Connect container to a network  
+- `docker network disconnect <network> <container>` → Disconnect container from a network  
+- `docker network rm <network>` → Remove a network  
+
+---
+
+### **6. Docker Volumes (Storage)**  
+- `docker volume ls` → List volumes  
+- `docker volume create <volume>` → Create a new volume  
+- `docker volume inspect <volume>` → Inspect a volume  
+- `docker volume rm <volume>` → Remove a volume  
+- `docker volume prune` → **Delete unused volumes**  
+
+---
+
+### **7. Docker Build & Push**  
+- `docker build -t <image-name> .` → Build an image from Dockerfile  
+- `docker tag <image> <repo>:<tag>` → Tag an image  
+- `docker push <repo>:<tag>` → Push image to Docker Hub  
+- `docker history <image>` → Show image history  
+
+---
+
+### **8. Docker Compose (Multi-container applications)**  
+- `docker-compose up` → Start all services  
+- `docker-compose down` → Stop and remove containers  
+- `docker-compose logs` → Show logs of all services  
+
+---
+### **9. Docker Exec & Attach**  
+- `docker exec -it <container> bash` → Open shell in running container  
+- `docker attach <container>` → Attach to a running container  
+
+
+### **10. Docker Cleanup Commands**  
+- `docker system prune` → Remove unused data  
+- `docker system prune -a --volumes` → **Delete everything (containers, images, networks, volumes)**  
+
+---
+
+
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker system prune -a --volumes
