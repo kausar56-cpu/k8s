@@ -12,3 +12,10 @@ Common HTTP Errors and Their Causes:
 503 Service Unavailable – The server is overloaded or under maintenance.
 
 504 Gateway Timeout – A request to an upstream server took too long.
+
+k8s -1.29
+jenkins - 2.4.26
+git- 2.42
+docker - 27.3.1
+teraform -1.61
+linux - 6.5.7
