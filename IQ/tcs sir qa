@@ -44,29 +44,176 @@ One2N:
 ====== 
 
 CI CD is different in ur project ?
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Did you do only one time jar file in maven in ci cd also you are doing it docker file ?
+
+### **Question:** Do you build the JAR file only once in Maven during CI/CD, or do you also build it in the Dockerfile?  
+
+✅ **Answer:** The **JAR file should be built only once** in the CI/CD pipeline using Maven. In the Dockerfile, 
+you should **copy** the pre-built JAR instead of building it again.  
+
+### **Best Practice Approach** (CI/CD + Docker)  
+1. **CI/CD Pipeline:**  
+   - Build the JAR using Maven (`mvn package`).  
+   - Store the JAR in an artifact repository (e.g., Nexus, Artifactory, or S3).  
+
+2. **Dockerfile:**  
+   - Use a multi-stage build **if necessary**, or just copy the pre-built JAR.  
+
+### **Example Dockerfile (Copying Pre-built JAR)**  
+```dockerfile
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY target/myapp.jar myapp.jar  # ✅ Copy pre-built JAR
+CMD ["java", "-jar", "myapp.jar"]
+```
+🚀 This ensures efficient builds and avoids rebuilding the JAR inside the Docker image.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 How services wil communicate ? talk with each other in kubernetes ?
 Could you tell me end to end setup for kubernetes cluster for ELK from scratch how its things works and how to implement?
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
 In eks cluster How will you know that this the authentication is valid user ?
+
+kubectl auth can-i create deployment ----> yes
+kubectl auth can-i delete nodes ------> no
+kubectl auth can-i create deployment --as dev-user ----> no
+kubectl auth can-i create pods --as dev-user -----> yes
+kubectl auth can-i create pods --as dev-user --namespace test ----> no
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 How to check port of services running in linux ?
 what is the difference between demonset and replicaset ?
 how will you set up elk from scratch for kubernetes nodes ?
 How you setup basic setup for kibana using deployement file ? 
 workflow of ELK ?
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+What is Nginx?
+Nginx is a high-performance web server, reverse proxy, and load balancer. It is widely used for handling large amounts of traffic efficiently.
+
+Key Features of Nginx:
+✅ Web Server – Serves static and dynamic web pages
+✅ Reverse Proxy – Forwards client requests to backend servers
+✅ Load Balancer – Distributes traffic across multiple servers
+✅ Security – Supports SSL/TLS, authentication, and rate limiting
+✅ Caching – Improves website performance by storing frequently accessed content
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 =========
 Deloitte:
 =========
 1. Could you give an introduction yourself and your daily activities as a DevOps engineer?
 2. In Terraform, I’ve created a database with sensitive information like a password, and I don't want it to appear in the output. How can I do that?
-3. Which parameter do I need to pass in Terraform to avoid displaying sensitive information like a password in the output ?
+3
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 4. In a Dockerfile, which user performs what action, and how can I specify the user ?
+
+### **User Management in a Dockerfile: Detailed Explanation**  
+
+By default, Docker containers run as the **root user**, which has full system privileges.
+This can be a security risk. To improve security and control, Docker allows you to **specify a different user** using the `USER` instruction.
+
+---
+
+### **How to Specify a User in a Dockerfile?**  
+You can define a user in the Dockerfile using the following steps:
+
+1. **Create a New User** (if not already present).  
+2. **Switch to that User** using the `USER` instruction.  
+
+#### **Example: Running as a Non-Root User**
+```dockerfile
+# Use an official base image
+FROM ubuntu:latest
+
+# Create a new user 'myuser' and its home directory
+RUN useradd -m myuser
+
+# Switch to the new user
+USER myuser
+
+# Set the working directory for this user
+WORKDIR /home/myuser
+
+# Default command
+CMD ["bash"]
+```
+✅ Now, all commands run in the container will be executed as **`myuser`** instead of **`root`**.
+
+---
+
+### **Understanding Which User Performs What Action**
+| **Action**                      | **User Responsible** |
+|---------------------------------|----------------------|
+| Install system packages         | **Root (Default)**   |
+| Run application processes       | **Non-root user**    |
+| Modify system files             | **Root user**        |
+| Access user-specific files      | **Non-root user**    |
+
+---
+
+### **Why Use a Non-Root User in Docker?**
+✅ **Security** – Reduces attack surface (if a hacker gains access, they won’t have root privileges).  
+✅ **Compliance** – Some environments (e.g., Kubernetes, OpenShift) **enforce** running containers as non-root.  
+✅ **Best Practices** – Prevents accidental system-wide changes in the container.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 5. What are the different networking types in Docker ?
 6. What is the difference between a bridge network and an overlay network in Docker ?
 7. How does a user access an application deployed in a Kubernetes cluster? What is the process ?
 8. Let’s say there’s an application deployed in AWS, and we want it to be highly available. How can we achieve high availability ?
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 9. In Terraform, there is a database password in my configuration. How can I ensure that the password does not appear in the output ? Which parameter should I use?
+प्रश्न: Terraform मध्ये डेटाबेसचा पासवर्ड आउटपुटमध्ये दिसू नये यासाठी काय करावे?
+### **How to Hide Sensitive Data in Terraform Output?**  
+
+To **prevent the database password** from appearing in Terraform output, use the **`sensitive`** argument.
+
+### **Example: Marking a Variable as Sensitive**  
+```hcl
+variable "db_password" {
+  description = "Database password"
+  type        = string
+  sensitive   = true   # ✅ Hides the value in Terraform output
+}
+```
+
+### **Example: Using `sensitive` in Outputs**  
+```hcl
+output "db_password" {
+  value     = var.db_password
+  sensitive = true   # ✅ Ensures Terraform does not display this value
+}
+```
+
+### **Alternative: Store Password Securely**
+- Use **AWS Secrets Manager** or **HashiCorp Vault** instead of hardcoding passwords.  
+- Use Terraform **`TF_VAR_db_password`** environment variable instead of storing it in code.  
+
+Would you like a best-practice example for securing secrets in Terraform? 🚀
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 10. What is the difference between SLO (Service Level Objective) and SLA (Service Level Agreement) ?
+
+### **SLO vs. SLA: Key Differences**  
+
+| **Aspect**               | **SLO (Service Level Objective)** | **SLA (Service Level Agreement)** |
+|--------------------------|---------------------------------|----------------------------------|
+| **Definition**           | A **target** for service reliability and performance | A **contract** between service provider and customer defining expectations |
+| **Purpose**             | Internal goal for system uptime, latency, etc. | Legal agreement ensuring commitments to customers |
+| **Enforcement**         | Not legally binding, used for monitoring and improvement | Legally binding, can lead to penalties if violated |
+| **Example**             | "99.9% uptime goal for a service" | "99.9% uptime guaranteed, or customer gets a refund" |
+| **Scope**               | Used by internal teams (SRE, DevOps) | Defined between service provider and customer |
+| **Consequence of Breach** | Performance review, alerting | Financial penalties, refunds, or service credits |
+
+### **Summary:**  
+- **SLO** is an internal **goal** to measure service reliability.  
+- **SLA** is a **formal agreement** with customers, including penalties if not met.  
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 11. What is the difference between PV (Persistent Volume) and PVC (Persistent Volume Claim) ?
 12. Explain the Kubernetes architecture used in your project.
 13. Are you using stateful or stateless applications in your project ?
@@ -81,8 +228,79 @@ Deloitte:
 22. Which ingress controller are you using in your project?
 23. What is the difference between a rollback, a canary deployment, and a blue-green deployment in Kubernetes ?
 24. Scenario-based questions related to deployments in Kubernetes.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 25. Let’s take a scenario: I am creating an EC2 instance and attaching it to a VPC. How can I ensure the VPC is created first and then the EC2 instance?
+(Implicit Dependency)
+What is a Direct Reference (Reference) in Terraform?
+A direct reference in Terraform means using the output or attribute of one resource inside another resource directly.
+This helps Terraform automatically understand the correct order of resource creation.
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_subnet" "my_subnet" {
+  vpc_id     = aws_vpc.my_vpc.id  # VPC आधी तयार होईल कारण Subnet त्याचा वापर करते
+  cidr_block = "10.0.1.0/24"
+}
+
+resource "aws_instance" "my_instance" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.my_subnet.id  # Subnet तयार झाल्यावरच EC2 instance तयार होईल
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
 26. How do you ensure that a VPC is created before an EC2 instance in AWS using Terraform ?  
+Terraform मध्ये EC2 सुरू करण्याआधी VPC तयार कसे सुनिश्चित करावे?
+
+Terraform मध्ये VPC तयार झाल्यानंतरच EC2 सुरू होईल याची खात्री करण्यासाठी खालील पद्धती वापरता येतात:
+
+1️⃣ अप्रत्यक्ष अवलंबित्व (Implicit Dependency) – सर्वोत्तम पद्धत
+जर VPC चा संदर्भ EC2 मध्ये दिला असेल, तर Terraform आपोआप योग्य क्रमाने संसाधने तयार करतो.
+
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_subnet" "my_subnet" {
+  vpc_id     = aws_vpc.my_vpc.id  # VPC आधी तयार होईल
+  cidr_block = "10.0.1.0/24"
+}
+
+resource "aws_instance" "my_instance" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.my_subnet.id  # Subnet आधी तयार झाल्यावरच EC2 सुरू होईल
+}
+✔️ Terraform आधी VPC आणि Subnet तयार करेल आणि मग EC2 इंस्टन्स सुरू करेल.
+
+2️⃣ थेट अवलंबित्व (depends_on) – जर थेट संदर्भ नसेल तर
+कधी कधी EC2 ला VPC ची थेट लिंक लागत नाही, अशावेळी depends_on वापरून क्रम सुनिश्चित करू शकतो.
+
+hcl
+Copy
+Edit
+resource "aws_instance" "my_instance" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = "t2.micro"
+  
+  depends_on = [aws_vpc.my_vpc]  # EC2 सुरू होण्याआधी VPC तयार होईल
+}
+✔️ VPC तयार झाल्याशिवाय EC2 इंस्टन्स सुरू होणार नाही.
+
+🔹 निष्कर्ष
+✅ थेट संदर्भ (Implicit Dependency) वापरणे सर्वोत्तम, कारण Terraform स्वयंचलितरित्या क्रम ठरवतो.
+✅ depends_on वापरा, जर थेट संदर्भ नसेल पण VPC आधी तयार होणे आवश्यक असेल. 🚀
+
+✅ Use implicit dependencies (referencing another resource) whenever possible.
+✅ Use depends_on if no direct reference exists but an order must be enforced. 🚀
+---------------------------------------------------------------------------------------------------------------------------------------------
 27. What is Ansible, and why do we use it ?
 
 ===========  
@@ -90,11 +308,102 @@ Broadridge:
 =========== 
 
 What is CI ?
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Why we use jenkins If we can do everything on local ? 
+
+✅ 1. Automation & Continuous Integration – No need for manual builds/tests.
+✅ 2. Centralized CI/CD Pipeline – Ensures consistency across teams.
+✅ 3. Scalability – Runs on multiple agents (remote nodes).
+✅ 4. Scheduled & Triggered Builds – Automates based on commits or schedules.
+✅ 5. Parallel Execution – Reduces build time with multiple machines.
+✅ 6. Security & Access Control – Role-based access, logs, and approvals.
+✅ 7. Artifact Storage – Integrates with AWS S3, Nexus, and Artifactory.
+✅ 8. Tool & Cloud Integrations – Works with Docker, Kubernetes, Terraform, etc.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Let's takes example I have installed application in EC2 instance how you forward the log to the cloud watch ?
+
+### **Forwarding EC2 Logs to CloudWatch**  
+
+To send logs from an **EC2 instance** to **AWS CloudWatch**, follow these steps:  
+
+---
+
+### **1️⃣ Install & Configure CloudWatch Agent**
+1. **Install the CloudWatch Agent** on the EC2 instance:  
+   ```sh
+   sudo yum install -y amazon-cloudwatch-agent  # Amazon Linux
+   sudo apt-get install -y amazon-cloudwatch-agent  # Ubuntu/Debian
+   ```
+
+2. **Configure the CloudWatch Agent:**  
+   ```sh
+   sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+   ```
+   - Select **logs** and specify the log file path (e.g., `/var/log/myapp.log`).  
+   - Choose **log group** name in CloudWatch.  
+
+3. **Start the CloudWatch Agent:**  
+   ```sh
+   sudo systemctl start amazon-cloudwatch-agent
+   sudo systemctl enable amazon-cloudwatch-agent
+   ```
+
+---
+
+### **2️⃣ Manually Configure CloudWatch Logs (Optional)**
+Instead of using the wizard, create a **CloudWatch agent config file**:
+
+```json
+{
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/myapp.log",
+            "log_group_name": "MyAppLogs",
+            "log_stream_name": "{instance_id}",
+            "timestamp_format": "%Y-%m-%d %H:%M:%S"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+1. **Save the file as** `/opt/aws/amazon-cloudwatch-agent/bin/config.json`  
+2. **Apply the config and restart the agent:**  
+   ```sh
+   sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+   ```
+
+---
+
+### **3️⃣ Verify Logs in CloudWatch**
+Go to **AWS Console → CloudWatch → Log Groups** and check if the logs are streaming.  
+
+✅ **Now your EC2 application logs are being forwarded to AWS CloudWatch!** 🚀
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Write replicaset manifest files ?
 Write a python programme which retrives ebs volume from AWS ?
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 How to take backup of EC2 instance through automation ?
+#!/bin/bash
+
+# Define variables
+INSTANCE_ID="i-xxxxxxxxxxxxxxxxx"  # Replace with your EC2 ID
+DATE=$(date +%Y-%m-%d-%H-%M-%S)
+DESCRIPTION="Backup-$INSTANCE_ID-$DATE"
+
+# Get Volume ID
+VOLUME_ID=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId" --output text)
+
+# Create snapshot
+aws ec2 create-snapshot --volume-id $VOLUME_ID --description "$DESCRIPTION"
+
+echo "Snapshot created for EC2 instance $INSTANCE_ID"
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 write manifest file for replicaset take replicaset number as 5 ? 
 Replicaset and Deployment diff ?
 How to send image to ECR on specific repository ? ---> docker push <account-id>.dkr.ecr.<region>.(link unavailable)<repository-name>:<image-tag>
@@ -102,38 +411,142 @@ End to end flow of EFK ?
 Could tell me if I want install fluentbit on Kubernetes Cluster how can you do it ?
 What are jenkins plugins you are using in your projects ?
 What is plugins ?
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 Write a script to reverse the string ?
+
+#!/bin/bash
+
+# Read input
+read -p "Enter a string: " str
+
+# Reverse the string using `rev` command
+echo "Reversed: $(echo "$str" | rev)"
+
+Enter a string: hello
+Reversed: olleh
+------------------------------------------------------------------------------------------------------------------------------------------------------
 Write a Python script to find concurrency in mentioned array (this is soham) ?
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 Write a Python script to find out large number from a list ( list = [12,14,16,18] ) ?
 
+#!/bin/bash
+numbers=(12 14 16 18)
+max=${numbers[0]}
+
+for num in "${numbers[@]}"; do
+  [ "$num" -gt "$max" ] && max=$num
+done
+
+echo "Largest: $max"
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
 ================
 Maruti Tech Labs
 ================
 
 Docker I want to run docker image how will you that which os will it run on like windows or linux 
 docker networking types
+------------------------------------------------------------------------------------------------------------------------------
 two containers are running on default networking can they talk with each other ?
+yes, but if network is different then it will not communicate
+------------------------------------------------------------------------------------------------------------------------------
 
 vpc end points ?
 RDS 
 cloudfront - 
 route53 - policy types and how we check health check ?
-Let's take there is an person who created pods in kubernetes without creating deployment files and labels and now you want check it its created by default lables now 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Let's take there is an person who created pods in kubernetes without creating deployment files and labels and now you want check
+एका व्यक्तीने Kubernetes मध्ये पॉड्स तयार केले, पण कोणतेही Deployment फायली आणि लेबल्स वापरले नाहीत. तुम्हाला हे तपासायचे असेल, तर कोणते आदेश वापराल?
+
+kubectl get pods -o wide
+kubectl get pods --show-labels
+kubectl get pods -A --field-selector metadata.ownerReferences[].kind!=ReplicaSet
+🔹 याने असे पॉड्स दिसतील जे कोणत्याही Deployment किंवा ReplicaSet द्वारे व्यवस्थापित केले जात नाहीत.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+it its created by default lables now 
 Want change label how can you do that ? 
 kubectl get pod <pod-name> --show-labels
 kubectl label pod <pod-name> <label-key>=<label-value> --overwrite
 kubectl label pod my-pod environment=production --overwrite
-If let's take example there two application which deployed i.e two pods running on two differenet nodes in two different nodes now I want drain out 2 pods on one node that pods 
-and want to run it on single node  how can I do that ?
-There are different env like dev and staging there are modules of each resource if i want run my ec2 with duplication on terraform shall i do that?
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+You have two applications running as two pods on two different nodes in a Kubernetes cluster.
+Now, you want to drain these pods from one node and make both pods run on a single node.
+
+kubectl get pods -o wide
+🔹 This will show the node name where each pod is running.
+
+kubectl cordon <node-name>
+🔹 This marks the node as unschedulable so that new pods will not be scheduled on it.
+
+kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
+🔹 This command evicts all running pods (except DaemonSet pods) from the node.
+
+🚨 Note: If pods are managed by a Deployment, ReplicaSet, or StatefulSet, Kubernetes will automatically reschedule them.
+
+Step 4: Ensure Pods Run on a Specific Node
+To force the pods to run on a single node, apply node affinity or a nodeSelector in the pod’s YAML:
+Option 1: Using nodeSelector
+Edit the deployment YAML and add:
+
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: <preferred-node-name>
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+If I have different environments like dev and staging, and I use Terraform modules for each resource, 
+can I run multiple EC2 instances with duplication using Terraform?
+
+Yes! You can duplicate EC2 instances using count or for_each inside Terraform modules.
+module "ec2_instance" {
+  source  = "./modules/ec2"  # Path to EC2 module
+  count   = 2  # Create 2 identical instances
+  env     = "dev"
+}
+Use count if you want identical EC2 instances.
+
+Use for_each if you want customized instances with different configurations.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 What is null resource in terraform ?
+A null_resource in Terraform is like a dummy resource that does not create anything but is used to run scripts or trigger actions when something changes.
+
+1️⃣ Run Scripts Without Creating Resources
+
+You can execute a script locally or on a remote server when running terraform apply.
+
+2️⃣ Trigger Actions Based on Changes
+
+If a resource changes, null_resource can detect it and run a command.
+
+3️⃣ Work With Provisioners
+
+Used with local-exec or remote-exec to run custom scripts.
+
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo 'Terraform executed this script!'"
+  }
+}
+When you run terraform apply, it prints the message but does not create any infrastructure.
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 ========== 
 Cloudraft
 ==========
 
-How you store sectrets in kubenernetes like in sectret manager let's take you have created secrets how argocd knows that the particular 
-secret is not synceed means thats not be pushed. 
+How do you store secrets in Kubernetes (e.g., using Secret Manager), and how does ArgoCD detect that a particular secret is not synced (i.e., not pushed)?
+
 
 ==========
 
@@ -141,7 +554,44 @@ I  have deployed my application on ec2 instance and it's giving me 500 when user
 
 Docker
 cmd and entrypoint
-how you check the health of docker container have created mysql data base application by using statefulset now coz of some out of 4 1 pod is in crashloop backoff error now my question is 
-if the pod state changed from crashloop backoff to ready state will it change the name of pod like earlie was mysql-001 
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+how you check the health of docker container
+docker ps
+docker inspect --format='{{.State.Health.Status}}' container-name
+docker logs container-name --tail 50
+docker exec container-name healthcheck-command
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+have created mysql data base application by using statefulset now coz of
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+que. If a Kubernetes Pod is in a CrashLoopBackOff state and later changes to the Ready state, will the Pod name change?
+ans    No, the Pod name will remain the same if it recovers from CrashLoopBackOff to Ready.
+       The Kubernetes kubelet will restart the same Pod without changing its name.
+
+       If the Pod is managed by a Deployment or ReplicaSet, it will only get a new name if the Pod is deleted and recreated.
+
+      In a StatefulSet, even if the Pod is deleted and recreated, the name will stay the same (e.g., mysql-0).
+
+      Only if the Pod is completely replaced (e.g., via a new Deployment rollout) will the name change.
+
+🔥 When Does a Pod Name Change?
+1️⃣ If the Pod is deleted and recreated (manually or by the Deployment).
+2️⃣ If a new rollout happens (e.g., updating the Deployment).
+3️⃣ If the Pod is managed by a ReplicaSet and it replaces the old Pod.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 terraform there is an ebs there are different env dev env and staging env now i am doing terraform plan but changing the tag of that ebs how will you fix it 
+तुम्ही Terraform plan चालवत असताना जर EBS व्हॉल्यूमचा tag बदलला असेल आणि Terraform त्याला recreate (delete & create) करायला निघत असेल, तर खालील उपाय वापरू शकता.
+
+ans.  To fix this issue, ensure that the EBS volume uses lifecycle { ignore_changes = ["tags"] } to prevent unnecessary replacement when only the tag is changed.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 I want to know the the ip of my mysql container without running exec command in docker as well in k8s
+docker inspect
+kubectl get pod -o wide | grep mysql
+kubectl get svc mysql-service-name -o jsonpath='{.spec.clusterIP}'
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
