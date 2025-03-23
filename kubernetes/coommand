@@ -94,7 +94,8 @@ kubectl delete pod -l env=testing
 
 
 
-kubectl patch deployment deployment-name -p '{"spec":{"replicas":5}}' # Updates the number of replicas for a deployment to 5.
+kubectl patch deployment deployment-name -p '{"spec":{"replicas":5}}' # 
+Updates the number of replicas for a deployment to 5.
 kubectl patch service service-name -p '{"spec":{"type":"LoadBalancer"}}'
 # Updates the service type to LoadBalancer.
 
