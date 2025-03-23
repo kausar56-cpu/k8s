@@ -1,3 +1,11 @@
+create ca.crt and ca.key
+crte user 
+add this user in kube config file 
+then crete role and bind
+
+
+
+
 What is kubectx?
 kubectx is a CLI tool that simplifies switching between multiple Kubernetes contexts in a kubeconfig file. 
 Instead of using kubectl config use-context, you can use a short and quick command.
