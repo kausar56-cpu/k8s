@@ -15,3 +15,4 @@ pods does have default temp space which is clled as empty dir
 nano default.config
 
 /var/run/secrets/kubernetes.io/serviceaccount/token
+aws eks update-kubeconfig --region us-east-1 --name my-cluster --role-arn arn:aws:iam::123456789012:user/new-joiner
