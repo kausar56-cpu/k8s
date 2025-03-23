@@ -594,4 +594,47 @@ docker inspect
 kubectl get pod -o wide | grep mysql
 kubectl get svc mysql-service-name -o jsonpath='{.spec.clusterIP}'
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+ Answer: Restrict AWS Usage to Only 2 Regions
+To allow AWS services only in 2 regions and restrict all others, use Service Control Policies (SCPs) in AWS Organizations.
+
+✅ Solution: Create an SCP Policy
+1️⃣ Go to AWS Organizations → Service Control Policies
+2️⃣ Create a new SCP with this JSON:
+
+json
+Copy
+Edit
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": ["us-east-1", "us-west-2"]
+        }
+      }
+    }
+  ]
+}
+🔹 This denies all actions outside us-east-1 and us-west-2.
+🔹 Attach this SCP to the required OU (Organizational Unit) or AWS accounts.
+
+✅ Result: AWS services will only work in us-east-1 and us-west-2, while all other regions are restricted.
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+🔹 Answer: Upgrade EC2 Instance Type (T2 → M4)
+To upgrade an EC2 instance from t2 to m4, follow these steps:
+
+✅ Option 1: Using AWS Console
+1️⃣ Stop the EC2 instance (Instance State → Stop).
+2️⃣ Go to Instance Settings → Change Instance Type.
+3️⃣ Select the new instance type (e.g., m4.large).
+4️⃣ Click Apply and Start the instance.
+ Best Practice: Plan maintenance downtime if using a single instance. If running multiple instances, use Auto Scaling and Load Balancing to avoid downtime.
+
+
 
