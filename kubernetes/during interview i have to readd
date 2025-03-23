@@ -12,3 +12,4 @@ PODS: PODS ARE NOTHING BUT, ITS A WRAPPER WHICH CONTAINS ONE OR MORE CONTAINERS
 pods does have default temp space which is clled as empty dir
 --------------------------------------------------------------------------------------------------------
 /var/run/secrets/kubernetes.io/serviceaccount/token
+nano default.config
