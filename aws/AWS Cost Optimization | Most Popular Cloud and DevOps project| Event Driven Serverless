@@ -11,3 +11,17 @@ TO Fetch all ebs sanpshot -
 to filter out sanpshot that are stale resource we will delete san
 default excution time lambda is 3 sec
 create iam role attach policy cost -optimization-policy|aws lambda basicexcution role
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSnapshots",
+        "ec2:DeleteSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
