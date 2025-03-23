@@ -27,3 +27,7 @@ then crete role and bind
 1.  init 
 2.adapter
 3.Ambassador Containers
+
+
+quota = NS level
+limit = conatainer level 
