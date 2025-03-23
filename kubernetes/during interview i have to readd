@@ -11,3 +11,4 @@ in realtime k8s cluster deploy with help only KOPS only becoz
 PODS: PODS ARE NOTHING BUT, ITS A WRAPPER WHICH CONTAINS ONE OR MORE CONTAINERS
 pods does have default temp space which is clled as empty dir
 --------------------------------------------------------------------------------------------------------
+/var/run/secrets/kubernetes.io/serviceaccount/token
