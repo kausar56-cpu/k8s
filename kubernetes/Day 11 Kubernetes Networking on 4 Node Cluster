@@ -175,28 +175,27 @@ pod communication in single ns                 -------------vimp
 
 #This Policy Will Allow Traffic Between PODs in prod NS with Label ns=prod
 ---
-kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
   name: allow-traffic-within-prod-namespace
-  namespace: prod
+  namespace: prod  # हे 'prod' namespace मध्ये लागू होईल
 spec:
-  podSelector: 
-   matchLabels:
-    ns: prod
+  podSelector: {}  # 'prod' namespace मधील सर्व पॉड्ससाठी
   policyTypes:
   - Ingress
   - Egress
   ingress:
   - from:
-    - podSelector:
+    - namespaceSelector:
         matchLabels:
-          ns: prod
+          kubernetes.io/metadata.name: prod  # 'prod' namespace मधीलच ट्रॅफिकला परवानगी
   egress:
   - to:
-    - podSelector:
+    - namespaceSelector:
         matchLabels:
-          ns: prod
+          kubernetes.io/metadata.name: prod  # फक्त 'prod' namespace मध्ये ट्रॅफिक जाऊ शकतो
+
 
 apply it
 login pod 1
