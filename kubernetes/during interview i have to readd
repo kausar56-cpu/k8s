@@ -23,3 +23,7 @@ create ca.crt and ca.key
 crte user 
 add this user in kube config file 
 then crete role and bind
+
+1.  init 
+2.adapter
+3.Ambassador Containers
