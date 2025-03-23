@@ -13,3 +13,5 @@ pods does have default temp space which is clled as empty dir
 --------------------------------------------------------------------------------------------------------
 /var/run/secrets/kubernetes.io/serviceaccount/token
 nano default.config
+
+/var/run/secrets/kubernetes.io/serviceaccount/token
