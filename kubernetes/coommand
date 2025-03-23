@@ -84,6 +84,14 @@ kubectl expose deployment deployment-name --port=80 --target-port=8080
 
 kubectl label pods pod-name app=myapp
 kubectl label nodes node-name disk=ssd
+kubectl label pod pod1 pod2 pod3 env=staging
+kubectl label pod my-pod env=development --overwrite
+kubectl label pod my-pod env-  #Remove the env label from a pod:
+kubectl get pod my-pod --show-labels
+kubectl get pods -l env=production
+kubectl delete pod -l env=testing
+
+
 
 
 kubectl patch deployment deployment-name -p '{"spec":{"replicas":5}}' # Updates the number of replicas for a deployment to 5.
