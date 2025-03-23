@@ -18,3 +18,8 @@ nano default.config
 aws eks update-kubeconfig --region us-east-1 --name my-cluster --role-arn arn:aws:iam::123456789012:user/new-joiner
  kubectx
 Licensed SSL Certificates /Let’s Encrypt
+
+create ca.crt and ca.key
+crte user 
+add this user in kube config file 
+then crete role and bind
