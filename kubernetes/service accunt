@@ -30,6 +30,18 @@
 
 ---
 
+How a Token is Mounted and Used for Authentication in a Pod (Simple Explanation)
+Token Mounting into the Pod:
+
+When a pod is created, Kubernetes assigns it a Service Account (default or custom).
+
+The token for this Service Account is automatically mounted inside the pod at:
+
+
+/var/run/secrets/kubernetes.io/serviceaccount/token
+
+The pod can read this token from the file.
+
 **👉 Example: How to create and use a Service Account?**  
 
 🔹 **Step 1: Create a Service Account**  
