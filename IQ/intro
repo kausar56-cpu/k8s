@@ -22,3 +22,6 @@ test application at local env
 migrating db with k8s application by extername
 create one troubleshooting container which contain all dependencies or packages -------
 any devolpwer wants pv
+assign a role directly to a  particular user 
+access a particular bucket, not all
+genrating temparary key to access s3 
