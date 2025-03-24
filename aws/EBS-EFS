@@ -24,6 +24,14 @@ Here are the key steps from your history in note format:
 - **Check Available Devices**:  
   - Use `lsblk` to ensure `/dev/xvdb1` or `/dev/xvdc1` exists and is properly recognized.
 
+/dev/ → This is the directory where all device files are stored in Linux.
+
+xvd → This prefix (xvd) indicates that it is a Xen Virtual Disk (used in virtualized environments like AWS EC2).
+
+b → The specific disk identifier. Disks are labeled alphabetically (xvda, xvdb, xvdc, etc.).
+
+1 → The partition number on the disk. Here, xvdb1 means it’s partition 1 on the disk xvdb.
+
 - **Create the Mount Point**:  
   - Use `sudo mkdir -p /ivo1` to create the mount point.
 
