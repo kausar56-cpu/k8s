@@ -44,3 +44,5 @@ docker run --rm -d --name mongodb -v mongodb:/data/db -p 27017:27017 mongo:lates
 sudo mkdir -p /kausar
 sudo mv /var/lib/docker /kausar
 sudo vim /etc/docker/daemon.json
+
+sc1 and sct
