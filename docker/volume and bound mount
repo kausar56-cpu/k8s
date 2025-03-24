@@ -86,6 +86,25 @@ Default behavior when no network is specified.
 ✅ Can communicate with other containers: Yes, via the host’s network.
 ✅ Can communicate with the internet: Yes, same as the host.
 ✅ Can be accessed directly from the host: Yes, no need for port mapping.
+
+
+
+4. Macvlan network 
+
+Here’s a similar breakdown for a **Macvlan network** in Docker:  
+
+✅ **Has an IP Address:** Yes, assigned from the **same subnet** as the host machine.  
+✅ **Can communicate with other containers:** Yes, if they are on the **same Macvlan network**.  
+✅ **Can communicate with the internet:** Yes, if the gateway is configured properly.  
+✅ **Can be accessed directly from the host:** **No, by default.**
+The host cannot communicate with Macvlan containers unless a workaround (such as an additional bridge interface) is used.
+
+usecase
+✅ **Legacy Applications** – Needs a unique MAC address for licensing or authentication.  
+✅ **Direct Network Integration** – Containers appear as separate physical devices.  
+✅ **Avoid Port Conflicts** – Each container gets its own IP, no need for `-p`.  
+✅ **Network Isolation** – Supports VLANs for multi-tenant setups.  
+✅ **High Performance** – Bypasses NAT, reducing latency for high-traffic apps.
 -----------------------------------------------------------------------------------------------------------------------------------------
 docker bound -mount
 docker run --rm -d --name app1 --network none kiran2361993/troubleshootingtools:v1
@@ -114,6 +133,8 @@ docker run -d --name container1 \
 ✅ डॉकर आपोआप एक व्हॉल्यूम तयार करतो, जो /var/lib/docker/volumes/ मध्ये स्टोअर होतो.
 ✅ जास्त सुरक्षित, कारण कंटेनरला थेट होस्ट डायरेक्टरी बदलण्याची गरज नसते.
 ✅ एकाच व्हॉल्यूमला अनेक कंटेनर्सशी जोडता येते, त्यामुळे डेटा शेअर करणे सोपे होते.
+container dont requred to change host dir directly
+single volume we can communicate with multiple containers
 
 📌 उदाहरण:
 
