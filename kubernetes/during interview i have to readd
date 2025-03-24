@@ -39,3 +39,8 @@ volume mount
 docker run --rm -d --name mongodb -v mongodb:/data/db -p 27017:27017 mongo:latest
 
 ✅ डॉकर आपोआप एक व्हॉल्यूम तयार करतो, जो /var/lib/docker/volumes/ मध्ये स्टोअर होतो
+
+
+sudo mkdir -p /kausar
+sudo mv /var/lib/docker /kausar
+sudo vim /etc/docker/daemon.json
