@@ -1,0 +1,125 @@
+"I worked on a credit card system for a major U.S. bank. The project covered everything from card issuance and approvals 
+to transaction processing and fraud detection.
+It was designed for premium customers, offering rewards, cashback, and personalized credit limits."
+
+
+
+1️⃣ Authentication & Authorization Service
+Role: Handles user authentication (login, OTP, MFA) and authorization (role-based access).
+
+Tech Stack: OAuth2, JWT, AWS Cognito, Keycloak
+
+Example: Users logging into the banking portal via SSO or 2FA.
+
+
+
+2️⃣ Customer Profile Service
+Role: Manages customer details (name, address, phone, KYC documents).
+
+Tech Stack: Spring Boot, PostgreSQL, AWS DynamoDB
+
+Example: Fetching customer details when applying for a new credit card.
+
+
+
+3️⃣ Credit Card Issuance Service
+Role: Handles requests for new credit cards, eligibility checks, and approval workflows.
+
+Tech Stack: Kafka (event-driven), MySQL, REST API
+
+
+
+Example: A user applies for a new card, and the request is processed asynchronously.
+
+4️⃣ Payment Processing Service
+Role: Handles transactions when a user swipes or enters card details online.
+
+Tech Stack: Node.js, Redis (cache), RabbitMQ (message queue)
+
+Example: Processing an e-commerce payment using the credit card.
+
+
+
+5️⃣ Fraud Detection Service
+Role: Detects suspicious transactions using AI/ML and triggers alerts.
+
+Tech Stack: Python, TensorFlow, AWS Lambda, ELK Stack
+
+Example: Blocking a high-value transaction from an unusual location.
+
+
+
+
+6️⃣ Statement & Billing Service
+Role: Generates credit card statements, tracks due payments, and calculates interest.
+
+Tech Stack: Spring Boot, MongoDB, Kafka (event streaming)
+
+Example: Sending a monthly statement via email with interest calculations.
+
+
+
+7️⃣ Rewards & Cashback Service
+Role: Tracks loyalty points, cashback offers, and redemptions.
+
+Tech Stack: Golang, Redis (real-time cache), PostgreSQL
+
+Example: Adding 5% cashback on a grocery transaction.
+
+
+8️⃣ Dispute Management Service
+Role: Handles user complaints for incorrect transactions and chargebacks.
+
+Tech Stack: Flask, Celery (task queue), MongoDB
+
+Example: A user files a dispute for an unauthorized transaction, and the case is assigned.
+
+
+9️⃣ Notification & Alerts Service
+Role: Sends SMS, email, and push notifications for payments, dues, and security alerts.
+
+Tech Stack: AWS SNS, Firebase, Twilio
+
+Example: Sending an OTP for an online transaction.
+
+
+🔟 Credit Limit & Risk Assessment Service
+Role: Manages credit limits, dynamic adjustments, and risk-based approvals.
+
+Tech Stack: Python, Apache Spark (Big Data), PostgreSQL
+
+Example: Automatically increasing a credit limit for a high-spending customer.
+
+
+### **Technical Stack & Architecture**  
+
+🚀 **Microservices Architecture**: Each module was independent and communicated efficiently for seamless processing.  
+
+🔧 **Tech Stack**: Used **Spring Boot, Kubernetes (EKS), Terraform**, and integrated with
+**AWS services** like **ECR, RDS, S3, SNS, and Load Balancer**.  
+
+🔐 **Security Measures**: Implemented **SSO (Single Sign-On), Active Directory (AD), KMS (Key Management Service), 
+and AWS Secrets Manager** for secure transactions.  
+
+📊 **Monitoring & Logging**: Used **EFK Stack (Elasticsearch, Fluentd, Kibana)** for real-time monitoring and log management.  
+
+⚙️ **Scalability & Performance**: Leveraged **Auto Scaling, EBS (Elastic Block Store), 
+and Load Balancer** to handle traffic spikes efficiently.
+
+
+### **Challenges & Solutions**  
+
+✅ **High Transaction Volume**: Used **Auto Scaling, ALB/NLB, and HPA** for efficient load handling.  
+✅ **Fraud Detection**: Integrated **ML models** for real-time fraud prevention.  
+✅ **Scaling & Performance**: Leveraged **EKS, Auto Scaling, and EBS** for seamless peak load management.
+
+
+
+Final Impact of the Project
+✅ Improved security with strong fraud detection.
+✅ Reduced transaction failures by implementing real-time monitoring.
+✅ Increased customer engagement through personalized rewards and cashback.
+✅ Scalable architecture capable of handling millions of transactions daily.
+
+
+
