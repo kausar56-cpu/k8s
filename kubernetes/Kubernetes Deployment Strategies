@@ -1,0 +1,80 @@
+### **Kubernetes Deployment Strategies**  
+
+Kubernetes offers various deployment strategies to ensure smooth application updates with minimal downtime. Here are the key strategies:  
+
+---
+
+### **1️⃣ Rolling Update (Most Common)**
+✅ Updates pods gradually, replacing old ones with new ones.  
+✅ Ensures **zero downtime** by keeping some old pods running until new ones are ready.  
+✅ Best for **regular updates** with minimal risk.  
+
+**Command:**  
+```sh
+kubectl set image deployment/myapp myapp=myimage:v2
+```
+
+---
+
+### **2️⃣ Blue-Green Deployment**  
+✅ Runs **two environments** (Blue = old, Green = new).  
+✅ Switches traffic from Blue to Green once testing is complete.  
+✅ Ensures **instant rollback** in case of failure.  
+✅ Requires **extra resources** (double environment).  
+
+**Example Workflow:**  
+- Deploy `v2` alongside `v1`.  
+- Test `v2` internally.  
+- Switch traffic to `v2`.  
+- Delete `v1` once stable.  
+
+---
+
+### **3️⃣ Canary Deployment**  
+✅ Gradually shifts traffic from old version to new version.  
+✅ **Low risk**, as only a small percentage of users see the new version initially.  
+✅ Used with **traffic splitting tools like Istio or Nginx**.  
+
+**Example Traffic Distribution:**  
+- 10% users → `v2`, 90% users → `v1`.  
+- Monitor errors.  
+- Slowly shift 50% → 100% to `v2`.  
+
+---
+
+### **4️⃣ Recreate Deployment**  
+✅ **Stops all old pods before deploying new ones**.  
+✅ Causes **downtime** but is simple and fast.  
+✅ Best for **major changes** where keeping old pods is risky.  
+
+**Command:**  
+```yaml
+strategy:
+  type: Recreate
+```
+
+---
+
+### **5️⃣ A/B Testing**  
+✅ Deploys different app versions to **specific user groups**.  
+✅ Ideal for testing new features **on selected users** before full rollout.  
+✅ Requires advanced **traffic management (e.g., Istio, Nginx, or custom logic)**.  
+
+---
+
+### **6️⃣ Shadow Deployment**  
+✅ **Clones real traffic** to a new version **without affecting users**.  
+✅ Used for testing **performance & bugs** in production-like environments.  
+✅ Ideal for **AI models, fraud detection systems, or high-risk updates**.  
+
+---
+
+### **Which Strategy Should You Use?**  
+- **Rolling Update** → Default, minimal risk, best for regular updates.  
+- **Blue-Green** → Safe & fast rollback but needs extra resources.  
+- **Canary** → Gradual rollout, good for new feature testing.  
+- **Recreate** → Quick reset but causes downtime.  
+- **A/B Testing** → User-targeted feature releases.  
+- **Shadow** → Testing without impacting real users.  
+
+Would you like examples for any of these? 😊
