@@ -1,0 +1,97 @@
+agent { label 'node-name' }  // Run on a specific node
+
+pipeline {
+    agent any
+
+    tools {
+        jdk 'jdk-17'
+    }
+
+    environment {
+        AWS_CREDENTIALS = credentials('aws-credentials')   // AWS credentials stored in Jenkins
+        EKS_CLUSTER = 'my-eks-cluster'                    // Replace with your EKS cluster name
+        SONARQUBE_SERVER = 'sonarqube-server'             // SonarQube server configured in Jenkins
+    }
+
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-repo.git'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=myapp'
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate Check') {
+            steps {
+                script {
+                    timeout(time: 3, unit: 'MINUTES') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "❌ Quality Gate failed: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build & Push Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t myapp:latest ."
+                    sh "aws ecr get-login-password | docker login --username AWS --password-stdin <AWS_ECR_URL>"
+                    sh "docker tag myapp:latest <AWS_ECR_URL>/myapp:latest"
+                    sh "docker push <AWS_ECR_URL>/myapp:latest"
+                }
+            }
+        }
+
+        stage('Deploy to EKS') {
+            steps {
+                script {
+                    sh "aws eks update-kubeconfig --name $EKS_CLUSTER"
+                    sh "kubectl apply -f deployment.yaml"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Deployment Successful!"
+        }
+        failure {
+            echo "❌ Deployment Failed!"
+        }
+    }
+}
+
+
+"In Jenkins, an agent (or node) is a machine that executes build jobs. By default,
+Jenkins pipelines run on any available agent (agent any). However, we can configure pipelines to run on a specific node
+using labels, which helps distribute workloads efficiently across different machines."
+
+
+"If we use agent any, Jenkins picks any available agent from the pool and runs 
+the pipeline. This is useful when we don't have any specific hardware or OS requirements."
+
+✅ How to explain?
+"If a pipeline requires a specific environment (e.g., a server with Java installed), 
+we use agent { label 'node-name' } to ensure the job runs on the correct node."
+
+
+
