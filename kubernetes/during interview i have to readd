@@ -46,3 +46,8 @@ sudo mv /var/lib/docker /kausar
 sudo vim /etc/docker/daemon.json
 
 sc1 and sct
+
+lsblk` to ensure `/dev/xvdb1` or `/dev/xvdc1` 
+sudo mkdir -p /ivo1
+sudo mount /dev/xvdb1 /ivo1`
+nano /etc/fstab -  /dev/xvdb1` mounted to `/ivo1
