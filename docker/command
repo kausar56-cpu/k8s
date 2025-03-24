@@ -1,4 +1,6 @@
 
+to see credential
+docker exec -it app1 env  
 
 ---
 
