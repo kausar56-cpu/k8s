@@ -404,7 +404,7 @@ build with paramiter - mde choice option ast 1,2,3 konti stage run krychi ti cho
  How can you configure Jenkins to trigger builds only when changes are pushed to specific branches (e.g., development branch), and how would you ensure that only successful builds are deployed to the staging environment?
 **************************************************************************************************************************************
 
-
+imp
 
 3. You have multiple teams working on different components of a complex application,
  each with its own Jenkins pipeline. How would you ensure consistency and standardization across these pipelines while 
@@ -419,7 +419,7 @@ Include in Pipelines: Teams can include this library in their Jenkinsfiles and c
 Version Control: Manage the shared library in a version control system to ensure versioning and proper updates.
 **********************************************************************************************************************************
 
-
+imp
 
 
 4. You need to deploy a new version of your application to the staging environment for testing.
@@ -798,7 +798,9 @@ Jenkins supports various job types including Freestyle projects, Pipelines, Mult
 Maven projects, and External jobs.
 
 
+
 ********************************************************************************************************************************s
+imp
 9.How do you configure email notifications in Jenkins?
 
 Install Email Extension Plugin:
@@ -1961,7 +1963,7 @@ Enter the path to the Maven installation directory in the "MAVEN HOME" field.
 Save the configuration and try running the pipeline again.
 
 ****************************************************************************************************************************
-
+imp
 Role-based Authorization Strategy
 
 -Configure Global Security in that select authorization onece select we will got RBAC 
