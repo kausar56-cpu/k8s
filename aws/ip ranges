@@ -1,4 +1,9 @@
 
+If your 10 AWS accounts are in AWS Organizations, use AWS Control Tower for governance,  ---------------------imp
+SCPs for restrictions, and SSM/CloudFormation StackSets for update
+
+
+----------------------------------------------------------------------------------
 Minimum CIDR Block: /28 (16 IP addresses)
 
 Maximum CIDR Block: /16 (65,536 IP addresses)
