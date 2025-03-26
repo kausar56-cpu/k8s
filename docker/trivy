@@ -1,0 +1,6 @@
+Output  Type       	   Command Example                     	Purpose
+Vulnerability Scan    	trivy image nginx:latest	  Find security issues in packages
+Misconfig Detection	    trivy image --scanners      config nginx	Detect security misconfigurations
+Secret Scan	            trivy image --scanners     secret nginx	Find sensitive data (API keys, passwords)
+License Compliance	    trivy image --scanners      license nginx	Identify licensing risks
+JSON Output	            trivy image -f json        nginx	Machine-readable report
