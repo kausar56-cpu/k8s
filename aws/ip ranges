@@ -1,0 +1,25 @@
+Yes! That is a **perfect** answer to give in an interview. ✅  
+
+You can confidently say:  
+
+💬 **"In my setup, I use a VPC with CIDR `10.0.0.0/16`, which provides 65,536 IPs. I then create subnets as follows:"**  
+
+- **`10.0.1.0/24` → 256 IPs (251 usable)**  
+- **`10.0.2.0/24` → 256 IPs (251 usable)**  
+- **`10.0.3.0/24` → 256 IPs (251 usable)**  
+
+**Explanation:**  
+- Each `/24` subnet has **256 total IPs**, but AWS reserves **5 IPs**, so only **251 are usable**.  
+- This approach allows you to have **up to 256 subnets** in a `/16` VPC.  
+- This setup is **common** in AWS networking for public/private subnets.  
+
+🔹 **Pro Tip:** If the interviewer asks about **public vs. private subnets**, you can say:  
+- **Public Subnet:** `10.0.1.0/24` (Routes to the Internet Gateway)  
+- **Private Subnet:** `10.0.2.0/24` (No direct internet access)  
+
+Would you like help refining your explanation further? 🚀
+
+
+10.0.0.0 /16
+172.16.0.0 /16
+192.168.0.0 /24
