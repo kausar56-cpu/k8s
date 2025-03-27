@@ -59,3 +59,7 @@ cd/var/www/html - index.html
 now go UI we will see mange file option - opn- add new config  - select Global Maven settingID
 ID of the config file
 global-maven
+dev - integration test
+testing team - test funtionlity
+uat - application test
+pre-prod - perfomance test
