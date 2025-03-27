@@ -54,3 +54,4 @@ nano /etc/fstab -  /dev/xvdb1` mounted to `/ivo1
 nlb attrubute
 
 versiong - propery
+cd/var/www/html - index.html
