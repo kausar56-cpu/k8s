@@ -51,3 +51,6 @@ lsblk` to ensure `/dev/xvdb1` or `/dev/xvdc1`
 sudo mkdir -p /ivo1
 sudo mount /dev/xvdb1 /ivo1`
 nano /etc/fstab -  /dev/xvdb1` mounted to `/ivo1
+nlb attrubute
+
+versiong - propery
