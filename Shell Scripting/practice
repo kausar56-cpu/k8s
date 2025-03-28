@@ -7,7 +7,7 @@ current time-300sec=5min
 time_threshold = $((current_time -300))
 
 find "$dir" -type f -newermt "$(date-d @ $ time_threshold + '%Y-%M-%D-%H-%M-%S'- Delete)
-
+-newermt finds files created or modified after a specific date.
 echo "files deleted sucessfully"
 
 
