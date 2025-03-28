@@ -1,3 +1,33 @@
+#!/bin/bash
+
+SERVICE="nginx"  # Change this to your service name
+
+#!/bin/bash
+
+SERVICE="nginx"  # Replace with your service name
+
+if systemctl is-active --quiet "$SERVICE"; then
+    echo "Yes, $SERVICE is running."
+else
+    echo "No, $SERVICE is not running."
+    systemctl restart servies
+fi
+
+-----
+#!/bin/bash
+
+SERVICE="$1"  
+
+if ps aux | grep -v grep | grep -q "$SERVICE"; then
+    echo "Yes, $SERVICE is running."
+else
+    echo "No, $SERVICE is not running."
+fi
+----------------------------------
+
+
+
+
 vim log.sh
 #!/bin/bash
 dir= "/root/" ----log path
