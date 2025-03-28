@@ -63,3 +63,19 @@ dev - integration test
 testing team - test funtionlity
 uat - application test
 pre-prod - perfomance test
+
+
+Performance branch marking
+tread dump and head dump
+Default Port no 2379
+Etcd
+Data stored -var/lib/e
+Vim/etc/k8s/manifest/etcd.yaml
+Yat hostpat mde var/Library/ Etcd/ Backup takych
+Ingress prfex and exact
+Pod created by Demonset ignored by kube shedudlar
+It's support rolling update
+It's does not support scalling
+tatic pod only created by kubelet 
+cat/var/lib/kubelet/config.yaml
+Ya mde /etc/k8d/manifest path bhet
