@@ -1,0 +1,15 @@
+
+
+Using **`terraform taint` (before deprecation)** or **`terraform apply -replace=<resource>` (recommended)** forces
+**Terraform to delete and then recreate the same resource** with the same configuration.  
+
+🔹 **Example:**  
+If you run:  
+
+terraform apply -replace=aws_instance.example
+
+Terraform will:  
+1️⃣ **Destroy (`delete`)** `aws_instance.example`.  
+2️⃣ **Create (`recreate`)** a new `aws_instance.example` with the same configuration.  
+
+Would you like a practical example with Terraform code? 😊
