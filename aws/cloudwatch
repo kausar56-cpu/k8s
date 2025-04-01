@@ -1,0 +1,19 @@
+Check EC2 CPU, Memory, Disk, and Network utilization using CloudWatch Metrics.
+
+Investigate spikes in resource usage (e.g., CPU > 80% for 5 mins).
+
+Verify that CloudWatch Alarms are working correctly (e.g., Low Disk Space).
+
+Action: If an instance shows high CPU for a long time, consider scaling or troubleshooting.
+------------------------------------------------------------------------------------------------------------------------------------
+
+Common Alarms to Monitor:
+
+EC2 CPU Utilization > 80%
+
+EBS Volume Usage > 90%
+
+Application Latency > 500ms
+
+RDS Free Storage < 20%
+--------------------------------------------------------------------------------------------------------------------------
