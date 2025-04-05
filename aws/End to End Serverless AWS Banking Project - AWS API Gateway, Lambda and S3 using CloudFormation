@@ -1,0 +1,3 @@
+we have retail user - who wants check accunt balance status - so he make api call to api gatway - which will invoke lambda funtion - 
+one lambda funtion invoke - it will run code - that in aws lambda funtion - then its read json object /files that we have witin s3 bucket 
+and retirn the value to api gatway - which will consume bt end user.
