@@ -64,6 +64,7 @@ testing team - test funtionlity
 uat - application test
 pre-prod - perfomance test
 
+access kibana through 5601
 
 Performance branch marking
 tread dump and head dump
