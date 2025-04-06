@@ -66,17 +66,25 @@ pre-prod - perfomance test
 
 access kibana through 5601
 
+discover option 
+
 Performance branch marking
 tread dump and head dump
+
 Default Port no 2379
 Etcd
-Data stored -var/lib/e
+
+Data stored -var/lib/etcd
 Vim/etc/k8s/manifest/etcd.yaml
 Yat hostpat mde var/Library/ Etcd/ Backup takych
+
 Ingress prfex and exact
+
 Pod created by Demonset ignored by kube shedudlar
 It's support rolling update
 It's does not support scalling
-tatic pod only created by kubelet 
+
+static pod only created by kubelet
+
 cat/var/lib/kubelet/config.yaml
 Ya mde /etc/k8d/manifest path bhet
