@@ -1,3 +1,39 @@
+
+
+
+
+--------------------------------------------------------
+Updates the system and removes unnecessary packages.
+
+#!/bin/bash
+
+echo "Updating system..."
+apt update && apt upgrade -y
+echo "Cleaning up old packages..."
+apt autoremove -y
+echo "System updated and cleaned."
+-----------------------------------------------------------------
+#!/bin/bash
+
+DB_NAME="production_db"
+BACKUP_DIR="/backup"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_backup_$TIMESTAMP.sql"
+
+mysqldump -u root -pYourPassword "$DB_NAME" > "$BACKUP_FILE"
+echo "Database backup saved at $BACKUP_FILE"
+-----------------------------------------------
+#!/bin/bash
+
+SRC_DIR="/var/log"
+BACKUP_DIR="/backup"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="backup_$TIMESTAMP.tar.gz"
+
+tar -czf "$BACKUP_DIR/$BACKUP_FILE" "$SRC_DIR"
+echo "Backup successful: $BACKUP_DIR/$BACKUP_FILE"
+
+----------------------------------------------------
 #!/bin/bash
 
 SERVICE="nginx"  # Change this to your service name
