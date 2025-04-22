@@ -61,6 +61,12 @@ if [ $? -eq 0 ]; then  # Check if the last command (aws --version) succeeded
 else
   echo "Incorrect command"
 fi
+--------------------------------------------------------------------------------------------------------------
+#!/bin/bash
+# A simple script using $@
+
+echo "All arguments passed to the script: $@"
+
 
 ------------------------------------------------------------------------------------------------------------------
 $*
