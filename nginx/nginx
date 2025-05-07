@@ -1,3 +1,43 @@
+Here are some commonly asked **NGINX interview questions**, categorized by difficulty level:
+
+---
+
+### ✅ **Basic Level**
+
+1. **What is NGINX and how does it differ from Apache?**
+2. **What are the main uses of NGINX?**
+3. **How do you install NGINX on Linux?**
+4. **What is the default port for NGINX?**
+5. **What is the difference between a server block and a location block in NGINX?**
+6. **Where is the default configuration file for NGINX located?**
+
+---
+
+### ⚙️ **Intermediate Level**
+
+7. **How does NGINX handle static and dynamic content?**
+8. **Explain reverse proxy and how NGINX implements it.**
+9. **How do you configure NGINX to serve as a load balancer?**
+10. **What is the difference between `proxy_pass` and `rewrite`?**
+11. **How do you enable HTTPS/SSL in NGINX?**
+12. **How can you restrict access to certain URLs in NGINX?**
+13. **How do you redirect HTTP to HTTPS in NGINX?**
+
+---
+
+### 🧠 **Advanced Level**
+
+14. **Explain how NGINX handles connection concurrency.**
+15. **What is the worker process model in NGINX?**
+16. **How do you configure caching in NGINX?**
+17. **How do you implement rate limiting in NGINX?**
+18. **What is the use of `try_files` in NGINX?**
+19. **How do you troubleshoot NGINX configuration errors?**
+20. **How can you monitor NGINX performance and logs?**
+
+---
+
+Would you like detailed answers or real-world scenario-based questions next?
 
 
 ### ✅ **Basic Level**
