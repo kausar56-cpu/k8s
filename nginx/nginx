@@ -1,0 +1,263 @@
+
+
+### ✅ **Basic Level**
+
+1. What is NGINX and how does it differ from Apache?
+   Answer: NGINX is a high-performance web server, reverse proxy, and load balancer.
+     It uses an **event-driven, asynchronous architecture, making it more efficient for handling high concurrency than Apache, which uses a **process/thread-based model**.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. **What are the main uses of NGINX?**
+   **Answer:**
+
+* Serving static files (HTML, CSS, JS, images)
+* Reverse proxying
+* Load balancing
+* Caching
+* SSL termination
+* API gateway
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+3. **How do you install NGINX on Linux?**
+   **Answer (Ubuntu):**
+
+
+sudo apt update
+sudo apt install nginx
+
+
+**Answer (RHEL/CentOS):**
+
+
+sudo yum install epel-release
+sudo yum install nginx
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. **What is the default port for NGINX?**
+   **Answer:** Port **80** for HTTP and port **443** for HTTPS.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. **What is the difference between a server block and a location block in NGINX?**
+   **Answer:**
+
+* **Server block**: Defines configuration for a domain/virtual host (like `server_name`, `listen`).
+* **Location block**: Used inside a server block to match specific request URIs and define how those requests should be processed.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+6. **Where is the default configuration file for NGINX located?**
+   **Answer:**
+   `/etc/nginx/nginx.conf` on most Linux systems.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+7. **How does NGINX handle static and dynamic content?**
+   **Answer:**
+
+* **Static content**: NGINX directly serves files from disk.
+* **Dynamic content**: NGINX proxies requests to application servers (e.g., PHP-FPM, Node.js, Python) using `proxy_pass`, `fastcgi_pass`, etc.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+8. **Explain reverse proxy and how NGINX implements it.**
+   **Answer:**
+   A reverse proxy sits in front of backend servers and forwards client requests to them. In NGINX:
+
+nginx
+location / {
+    proxy_pass http://backend_server;
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+9. **How do you configure NGINX to serve as a load balancer?**
+   **Answer:**
+
+`nginx
+upstream backend {
+    server app1.example.com;
+    server app2.example.com;
+}
+
+server {
+    location / {
+        proxy_pass http://backend;
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+10. **What is the difference between `proxy_pass` and `rewrite`?**
+    **Answer:**
+
+* `proxy_pass`: Forwards the request to another server.
+* `rewrite`: Modifies the URL of the request internally before processing.
+
+Example:
+
+```nginx
+rewrite ^/old$ /new permanent; # Changes URL from /old to /new
+proxy_pass http://app;         # Forwards request to backend
+```
+
+---
+-------------------------------------------------------------------------------------
+
+
+---
+
+### ⚙️ **Intermediate Level**
+
+11. **How do you enable HTTPS/SSL in NGINX?**
+    **Answer:**
+    You need an SSL certificate (from Let’s Encrypt or another CA). Example config:
+
+nginx
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate     /etc/ssl/certs/example.crt;
+    ssl_certificate_key /etc/ssl/private/example.key;
+
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+12. **How can you restrict access to certain URLs in NGINX?**
+    **Answer:** Use `allow` and `deny` directives:
+
+```nginx
+location /admin {
+    allow 192.168.1.0/24;
+    deny all;
+}
+```
+
+Or use basic authentication:
+
+```nginx
+location /secure {
+    auth_basic "Restricted Area";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}
+```
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+13. **How do you redirect HTTP to HTTPS in NGINX?**
+    **Answer:**
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+}
+```
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+14. **Explain how NGINX handles connection concurrency.**
+    **Answer:**
+    NGINX uses an **event-driven, non-blocking I/O model**, allowing a single worker process to handle thousands of simultaneous
+connections efficiently using epoll (Linux), kqueue (BSD), or similar APIs.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+15. **What is the worker process model in NGINX?**
+    **Answer:**
+
+* **Master process**: Manages configuration and spawns worker processes.
+* **Worker processes**: Handle client requests. Each worker can handle many connections concurrently.
+
+Defined in `nginx.conf`:
+
+```nginx
+worker_processes auto;
+```
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+16. **How do you configure caching in NGINX?**
+    **Answer:**
+    For static files:
+
+```nginx
+location ~* \.(jpg|css|js)$ {
+    expires 30d;
+    add_header Cache-Control "public";
+}
+```
+
+For proxy caching:
+
+```nginx
+proxy_cache_path /tmp/cache levels=1:2 keys_zone=my_cache:10m max_size=1g;
+
+location / {
+    proxy_cache my_cache;
+    proxy_pass http://backend;
+}
+```
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+17. **How do you implement rate limiting in NGINX?**
+    **Answer:**
+
+```nginx
+limit_req_zone $binary_remote_addr zone=mylimit:10m rate=1r/s;
+
+location / {
+    limit_req zone=mylimit burst=5;
+    proxy_pass http://backend;
+}
+```
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+18. **What is the use of `try_files` in NGINX?**
+    **Answer:**
+    `try_files` tries multiple files or URIs and returns the first one found:
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.html;
+}
+```
+
+Useful for SPAs or fallback routing.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+19. **How do you troubleshoot NGINX configuration errors?**
+    **Answer:**
+
+* Run `nginx -t` to test config
+* Check logs:
+
+  * Access log: `/var/log/nginx/access.log`
+  * Error log: `/var/log/nginx/error.log`
+* Use `curl -v`, `telnet`, or browser dev tools for request/response debugging.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+20. **How can you monitor NGINX performance and logs?**
+    **Answer:**
+
+* **Access/Error Logs**: For basic monitoring
+* **Stub status module**:
+
+```nginx
+location /nginx_status {
+    stub_status;
+    allow 127.0.0.1;
+    deny all;
+}
+```
+
+* Integrate with tools like:
+
+  * **Prometheus + Exporter**
+  * **Grafana**
+  * **Datadog / New Relic**
+
+---
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
