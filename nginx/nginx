@@ -89,6 +89,8 @@ sudo yum install nginx
 6. **Where is the default configuration file for NGINX located?**
    **Answer:**
    `/etc/nginx/nginx.conf` on most Linux systems.
+---------------------------------------------------------------------------------------------------------------
+var/log/nginx  -------error log and access log
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 7. **How does NGINX handle static and dynamic content?**
