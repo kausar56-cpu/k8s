@@ -1,0 +1,3 @@
+With AWS Systems Manager Session Manager, you secure SSH access by using its built-in capabilities, 
+eliminating the need for .pem keys. It allows you to start a session directly from the AWS Management Console, CLI, or SDKs,
+providing auditable and secure access without managing keys.
