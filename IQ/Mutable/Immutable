@@ -13,3 +13,84 @@ Safer for CI/CD pipelines.
 Ensures consistency and traceability.
 
 ✅ Use immutable tags in production to avoid deploying unintended images.
+-----------------------------------------------------------------------------------------------------------------
+You're right to clarify that — here's the corrected and simplified version:
+
+### 🔹 Can we change the private IP of a running EC2 instance?
+
+**No**, not while it's running.
+
+### 🔹 Can we change it after stopping the instance?
+
+**No**, because the private IP is assigned from the **VPC subnet** and tied to the **Elastic Network Interface (ENI)**.
+To change it, you must:
+
+* **Detach the current ENI**
+* **Attach a new ENI** with a different private IP from the same subnet
+
+So technically, it’s possible **only by replacing the ENI**, not by directly editing the IP.
+-----------------------------------------------------------------------------------------------------------------
+
+🚨 Issue: EC2 application is slow.
+
+✅ Troubleshooting Steps:
+Check CPU, memory, disk → top, free -m, df -h
+
+Check application logs → for errors or delays
+
+Check web server → Apache/Nginx status and logs
+
+Check network → ping, security groups, route tables
+
+Check CloudWatch → CPU, disk I/O, network metrics
+
+Fix based on issue → Restart app, resize EC2, optimize code
+
+------------------------------------------------------------------------------------------
+
+### ✅ Fixing Storage Issues on EC2 (Short Answer):
+
+1. **Check disk space:**
+   `df -h` → Find which volume is full
+
+2. **Clear space:**
+   Delete logs, temp files → `sudo rm -rf /var/log/*`, `/tmp/*`
+
+3. **Resize volume:**
+
+   * Go to **AWS Console → EC2 → Volumes**
+   * **Modify** volume size (e.g., from 8GB to 20GB)
+
+4. **Extend file system:**
+   After resizing, run:
+
+   * `sudo growpart /dev/xvda 1`
+   * `sudo resize2fs /dev/xvda1` (or `xfs_growfs` if using XFS)
+
+Done! Your storage issue is resolved.
+------------------------------------------------------------------
+### ✅ **CloudWatch Events vs Logs** (Short & Simple):
+
+---
+
+### 📅 **CloudWatch Events** (now called **EventBridge**):
+
+* Triggers **automated actions** based on AWS events.
+* Example:
+  “When an EC2 instance stops, send an email or start another instance.”
+
+---
+
+### 📄 **CloudWatch Logs**:
+
+* Stores and monitors **log files** from EC2, Lambda, RDS, etc.
+* Example:
+  “Application logs, system logs, error logs from EC2 are pushed to CloudWatch Logs for troubleshooting.”
+
+---
+
+### 🔑 Key Difference:
+
+* **Events = Action-based triggers**
+* **Logs = Log storage and analysis**
+-----------------------------------------------------------------------
