@@ -1,0 +1,15 @@
+🔁 Mutable Tag
+You can overwrite the same tag (e.g., latest) with a new image.
+
+Default behavior.
+
+❗Risk: Can lead to confusion or unexpected deployments.
+
+🔒 Immutable Tag
+Once pushed, the tag cannot be changed or overwritten.
+
+Safer for CI/CD pipelines.
+
+Ensures consistency and traceability.
+
+✅ Use immutable tags in production to avoid deploying unintended images.
