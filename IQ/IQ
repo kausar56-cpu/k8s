@@ -1,5 +1,46 @@
 how can you copy files from base machine to ec2 machine
+-----------------------------------------------------------
+3)If I want to connect ec2 to s3 bucket but i dont want to use internet gateway
+and nat gateway how will you establish communication between ec2
+and s3 without internet?
+
+"To allow EC2 in a private subnet to access S3 without using Internet Gateway or NAT Gateway, I would create 
+a VPC Gateway Endpoint for S3. It enables private, secure communication over the AWS network."
 ------------------------------------------------------------------------------------------------------
+4) My Frontend application is hosted on ec2 in public subnet.
+There are spikes in traffic sometimes. This Server is having slowness.
+How to handle this problem and provide best solution?
+
+Use Application Load Balancer (ALB) with an Auto Scaling Group (ASG) and CloudWatch alarms to handle traffic 
+spikes and ensure high availability. Optionally, use CloudFront to cache static content.
+---------------------------------------------------------------------------------------------------------
+8) Your Auto scaling group is implemented. Now suppose that
+your 80% cpu utilisations occurs, will it scale immediately
+or wait for 15 minutes then scale ?
+
+If you're using Target Tracking Policy (e.g., target CPU = 60%), and CPU reaches 80%,
+ten Auto Scaling will scale immediately — it does not wait 15 minutes.
+-------------------------------------------------------------------------------------------
+6)So now, There is CPU spike on your server and you scaled it up,
+but when cpu reaches back to the normal value, does your
+-
+scaling method policy scales it down or how it behaves?
+
+When CPU usage drops, Auto Scaling does not delete all EC2 instances suddenly. It scales down gradually
+but always respects the minimum instance count defined in the Auto Scaling Group.
+
+
+------------------------------------------------------------------------------------------------------
+7) What is cooldown period in aws auto scaling group?
+The cooldown period in an AWS Auto Scaling Group is a waiting time after a scaling activity
+(like scale in or scale out). During this time, no new scaling action will occur — it allows the s
+ystem to stabilize before evaluating metrics again.
+
+🔸 Example: If cooldown is 300 seconds, Auto Scaling will wait 5 minutes after launching an instance 
+before taking another scaling decision.
+
+
+---------------------------------------------------------------------------------------------------
 26) I have created vpc and other infrastructure using Terraform.
 Someone manually changed a rule in security group. If you run terraform
 apply now, how will it behave ?
