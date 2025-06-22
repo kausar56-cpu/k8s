@@ -7,6 +7,7 @@ and s3 without internet?
 "To allow EC2 in a private subnet to access S3 without using Internet Gateway or NAT Gateway, I would create 
 a VPC Gateway Endpoint for S3. It enables private, secure communication over the AWS network."
 ------------------------------------------------------------------------------------------------------
+
 4) My Frontend application is hosted on ec2 in public subnet.
 There are spikes in traffic sometimes. This Server is having slowness.
 How to handle this problem and provide best solution?
@@ -14,6 +15,7 @@ How to handle this problem and provide best solution?
 Use Application Load Balancer (ALB) with an Auto Scaling Group (ASG) and CloudWatch alarms to handle traffic 
 spikes and ensure high availability. Optionally, use CloudFront to cache static content.
 ---------------------------------------------------------------------------------------------------------
+
 8) Your Auto scaling group is implemented. Now suppose that
 your 80% cpu utilisations occurs, will it scale immediately
 or wait for 15 minutes then scale ?
@@ -21,6 +23,7 @@ or wait for 15 minutes then scale ?
 If you're using Target Tracking Policy (e.g., target CPU = 60%), and CPU reaches 80%,
 ten Auto Scaling will scale immediately — it does not wait 15 minutes.
 -------------------------------------------------------------------------------------------
+
 6)So now, There is CPU spike on your server and you scaled it up,
 but when cpu reaches back to the normal value, does your
 -
@@ -75,6 +78,20 @@ When a container runs, it uses an image as its base. If the container is still r
 ✅ How to delete the image:
 You must first stop and remove the container(s) using the image:
 --------------------------------------------------------------------------------------------
+
+12) How do you take care of cleanup of temporary files in
+workspace in jenkins ?
+To clean up temporary files in Jenkins workspace, we use the Delete workspace option or add cleanup steps in the pipeline using:
+
+groovy
+Copy
+Edit
+post {
+  always {
+    cleanWs()
+  }
+}
+-----------------------------------------------------------------------------------------------------------
 
 1. Write a Terraform code to create multiple S3 buckets
 2. How you managed statefile
