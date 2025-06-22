@@ -1,3 +1,10 @@
+Sure! Here's the **list of VPC endpoint types**:
+
+1. **Gateway Endpoint**
+2. **Interface Endpoint**
+3. **Gateway Load Balancer Endpoint**
+
+------------------------------------------------------------------------------------------------------------------------
 crete bucket s3 - add policy 
 ACLS enabled - uncheck public access 
 crete vpc 1 public and 1private subnet cwithout endpoint
