@@ -1,5 +1,7 @@
 how can you copy files from base machine to ec2 machine
-
+26) I have created vpc and other infrastructure using Terraform.
+Someone manually changed a rule in security group. If you run terraform
+apply now, how will it behave ?
 
 1. Write a Terraform code to create multiple S3 buckets
 2. How you managed statefile
