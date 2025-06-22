@@ -24,6 +24,16 @@ have access to aws console and have only vpc name?
 to fetch the VPC ID. Then, I’ll use aws_subnet_ids and aws_subnet data sources 
 to fetch a subnet inside the VPC and use that to launch the EC2 instance."
 ----------------------------------------------------------------------------------------------------------
+45) Can we delete the image out of which my container is running ?
+No, you cannot delete the image if a container is currently running from it.
+
+🔍 Explanation:
+When a container runs, it uses an image as its base. If the container is still running or even stopped
+(but exists), the image is in use, and Docker will not allow deletion.
+---------------------------------------------------------------------------------------------------
+✅ How to delete the image:
+You must first stop and remove the container(s) using the image:
+--------------------------------------------------------------------------------------------
 
 1. Write a Terraform code to create multiple S3 buckets
 2. How you managed statefile
