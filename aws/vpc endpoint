@@ -4,6 +4,34 @@ Sure! Here's the **list of VPC endpoint types**:
 2. **Interface Endpoint**
 3. **Gateway Load Balancer Endpoint**
 
+✅ Use Gateway Endpoint for:
+S3
+
+DynamoDB
+
+✅ Use Interface Endpoint for:
+All other AWS services like:
+
+SSM (AWS Systems Manager)
+
+Secrets Manager
+
+CloudWatch
+
+SNS, SQS
+
+KMS
+
+ECR (API)
+
+STS
+
+Lambda (invoke)
+
+✅ Use Gateway Load Balancer Endpoint for:
+Third-party or custom firewalls, security appliances, traffic inspection
+
+
 ------------------------------------------------------------------------------------------------------------------------
 crete bucket s3 - add policy 
 ACLS enabled - uncheck public access 
