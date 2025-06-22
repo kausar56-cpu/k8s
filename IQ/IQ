@@ -15,6 +15,15 @@ Remove or revert the manual change during terraform apply (if it’s not in the 
 If someone added a new inbound rule manually, and it's not in your Terraform code, terraform apply 
 will remove that rule to match the .tf configuration.
 ------------------------------------------------------------------------------------------------------------
+32) | have created a vpc manually on aws. Now you are writing Terraform
+configuration to create an ec2 inside this vpc. How will you do this if you dont
+have access to aws console and have only vpc name?
+
+
+"Since I only have the VPC name, I’ll use a data block in Terraform with a filter on the tag Name 
+to fetch the VPC ID. Then, I’ll use aws_subnet_ids and aws_subnet data sources 
+to fetch a subnet inside the VPC and use that to launch the EC2 instance."
+----------------------------------------------------------------------------------------------------------
 
 1. Write a Terraform code to create multiple S3 buckets
 2. How you managed statefile
