@@ -1,0 +1,4 @@
+| Strategy           | When to Use                                                                    | How it Works                                        |
+| ------------------ | ------------------------------------------------------------------------------ | --------------------------------------------------- |
+| **Rolling Update** | - Small, frequent updates<br>- Minimal resources available<br>- Tolerates risk | Replaces old version **in phases**                  |
+| **Blue-Green**     | - Big version changes<br>- High availability needed<br>- Zero downtime needed  | Deploys to **new environment**, then switch traffic |
