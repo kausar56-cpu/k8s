@@ -9,7 +9,9 @@
 ✅ **2️⃣ Configure Jenkins Job**  
 - **Install Plugins**:  
   - **GitHub Plugin** (for GitHub)  
-  - **Generic Webhook Trigger Plugin** (for others)  
+  - **Generic Webhook Trigger Plugin** (for others) 
+
+
 - **Go to Job → Configure → Build Triggers**  
   - ✅ **GitHub hook trigger for GITScm polling** (for GitHub)  
   - ✅ **Trigger builds remotely (Generic Webhook Plugin)** (for other sources)  
@@ -18,3 +20,4 @@
 - Push a commit → Jenkins should trigger automatically 🎯  
 
 Let me know if you need setup help! 🚀
+
