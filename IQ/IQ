@@ -1,5 +1,62 @@
 how can you copy files from base machine to ec2 machine
 -----------------------------------------------------------
+12) Application deployed on ec2.I have to do routing from Chaitanya.com to
+my application hosed on AWS. I want to route /home to something /profile to
+mething else. How will you setup this routing ? What all aws services will you use ? ingress
+
+✅ **Short Answer (English):**
+
+For EC2, don't use Ingress. Instead, use:
+
+* **Route 53** – for managing the domain (`chaitanya.com`)
+* **Application Load Balancer (ALB)** – for path-based routing like `/home`, `/profile`
+* **Target Groups** – to direct traffic to different EC2 apps
+
+Ingress is used only in Kubernetes, not with EC2.
+
+-------------------------------------------------------------------------------------
+13) How will you ensure that in your terraform configuration that
+once vpc is created only after that its vpc id is fetched and passed
+on to ec2 module ?
+
+In Terraform, resource dependencies are handled automatically using references.
+To ensure that EC2 is created only after VPC, we pass the VPC ID as an input to the EC2 module:
+
+h
+Copy
+Edit
+module "vpc" {
+  source = "./vpc"
+}
+
+module "ec2" {
+  source = "./ec2"
+  vpc_id = module.vpc.vpc_id
+}
+-----------------------------------------------------------------------------
+10) Can we change pvt ip address of a running ec2 instance? Can you
+change it after stoppoing the instance?
+
+You cannot change the private IP of an EC2 instance while it is running.
+In some cases, you can change it after stopping the instance.
+
+If not possible, the best way is to Create an AMI (Amazon Machine Image) of the existing EC2 instance.
+
+Terminate (delete) the old instance.
+
+Launch a new EC2 instance from that AMI, and during launch:
+
+You can manually assign a new private IP address (through the ENI settings),
+
+Or let AWS automatically assign a new private IP.
+-=----------------------------------------================================================================
+12) Application deployed on ec2.I have to do routing from Chaitanya.com to
+my application hosed on AWS. I want to route /home to something /profile to
+mething else. How will you setup this routing ? What all aws services will you use ?
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
 3)If I want to connect ec2 to s3 bucket but i dont want to use internet gateway
 and nat gateway how will you establish communication between ec2
 and s3 without internet?
