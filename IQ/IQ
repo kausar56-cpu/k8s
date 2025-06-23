@@ -15,6 +15,29 @@ For EC2, don't use Ingress. Instead, use:
 Ingress is used only in Kubernetes, not with EC2.
 
 -------------------------------------------------------------------------------------
+2) You have an app running on EC2 in AWS account A. The product images are
+stored in S3 bucket in AWS account B. What kind of setup will you do to fetch the images?
+
+✅ Steps:
+In Account B (S3 Bucket Owner):
+
+Add a bucket policy to allow Account A to access objects:
+
+
+{
+  "Effect": "Allow",
+  "Principal": { "AWS": "arn:aws:iam::ACCOUNT-A-ID:root" },
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::bucket-name/*"
+}
+In Account A (EC2 Owner):
+
+Attach an IAM role to EC2 with s3:GetObject permission for that bucket.
+Now, your EC2 in Account A can run:
+
+aws s3 cp s3://bucket-name/image.jpg .
+
+------------------------------------------------------------------------------------------------------------
 13) How will you ensure that in your terraform configuration that
 once vpc is created only after that its vpc id is fetched and passed
 on to ec2 module ?
