@@ -1,4 +1,12 @@
- Dangling Image | 
+docker build -t myapp:latest .
+docker tag myapp:latest kausar123/myapp:latest
+docker push kausar123/myapp:latest
+
+
+
+
+
+Dangling Image | 
 how to pss build parameter during the time of building images |
 how to pass env variable in running container|
 dockerfile|
