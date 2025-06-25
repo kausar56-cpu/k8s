@@ -1,3 +1,12 @@
+
+bridge: Default network for containers on the same host to communicate.
+
+host: Container shares the host’s network directly for better performance.
+
+none: Container is completely isolated with no network access.
+
+overlay: Allows containers on different Docker hosts to communicate in a Swarm cluster.
+---------------------------------------------------------------------------------------------------------------------------
 docker persistent volume
 
 docker ps- client - demon in http api call
