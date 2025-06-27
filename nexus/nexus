@@ -6,6 +6,7 @@ Step 5: Now go into system section to configure sonarqube server.
 Step 6: Create the secret text credential using token that is generated in step 3.
 Step 7: Then attach the credential to the sonarqube configuration.
 Step 8: Create a pipeline. Give the pipeline a name and select ok.
+https://www.geeksforgeeks.org/devops/how-to-integrate-sonarqube-with-jenkins/
 ====================================================================
 system
 secret
