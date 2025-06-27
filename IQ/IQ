@@ -43,7 +43,8 @@ once vpc is created only after that its vpc id is fetched and passed
 on to ec2 module ?
 
 In Terraform, resource dependencies are handled automatically using references.
-To ensure that EC2 is created only after VPC, we pass the VPC ID as an input to the EC2 module:
+To ensure that EC2 is created only after VPC, we pass the VPC ID as an
+input to the EC2 module:
 
 h
 Copy
