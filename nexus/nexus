@@ -1,3 +1,12 @@
+Step 1: First go to Jenkins dashboard and download the SonarQube plugin. Then restart the Jenkins.
+Step 2: Now go to sonarqube server . Here go to administration , then security and then select users.
+Step 3: Now create a token for Jenkins.
+Step 4: Go to Jenkins dashboard and go inside the tools section. Here you setup a sonar scanner which will scan the code.
+Step 5: Now go into system section to configure sonarqube server.
+Step 6: Create the secret text credential using token that is generated in step 3.
+Step 7: Then attach the credential to the sonarqube configuration.
+Step 8: Create a pipeline. Give the pipeline a name and select ok.
+====================================================================
 system
 secret
 tools
