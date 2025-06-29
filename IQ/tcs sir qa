@@ -1,4 +1,20 @@
-Mindmap
+✅ What is terraform taint?
+terraform taint म्हणजे:
+👉 एका resource ला खराब (bad) म्हणून मार्क करणं,
+जेणेकरून Terraform पुढच्या वेळी ते delete करून परत create करेल.
+
+Sure! Here's the English translation:
+
+---
+
+## ✅ What is `terraform taint`?
+
+`terraform taint` means:
+👉 Marking a resource as **bad (unhealthy)**,
+so that Terraform will **destroy and recreate it** during the next `terraform apply`.
+
+========================================================================================================
+=Mindmap
 ===========
 
 1. may i know how you are deploying your application to kubernetes cluster ?
