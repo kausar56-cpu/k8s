@@ -105,6 +105,13 @@ Deloitte:
 =========
 1. Could you give an introduction yourself and your daily activities as a DevOps engineer?
 2. In Terraform, I’ve created a database with sensitive information like a password, and I don't want it to appear in the output. How can I do that?
+
+Sure! Here's a **3-line interview-style answer**:
+
+> We manage secrets in Terraform using **AWS Secrets Manager** to keep them secure.
+> Secrets are fetched using a `data` block and parsed with `jsondecode()` into `locals` for safe usage.
+> This avoids hardcoding and ensures secrets stay hidden from logs and version control.
+
 3
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 4. In a Dockerfile, which user performs what action, and how can I specify the user ?
