@@ -1,4 +1,6 @@
 how can you copy files from base machine to ec2 machine
+scp -i mykey.pem file.txt ec2-user@<EC2-IP>:/home/ec2-user/
+
 -----------------------------------------------------------
 12) Application deployed on ec2.I have to do routing from Chaitanya.com to
 my application hosed on AWS. I want to route /home to something /profile to
