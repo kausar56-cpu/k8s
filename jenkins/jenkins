@@ -1,3 +1,93 @@
+imp
+Role-based Authorization Strategy
+
+-Configure Global Security in that select authorization onece select we will got RBAC 
+Manage and Assign Roles option in UI 
+
+-Click on "Manage Roles" to create new roles and define permissions.
+You can create global roles, item roles (for jobs), and node roles.
+
+-there are 2 type manage role and asign role
+
+-under "Manage Roles," add a new role by entering a name (e.g., "developer") and selecting the permissions
+ you want to grant for this role.
+--------------------------------------------------------------------------------------------------------------------------
+Assign the Role:
+
+3 type - 1. Global Roles 2. Item Roles 3. Agent Roles
+--------------------------------------------------------------------------------------------------------------------------
+1. Global 
+Scope: Applies to the entire Jenkins instance.
+Purpose: Used to control permissions that affect the overall Jenkins environment and its management.
+
+Permissions Example:
+
+Overall Read: Allows viewing the Jenkins dashboard.
+Overall Administer: Grants full administrative access.
+Job Create: Allows creating new jobs.
+SCM (Source Code Management) Tag: Allows tagging in SCM.
+Use Case: Assigning administrative roles to users who need to manage Jenkins, or creating read-only roles for users who only need to view the Jenkins instance without making changes.
+
+2. Item Roles
+Scope: Applies to specific jobs or projects.
+Purpose: Used to control permissions for individual Jenkins items such as jobs, pipelines, and folders.
+
+
+Permissions Example:
+
+Job Read: Allows viewing the job configuration and build history.
+Job Build: Allows triggering builds for the job.
+Job Configure: Allows changing the job configuration.
+Job Delete: Allows deleting the job.
+Use Case: Assigning permissions to developers or teams to manage specific projects or jobs without granting 
+them access to other parts of Jenkins.
+
+3. Agent Roles
+Scope: Applies to Jenkins nodes (agents/slaves).
+Purpose: Used to control permissions related to the management and use of Jenkins nodes.
+
+Permissions Example:
+
+Agent Configure: Allows configuring node properties.
+Agent Connect: Allows connecting or disconnecting agents.
+Agent Build: Allows running builds on the specified agent.
+Agent Delete: Allows deleting the agent.
+Use Case: Granting permissions to users responsible for managing build nodes or restricting which users
+ can run builds on specific agents.
+
+***********************************************************************************************************************
+
+-Under "Assign Roles," assign the created role to a user or group by entering the username or group name and
+ selecting the role from the list.
+
+3 type - 1. Global Roles 2. Item Roles 3. Agent Roles
+
+Assigning Roles in Jenkins
+Global Roles:
+
+Go to Manage Jenkins > Manage and Assign Roles > Manage Roles.
+Create a role under Global roles and assign permissions.
+Go to Assign Roles.
+Under Global roles, enter the username and select the role.
+-------------------------------------------------------------
+Item Roles:
+
+Go to Manage Jenkins > Manage and Assign Roles > Manage Roles.
+Create a role under Item roles and assign permissions.
+Go to Assign Roles.
+Under Item roles, enter the username and select the role for specific items.
+--------------------------------------------------------------------------
+Agent Roles:
+
+Go to Manage Jenkins > Manage and Assign Roles > Manage Roles.
+Create a role under Agent roles and assign permissions.
+Go to Assign Roles.
+Under Agent roles, enter the username and select the role for specific agents.
+
+****************************************************
+
+
+
 ### 1. *Deployment Failures*
 
 
