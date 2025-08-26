@@ -1,1 +1,4 @@
 We need to just put repetitive code as Jenkins library in out git repository, reference the library in your stage
+stageOnce they write the name of the library in our pipelineJenkins controller will 
+start searching of that particular Jenkins library from our GitHub.And then it will execute the action.
+
