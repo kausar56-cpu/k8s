@@ -1,0 +1,1 @@
+We need to just put repetitive code as Jenkins library in out git repository, reference the library in your stage
