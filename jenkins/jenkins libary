@@ -14,4 +14,10 @@ Reduce the risk of errors
 
 Instead of writing the same code again and again in multiple pipelines, you can create a shared library and 
 use it in all the pipelines that need it. This can make your code more organized and easier to maintain.
+helloworld.groovy
+{var/ -- def call() {
+  sh 'echo Hi From DevOps Team'
+
+pippeline mdil starting ch name he jenkins mde je dily te dych ani khali repo name
+}
 
