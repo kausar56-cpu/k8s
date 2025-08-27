@@ -4,7 +4,9 @@ If u create a  user- u have to create cred - attach policy -and thing
 But in case the role is not required -sometimes requires just a temporary key - we can attach the role to our ec2 
  
 ------------------------------------------------------------------------------------------------
-task1  - I want to  access a particular bucket, not all 
+task1  - I want to  access a particular bucket, not all
+role -(*genrate policy- arn of s3 bucket) policy - add role in policy - aws a3 cp kausar s3://flowloqs236/kausar
+
 
 task2  -  how will assign a role directly to a particular user 
 ----------------------------------------------------------------------------------------------
