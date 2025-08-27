@@ -1,3 +1,26 @@
+📌 1. Can you detach an EBS root volume? If yes, under what condition?
+
+✅ Answer:
+Yes, but only when the EC2 instance is stopped.
+
+The root volume is where the OS runs from, so while the instance is running it cannot be detached.
+
+Once stopped, you can detach the root volume and even attach it to another instance for troubleshooting (e.g., fixing corrupted configs).
+
+
+
+📌 2. Can you attach one EBS volume to multiple EC2 instances?
+
+✅ Answer:
+
+Normally no → A standard EBS volume can only attach to one EC2 instance at a time.
+
+Exception: With io1/io2 volumes and the Multi-Attach feature enabled, the same volume can be attached to up to 16 EC2 instances in the same AZ.
+
+But → only for cluster-aware applications (e.g., databases, clustered filesystems).
+
+
+
 diff ebs and instance storage  
 instance storage - 
 1. it's not good practice - why? default space gets 8 GB only /root 
