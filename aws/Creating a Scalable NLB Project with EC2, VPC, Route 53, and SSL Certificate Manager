@@ -4,7 +4,7 @@ Amazon Route 53 supports several types of DNS record types to manage domain traf
 Maps a domain name to an IPv4 address (e.g., 192.0.2.1).
 2. AAAA Record (IPv6 Address Record)
 Maps a domain name to an IPv6 address (e.g., 2001:db8::1).
-3. CNAME Record (Canonical Name Record)
+3. CNAME Record (Canonical Name Record) Points one domain name to another domain name.
 Maps a domain or subdomain to another domain (e.g., www.example.com → example.com).
 5. TXT Record (Text Record)
 Stores arbitrary text, often used for verification (e.g., SPF, DKIM, and DMARC).
