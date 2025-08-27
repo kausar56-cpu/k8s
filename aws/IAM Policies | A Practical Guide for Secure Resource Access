@@ -65,3 +65,12 @@ To provide view-only access to S3 and EC2 resources, you can create an IAM polic
 permissions for those services.
 Create policy - json - pest - name permission -boundary- go to set permission boundary policy - select it.  
 -------------------------------------------------------------------------------------------------------------
+Identity-based policies (attached to users, groups, or roles),
+
+Resource-based policies (attached directly to resources like S3 or KMS),
+
+Permissions boundaries (limit max permissions of a role/user),
+
+Service control policies (SCPs) in AWS Organizations, and
+
+Session policies for temporary sessions.
