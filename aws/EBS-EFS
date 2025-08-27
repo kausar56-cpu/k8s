@@ -19,7 +19,7 @@ Exception: With io1/io2 volumes and the Multi-Attach feature enabled, the same v
 
 But → only for cluster-aware applications (e.g., databases, clustered filesystems).
 
-
+Always use the nofail option in /etc/fstab, so even if the volume is missing, the instance will still boot.
 
 diff ebs and instance storage  
 instance storage - 
