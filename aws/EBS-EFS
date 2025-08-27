@@ -4,7 +4,7 @@ instance storage -
 2. if u start and stop data whatever data u kept will gone 
 4 size and type fixed - t2micro, t2 medium 
 5 .if u already created GB and now u want the required 5 GB then I have to create EBS 
-6. u cannot attach or detach volume to another instance 
+6. u can attach or detach volume to another instance 
 ---------------------------------------------------------------
 EBS
 12. if u start and stop data whatever data u kept it will NOT go 
