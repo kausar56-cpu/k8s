@@ -1,3 +1,9 @@
+“The VPC CIDR range is decided by the user or network architect at the time of VPC creation. AWS doesn’t assign it.
+It should be chosen from the private IP ranges, avoiding overlaps with on-premises or other VPCs.”
+
+
+
+
 ### **How to Identify Private vs. Public IP Addresses?**  
 
 IP addresses are classified into **private** and **public** ranges. You can identify whether an IP is private or public based on its range.  
