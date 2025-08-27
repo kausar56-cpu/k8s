@@ -1,3 +1,7 @@
+jenkins url
+github pluging
+Build Triggers -*GitHub hook trigger
+
 ### **Steps to Integrate Webhook with Jenkins**  
 
 ✅ **1️⃣ Configure Webhook in Your Repository**  
