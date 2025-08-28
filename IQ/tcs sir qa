@@ -1,3 +1,11 @@
+What happens when you do SSHTo your server ?
+SSH connects my client to the server on port 22, authenticates with key/password, 
+establishes encryption, and then gives me a secure shell to run commands.
+
+
+
+
+--------------------------------------------------------------------------
 ✅ What is terraform taint?
 terraform taint म्हणजे:
 👉 एका resource ला खराब (bad) म्हणून मार्क करणं,
