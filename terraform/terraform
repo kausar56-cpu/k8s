@@ -1,4 +1,25 @@
+terraform-app/
+│
+├── backend.tf
+├── provider.tf
+├── main.tf
+├── variables.tf
+├── outputs.tf
+│
+└── envs/
+    ├── dev/
+    │   └── terraform.tfvars
+    ├── preprod/
+    │   └── terraform.tfvars
+    └── prod/
+        └── terraform.tfvars
+key = "prod/terraform.tfstate"
+We use Terraform remote backend to share and manage state across environments.
+Each environment (dev, preprod, prod) has its own state file, defined by a unique key.
+The backend configuration remains the same, only the key changes per environment.
+This ensures isolation, consistency, and safe collaboration among teams
 
+----------------------------------------------------------------------------------------------------------------------------
 
 Using **`terraform taint` (before deprecation)** or **`terraform apply -replace=<resource>` (recommended)** forces
 **Terraform to delete and then recreate the same resource** with the same configuration.  
