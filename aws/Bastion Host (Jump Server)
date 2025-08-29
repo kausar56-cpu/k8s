@@ -1,0 +1,17 @@
+Public (Bastion) Server मध्ये Login कर
+
+ssh -i public-key.pem ec2-user@<Public-IP>
+
+
+Private Server ची Key Bastion Host वर ठेव
+
+Bastion मध्ये vi private-key.pem करून Key paste कर.
+
+मग permission secure कर:
+
+chmod 400 private-key.pem
+
+
+Bastion वरून Private Server मध्ये SSH कर
+
+ssh -i private-key.pem ec2-user@<Private-IP>
