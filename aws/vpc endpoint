@@ -1,7 +1,7 @@
 Sure! Here's the **list of VPC endpoint types**:
 
 1. **Gateway Endpoint**
-2. **Interface Endpoint**
+2. **Interface Endpoint**(PrivateLink)
 3. **Gateway Load Balancer Endpoint**
 
 ✅ Use Gateway Endpoint for:
