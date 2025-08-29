@@ -1,4 +1,7 @@
-creat vpc - configure sg- creat s3- crete ec2 select vpc, sg 
+
+.log or .txt
+--------------------------------------------------------------------------
+----creat vpc - configure sg- creat s3- crete ec2 select vpc, sg 
 crete flow logs aadd s3 ARN 
 go to ec2 take access install nginx
 copy dns
