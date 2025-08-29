@@ -1,0 +1,193 @@
+What happens when you do SSHTo your server ?
+SSH connects my client to the server on port 22, authenticates with key/password, 
+establishes encryption, and then gives me a secure shell to run commands.
+-----------------------------------------------------------------------------------
+
+1) Your application on EC2 experiences traffic spikes only during business hours. How would you optimize cost and performance?
+
+“I will use Auto Scaling for EC2 so that more instances run only in business hours 
+and scale down after hours. Also, I can use a Load Balancer for even traffic distribution.
+For more cost saving, I can use Spot Instances or Scheduled Scaling.”
+----------------------------------------------------------------------------------------
+2) Your EC2 instance crashed unexpectedly. What steps would
+you take to identify the issue and restore service quickly?
+If my EC2 instance crashes, first I would check system logs and CloudWatch metrics to find the cause (like CPU, memory, or disk).
+Next, I’d try to quickly restore service by restarting the instance or replacing it with a new one using an AMI or Auto Scaling.
+After recovery, I’d analyze root cause, such as application errors or OS issues, and put preventive measures in place like monitoring and alerts.”
+-----------------------------------------------------------------------------------------------------------------------------------------
+3) You have deployed your app on EC2 instance. The app has to Fetch some images
+from internet but it's not able to fetch. What might be the possible issues?
+
+If my app on EC2 can’t fetch images from the internet, I would first check if the instance has internet access. 
+If it’s in a private subnet, I’d verify NAT Gateway. Then, I’d check security group outbound rules for ports 
+80/443 and confirm that NACLs allow return traffic.
+I’d also test DNS resolution and ensure no local firewall is blocking traffic. These steps usually help 
+identify and fix the issue quickly.
+----------------------------------------------------------------------------------------------
+4) You accidentally deleted data from S3. How do you recover it?
+
+If I accidentally delete data from S3, the first thing I check is whether S3 Versioning is enabled.
+If it is, I can easily recover the object by restoring a previous version. If Cross-Region Replication was set up,
+I can also restore it from the replicated bucket. If versioning wasn’t enabled, unfortunately, the data cannot be 
+recovered, but I’d analyze the CloudTrail logs
+to identify the cause and immediately enable Versioning and MFA Delete to prevent such incidents in the future."
+---------------------------------------------------------------------------------------------------------
+6) I have 2 EC2 Instance in 2 VPC one in each. First one is running
+frontend app and second is running backend. These 2 app needs to
+communicate but they're not able to communicate. How will you fix this ?
+
+“Since the two EC2s are in different VPCs, they can’t communicate directly.
+I would enable communication either by creating a VPC peering connection or using a Transit Gateway. 
+Then, I’d update the route tables and security groups to allow traffic between the frontend and backend subnets.”
+----------------------------------------------------------------------------------------------------------
+
+7) I have an app running on EC2. Product icons are stored in S3 bucket which
+Needs to be shown on web home page. When my application is trying to fetch
+it's resulting into error. What might be the problem here?
+
+I will check bucket policy and ensure objects are accessible either via pre-signed URLs or correct IAM role. If the frontend directly
+loads icons, I’ll configure proper CORS policy on the S3 bucket. Also, if private access is required, I’ll set up an S3 VPC endpoint.”
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+10) how to distribute 10 pods equally over 10 nodes in Kubernetes?
+Like for log collecting metric beat, dynatrace agent etc
+
+To distribute one pod per node, I’ll use a DaemonSet. It ensures that exactly one pod of my app runs on each node, 
+which is ideal for log collectors or monitoring agents like metricbeat and dynatrace."
+
+---------------------------------------------------------------------------------------------------------------------
+
+13) I have created a VPC manually. Now I have to create one EC2 instance
+using Terraform. How will you pass VPC id here in Terraform script?
+
+If the VPC is created manually, Terraform doesn’t track it, so I would pass the VPC ID as a variable in my script, 
+or use a data block to fetch the existing VPC by its tags. This way Terraform can still provision the EC2 instance inside that VPC.”
+
+data "aws_vpc" "my_vpc" {
+  filter {
+    name   = "tag:Name"
+    values = ["my-manual-vpc"]
+  }
+}
+
+resource "aws_instance" "my_ec2" {
+  ami           = "ami-1234567890abcdef0"
+  instance_type = "t2.micro"
+  subnet_id     = "subnet-xxxxxx"
+  vpc_security_group_ids = [aws_security_group.my_sg.id]
+  tags = {
+    Name = "MyEC2"
+  }
+}
+-----------------------------------------------------------------------------------------------------
+14) You have provisioned a VPC using Terraform and someone deleted
+it manually. Now if you run Terraform apply, how will your pipeline behave?
+
+If someone deletes the VPC manually, Terraform will detect this as a drift in the infrastructure state during the plan phase.
+Since the VPC is missing, Terraform will show that the resource needs to be created again.
+When I run terraform apply, it will re-create the VPC according to the configuration defined in my .tf files." ✅
+-----------------------------------------------------------------------------------------------------------------------
+
+15) I have 2 modules written one for VPC and second for EC2. EC2 modules need VPC id
+to provision. How will you ensure that EC2 module get VPC id at runtime?
+
+I will use module outputs to export the VPC ID from the VPC module and pass it as an input variable to the EC2 module. 
+Terraform automatically handles dependencies and ensures the correct order of resource creation.
+----------------------------------------------------------------------------------------------------------------
+
+17) I am trying to run one script file on my Linux server and
+getting permission error. How will you troubleshoot this ?
+
+If I get a permission error while running a script, first I’ll check if the file has execute permission 
+(chmod +x). Then I’ll verify ownership and whether I’m running it correctly with ./script.sh or bash script.sh. 
+If it’s copied from Windows,
+I’ll fix line endings using dos2unix. Finally, if SELinux is enabled, I’ll check for security restrictions.
+----------------------------------------------------------------------------------------------------------------
+
+18) Linux server is experiencing slow performance.
+How will you debug this slowness?
+
+For Linux server slowness, I will:
+
+Check CPU, memory, and load using top, htop, or uptime.
+
+Verify disk I/O and space with iostat, df -h.
+
+Review logs (/var/log/) and network usage with netstat/ss
+----------------------------------------------------------------------------
+
+I have to deploy an application. In which scenario you will choose EC2 
+and Lambda ?I have to deploy an application. In which scenario
+
+If my application needs to run all the time, has complex setup, or requires full control over 
+the server, I will choose EC2.But if my application has small tasks, runs only when triggered, and I want 
+to save cost without managing servers, I will choose Lambda.”
+---------------------------------------------------------------------------------------
+How will you troubleshoot 403 error code?-----
+
+A 403 error means forbidden – the server understood the request but refused to allow it.
+To troubleshoot, first I will check permissions. For example: in web servers I will check 
+file/folder permissions, in S3 I will check bucket policy, in APIs I will check authentication 
+and IAM roles. Then I verify if the user or service account has the correct access rights.
+Finally, I review logs (web server logs, CloudTrail, or app logs) to see the exact reason.”
+-------------------------------------------------------------------------------------
+
+“I manage my infrastructure using Infrastructure as Code with Terraform,
+which keeps everything automated and version-controlled. Deployments are integrated through CI/CD pipelines in Jenkins, and I 
+use Prometheus and Grafana for monitoring along with ELK stack for logging.
+This ensures scalability, consistency, and easy troubleshooting.”
+
+----------------------------------------------------------------------------------------------------------------------------------
+What will happen if your infrastructure has been deleted manually
+and
+you run infra provisioning pipeline again ?
+
+If infra is deleted manually, the pipeline will recreate it because Terraform compares actual state vs. 
+desired state in code. As long as the state file is intact, 
+infra will be provisioned back. But if the state file is also lost, Terraform may try to create duplicate resources.”
+-------------------------------------------------------------------------------------------------------------------------------------
+
+How will you push code from local to GitHub repository
+You can answer in simple steps like this in interview:
+
+First, initialize git in project → git init.
+
+Add remote GitHub repo → git remote add origin <repo-URL>.
+
+Stage and commit code → git add . && git commit -m "Initial commit".
+
+Push to GitHub → git push origin main (or master). ✅
+--------------------------------------------------------------------------------------------------------------------------
+4) Suppose you have an EC2 Machine and you performed some task today.
+Now you have to perform the same task tomorrow and so on
+but on a new EC2 Machine. What will be the best way to do task here?
+
+"I will never do the same task manually again and again. I’ll automate it. Depending on the requirement:
+
+For pre-baked configuration → I’ll use an AMI.
+
+For startup scripts → I’ll use User Data.
+
+For large-scale infra management → I’ll use Terraform with Ansible so that every time a new EC2 is launched, tasks are performed automatically."
+----------------------------------------------------------------------------------------------------------------------------
+6) In S3 bucket, I want to keep my bucket private and at the same time
+I want my one of object can be fetched by one user for specific 15 mins.
+How to achieve this ?
+
+"I will keep my bucket private and use an S3 Pre-Signed URL to share the object. 
+The Pre-Signed URL can be generated through AWS CLI or SDK, and I will set the expiry to 15 minutes.
+After that time, the link won’t work anymore. This ensures the bucket is private, but still allows controlled access when needed."
+---------------------------------------------------------------------------------------------------------------------------------------
+
+18) Which AWS services can be used to trigger notification whenever
+your database storage gets consumed more than 80%?
+
+"I’ll configure a CloudWatch alarm on the database’s FreeStorageSpace metric. Once utilization crosses 80%, the alarm will trigger 
+an SNS topic, which will send me a notification (email/SMS). This ensures proactive alerting before the database runs out of storage."
+--------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
