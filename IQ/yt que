@@ -1,3 +1,4 @@
+/var/www/html/index.html
 What happens when you do SSHTo your server ?
 SSH connects my client to the server on port 22, authenticates with key/password, 
 establishes encryption, and then gives me a secure shell to run commands.
