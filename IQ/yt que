@@ -1,3 +1,14 @@
+network load balancer - inegrasion section - vpc endpoint (private link)
+
+create vpc private and public subnet - then crte ec2 in private - TG - then create NLB - network load balancer - inegrasion section - vpc endpoint (private link)
+we need to select nlb in vpc private link endpoint - 
+vpc endpoint crate kra on primises - in that select sevice categary other endpoint sevices - copy other endpoint name and pest heare 
+ec2 - vpc endpoint (A-VPC) -  VPC ENDPOINT (b vpc) -nlb - tg - ec2
+in vpc endpoint A - in that endpoint connection - accept it from b
+
+
+
+----------------------------------------------------------------------------------------
 /var/www/html/index.html
 What happens when you do SSHTo your server ?
 SSH connects my client to the server on port 22, authenticates with key/password, 
