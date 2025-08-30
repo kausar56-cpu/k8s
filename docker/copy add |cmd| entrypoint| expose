@@ -110,9 +110,9 @@ both are similar
 copy will coping file from current location to anyother loaction internely
 add   same + retrive file from s3 bucket or internet
 ------------------------------------------------------------------------------------------------------------------------
-we are not give any user instruction in docker file problem is may in future any security threts will be happen
-they will be having root access directly 
-container is excuting with the rrot crd in backend                                -------------------vvvimp
+If we don’t specify a user in the Dockerfile, the container runs as root by default, 
+which can be a security risk. To prevent privilege escalation, we should create a non-root user inside the Dockerfile
+using the USER instruction, or run containers with the --user flag. Following least-privilege principle is a Docker best practice.”                             -------------------vvvimp
 -----------------------------------------------------------------------------------------------------------------------
 crete cred file at root access by ubantu permission denied
 in dockerfile we crete user and this user should doent have access root  --- this task
