@@ -106,7 +106,22 @@ to provision. How will you ensure that EC2 module get VPC id at runtime?
 I will use module outputs to export the VPC ID from the VPC module and pass it as an input variable to the EC2 module. 
 Terraform automatically handles dependencies and ensures the correct order of resource creation.
 ----------------------------------------------------------------------------------------------------------------
+Where are system logs stored?
 
+Most logs are in /var/log/ directory.
+
+Some important files:
+
+/var/log/syslog → General system logs (Ubuntu/Debian).
+
+/var/log/messages → General system logs (RHEL/CentOS).
+
+/var/log/auth.log → Authentication & SSH login logs.
+
+/var/log/dmesg → Kernel & boot logs.
+
+/var/log/nginx/ or /var/log/apache2/ → Web server logs.
+------------------------------------------------------------------------------------------------------
 17) I am trying to run one script file on my Linux server and
 getting permission error. How will you troubleshoot this ?
 
