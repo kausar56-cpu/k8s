@@ -116,6 +116,17 @@ usecase
 ✅ **High Performance** – Bypasses NAT, reducing latency for high-traffic apps.
 -----------------------------------------------------------------------------------------------------------------------------------------
 docker bound -mount
+
+docker run -v /host/path:/container/path <image>
+docker run -it --name mycontainer  -v /home/kausar/data:/app/data ubuntu bash
+
+/home/kausar/data → folder on host
+
+/app/data → folder inside container
+
+
+
+
 docker run --rm -d --name app1 --network none kiran2361993/troubleshootingtools:v1
 docker run --rm -d --name app1 -v /var/run/docker.sock:/var/run/docker.sock --network  none kiran2361993/troubleshootingtools:v1  ---vvimp
 none nework doesnt have any ip
