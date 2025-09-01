@@ -1,6 +1,27 @@
 What happens when you do SSHTo your server ?
 
 
+What is null resource in terraform ?
+A null_resource in Terraform is like a dummy resource that does not create anything but is used to run scripts or trigger actions when something changes.
+
+1️⃣ Run Scripts Without Creating Resources
+
+You can execute a script locally or on a remote server when running terraform apply.
+
+2️⃣ Trigger Actions Based on Changes
+
+If a resource changes, null_resource can detect it and run a command.
+
+3️⃣ Work With Provisioners
+
+Used with local-exec or remote-exec to run custom scripts.
+
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo 'Terraform executed this script!'"
+  }
+}
+When you run terraform apply, it prints the message but does not create any infrastructure.
 
 --------------------------------------------------------------------------
 ✅ What is terraform taint?
