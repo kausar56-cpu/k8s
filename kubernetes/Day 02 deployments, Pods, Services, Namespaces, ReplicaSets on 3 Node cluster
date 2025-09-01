@@ -1,3 +1,8 @@
+ReplicaSet independently delete केला → Pods पण delete होतील, पुन्हा तयार होणार नाहीत.
+
+ReplicaSet Deployment ने manage केलेलं असेल → delete केला तरी Deployment लगेच नवीन ReplicaSet + नवीन Pods तयार करेल.
+
+
 kubectl create ns alpha
 kubectl create ns bravo
 kubectl get ns
