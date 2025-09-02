@@ -1,3 +1,109 @@
+ prod ❌ dev ❌ qa
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-prod
+  namespace: prod
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+---------------------------------------------
+ prod: pod1 <--> pod2 ✅
+ dev: pod1 <--> pod2 ✅
+ qa : pod1 <--> pod2 ✅
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-within-prod
+  namespace: prod
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: prod
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: prod
+----------------------------------------------------------------------------------------------
+Allow dev → prod (Only One Direction)
+
+ dev pod ---> prod pod ✅
+
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-dev
+  namespace: prod
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          nsp: dev
+----------------------------------
+ prod pod -x-> dev pod ❌
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress-to-prod
+  namespace: dev
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          nsp: prod
+------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### **🔥 Kubernetes NetworkPolicy - सर्व संभाव्य परिस्थिती (Scenarios) 🔥**  
 कमी गोंधळ होण्यासाठी, मी विविध **Namespace (ns) आणि Pod (पॉड) पर्याय** स्पष्ट करतो.  
 
