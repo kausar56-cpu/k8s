@@ -1,3 +1,84 @@
+3) How can you give temporary access of 5 mins to an object stored in S3 bucket to an external user while keeping bucket private ?
+
+“If my S3 bucket is private but I need to give temporary access to an external user,
+I would generate a pre-signed URL. This URL is created using AWS CLI or SDK and allows 
+access to a specific object for a limited time— for example, 5 minutes. The URL automatically
+expires after that duration, ensuring the bucket remains private and secure.”
+aws s3 presign s3://bucket-name/object --expires-in 300
+----------------------------------------------------------------------------------------------------------------------
+5) I have two AWS S3 bucket in 2 different regions.In one bucket static website is hosted and in 2nd images are stored. 
+The static website has to fetch images. What kind of setup will you do ?
+
+Bucket A (Region 1): Static website (HTML, CSS, JS).
+Bucket B (Region 2): Images.
+Requirement → Website must fetch images from the other bucket, securely and efficiently.
+
+
+Enable Cross-Origin Resource Sharing (CORS):
+
+Since your static site and image bucket are in different regions, browser requests need CORS rules on the image bucket.
+
+
+Example CORS policy on Bucket B (images):
+
+<CORSConfiguration>
+  <CORSRule>
+    <AllowedOrigin>http://my-website.s3-website-us-east-1.amazonaws.com</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+  </CORSRule>
+</CORSConfiguration>
+
+Make image bucket objects accessible:
+Keep Bucket B private but allow access via:
+Pre-signed URLs (if limited users).
+Or Bucket Policy with CloudFront OAI (Origin Access Identity) for secure, controlled public access.
+
+
+Use CloudFront for global performance:
+
+Deploy a CloudFront distribution in front of both buckets.
+One origin = Static Website bucket.
+Second origin = Image bucket.
+CloudFront will cache images at edge locations → better latency and cost savings.
+Can also set up Origin Groups to combine origins.
+
+
+Since the website is in one S3 bucket and images are in another bucket in a different region, 
+I would configure CORS on the image bucket so the static website can fetch them. To improve
+performance and provide secure global access, I would place CloudFront in front of both buckets. CloudFront will act as a
+single distribution with multiple origins — one for the static website and one for the images — 
+ensuring low latency and secure access.”
+------------------------------------------------------------------------------------------------------------------------------
+**“To scrape data from running nodes, I would deploy the monitoring agent as a DaemonSet if it’s a Kubernetes environment,
+since DaemonSets ensure that one agent runs on every node automatically.
+
+-------------------------------------------------------------------------
+403 Forbidden
+Meaning → “You are authenticated, but you don’t have permission.
+
+401 Unauthorized
+Meaning → “You are not authenticated.”
+-----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-=-------------------------------------------------------------------------------------------------------------------
 network load balancer - inegrasion section - vpc endpoint (private link)
 
 create vpc private and public subnet - then crte ec2 in private - TG - then create NLB - network load balancer - inegrasion section - vpc endpoint (private link)
