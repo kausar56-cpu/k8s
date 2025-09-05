@@ -1,0 +1,96 @@
+Deploy this ingress controller and it will read the ingress 
+resource which we have written in an ingress file, ingressfile and then it will create a load balancer.
+--------------------------------------------------------------------------------------------
+
+first step you need to deploy your ingress controller on cluster by using helm chart
+------------------------------------------------------------------------------------------
+Ingress Control will not do anything as long as we create an ingres resource ---vimp
+-----------------------------------------------------------------------------------------
+- Ingres controller will watch the Ingress resource
+- Whatever you wrote in the Engress resources it will convert into the Load Balancer configuration(routing request to the pod)
+- Ingress controller will create the Load Balancer along with creation it will configure
+  the Load Balancer how that depending upon our ingress yml file
+---------------------------------------------------------------------------------------------------------
+Ingress controller is nothing but the simple go program it's written by the company 
+in a different form like Ingress controller nginx controller
+------------------------------------------------------------------------------------
+aws configure
+
+snap install aws-cli --classic
+---------------------------------
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl tar
+curl --silent --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" -o eksctl.tar.gz
+
+tar -xvzf eksctl.tar.gz
+sudo mv eksctl /usr/local/bin
+
+eksctl version
+
+---------------------------------------------------------------------------
+sudo apt update && sudo apt upgrade -y
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+kubectl version --client
+
+--------------------------------------------------------------------------------------------
+eksctl create cluster --name my-cluster --region ap-south-1
+-----------------------------------------------------------------------------------------------
+clone repo https://github.com/Kausar1011/flask.git
+apt  install docker.io 
+sudo usermod -aG docker ubuntu
+
+
+docker build -t kausar1011/cka-ingress-demo:v1 .
+docker login -u kausar1011
+genrate token add it then push
+docker push kausar1011/cka-ingress-demo:v1
+
+image name -  kausar1011/cka-ingress-demo
+-------------------------------------------------------
+edit deployment.yaml add image name of yours
+ kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+ kubectl apply -f ingress.yaml
+
+
+https://kubernetes.github.io/ingress-nginx/deploy/
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.1/deploy/static/provider/aws/deploy.yaml
+
+ns - ingress-nginx 
+kubectl edit svc ingress-nginx-controller -n ingress-nginx
+add
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: myapp.example.com   # 👈 yahan apna domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hello-world
+            port:
+              number: 80
+
+kubectl apply -f ingress-hello.yaml
+
+
+
+
+
+
+
+
+
