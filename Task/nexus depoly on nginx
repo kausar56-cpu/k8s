@@ -1,0 +1,122 @@
+Clone repo → Build JAR → Build & push Docker image → Upload JAR to Nexus → Deploy with Nginx.
+640dd959-b20c-4039-a99b-8193f13c8267
+
+
+
+
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = "myapp"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'master', url: 'https://github.com/Kausar1011/maven-simple.git'
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Upload to Nexus') {
+            steps {
+                withMaven(maven: 'M3') {
+                    sh "mvn clean deploy -s /var/lib/jenkins/.m2/settings.xml -DskipTests"
+                }
+            }
+        }
+
+        stage('Download from Nexus') {
+            steps {
+                sh """
+                curl -u admin:kausar@123 -O \
+                http://13.201.67.255:8081/repository/maven-releases/com/github/jitpack/maven-simple/0.2-SNAPSHOT/maven-simple-0.2-SNAPSHOT.jar
+                """
+            }
+        }
+
+        stage('Deploy to Nginx') {
+            steps {
+                sh """
+                sudo rm -rf /var/www/html/*
+                sudo cp target/maven-simple-0.2-SNAPSHOT.jar /var/www/html/
+                sudo systemctl restart nginx
+                """
+            }
+        }
+    }
+}
+mkdir -p /var/lib/jenkins/.m2
+sudo nano /var/lib/jenkins/.m2/settings.xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <servers>
+    <server>
+      <id>maven-releases</id>
+      <username>admin</username>
+      <password>kausar@123</password>
+    </server>
+
+    <server>
+      <id>maven-snapshots</id>
+      <username>admin</username>
+      <password>kausar@123</password>
+    </server>
+  </servers>
+
+</settings>
+---------
+CTRL+O, Enter, CTRL+X.
+---------------
+ls -l /var/lib/jenkins/.m2/settings.xml
+
+------------------------------------------------
+configure maven -tool -5.8.7
+---------------------------
+------------
+sudo visudo
+
+jenkins ALL=(ALL) NOPASSWD: /bin/systemctl restart nginx, /bin/rm, /bin/cp
+or
+sudo chown -R jenkins:jenkins /var/www/html
+
+
+
+
+
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <servers>
+    <server>
+      <id>maven-releases</id>
+      <username>admin</username>
+      <password>kausar@123</password>
+    </server>
+
+    <server>
+      <id>maven-snapshots</id>
+      <username>admin</username>
+      <password>kausar@123</password>
+    </server>
+  </servers>
+
+</settings>
+
