@@ -1,0 +1,437 @@
+resource "time_sleep" "wait_for_cluster" {
+  create_duration = "30s"
+  depends_on = [
+    module.retail_app_eks,
+    module.eks_addons
+  ]
+}
+
+time_sleep -  is a Terraform resource that pauses for a given amount of time
+
+It waits for 30 seconds here.
+
+Until then, it waits for both the retail_app_eks and eks_addons modules to complete (depends_on).
+---------------------------------------------------------------------------------------------------------
+
+
+
+resource "helm_release" "argocd" {
+  name             = "argocd"
+  namespace        = var.argocd_namespace
+  create_namespace = true
+
+
+helm_release is the resource used to install Helm charts.
+
+A Helm release is created with the name ArgoCD.
+
+It is installed in a specific namespace.
+
+If the namespace does not already exist, create_namespace = true creates it automatically.
+
+---------------------------------------------------------------------------------------------------
+
+
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  version    = var.argocd_chart_version
+
+ArgoCD's official Helm repository used to download Helm charts.
+
+The chart argo-cd is used.
+
+The version is taken from the variable argocd_chart_version.
+-----------------------------------------------------------------------------------------------
+  values = [
+    yamlencode({
+Custom settings are provided in YAML format using yamlencode
+-----------------------------------------------------------------------------------------------------
+      server = {
+        service = {
+          type = "ClusterIP"
+        }
+        ingress = {
+          enabled = false
+        }
+        extraArgs = [
+          "--insecure"
+        ]
+      }
+
+service.type = ClusterIP means this service can only be used within the cluster (not from outside).
+
+ingress.enabled = false means we will not use ingress. We will be viewing the UI with port-forward.
+
+--insecure means the UI will work even without HTTPS – convenient for local development.
+------------------------------------------------------------------------------------------------------
+      controller = {
+        resources = {
+          requests = {
+            cpu    = "100m"
+            memory = "128Mi"
+          }
+          limits = {
+            cpu    = "500m"
+            memory = "512Mi"
+          }
+        }
+      }
+The controller pod is given the minimum (requests) and maximum (limits) CPU and RAM to be allocated.
+------------------------------------------------------------------------------------------------------
+      repoServer = {
+        resources = {
+          requests = {
+            cpu    = "50m"
+            memory = "64Mi"
+          }
+          limits = {
+            cpu    = "200m"
+            memory = "256Mi"
+          }
+        }
+      }
+Resource limits are given for the repoServer pod that connects 
+to the Git repository.Resource limits are given for the repoServer pod that connects to the Git repository.
+----------------------------------------------------------------------------------------------------------------
+      redis = {
+        resources = {
+          requests = {
+            cpu    = "50m"
+            memory = "64Mi"
+          }
+          limits = {
+            cpu    = "200m"
+            memory = "128Mi"
+          }
+        }
+      }
+CPU and RAM resource configuration assigned to the Redis pod.
+---------------------------------------------------------------------------------------------------------------------
+  depends_on = [time_sleep.wait_for_cluster]
+}
+The cluster must be created before ArgoCD can be installed, so depends_on.
+----------------------------------------------------------------------------------------------------------------------
+resource "time_sleep" "wait_for_argocd" {
+  create_duration = "60s"
+  depends_on      = [helm_release.argocd]
+}
+After ArgoCD is installed, it waits for 60 seconds so that all ArgoCD pods are created.
+-----------------------------------------------------------------------------------------------------------------
+resource "null_resource" "argocd_apps" {
+  depends_on = [time_sleep.wait_for_argocd]
+
+ArgoCD uses null_resource to install Apps (Projects and Applications).
+
+This should be run only after ArgoCD is created, hence depends_on.
+---------------------------------------------------------------------------------------------------
+  provisioner "local-exec" {
+    command = <<-EOT
+      echo "Deploying ArgoCD projects and applications..."
+      kubectl apply -n ${var.argocd_namespace} -f ${path.module}/../argocd/projects/
+      kubectl apply -n ${var.argocd_namespace} -f ${path.module}/../argocd/applications/
+      echo "ArgoCD applications deployed successfully!"
+    EOT
+  }
+The command is run from the local machine using local-exec.
+
+YAML files are applied from the projects/ and applications/ folders in the ArgoCD namespace.
+----------------------------------------------------------------------------------------------------
+  triggers = {
+    argocd_version = var.argocd_chart_version
+    timestamp      = timestamp()
+  }
+}
+This block needs to be triggered again.
+
+If the ArgoCD version changes or the timestamp changes, null_resource will be applied again.
+------------------------------------------------------------------------------------------------
+Waiting for cluster to be created
+➤ Waits 30 seconds for EKS and Add-ons to be created.
+
+Installing ArgoCD (with Helm chart)
+➤ Uses argoproj's Helm chart
+➤ Creates a service of type ClusterIP
+➤ Can use HTTP with --insecure mode (without HTTPS)
+➤ CPU/Memory resource limits are set for each component (controller, repoServer, redis)
+
+Waiting for ArgoCD to become stable
+➤ Waits for 60 seconds — ArgoCD pods may take time to create
+
+Deploying applications and projects from ArgoCD
+➤ YAML files are applied using kubectl apply
+➤ path: ../argocd/projects/ and ../argocd/applications/
+➤ These YAML files contain your GitOps apps
+
+Update detection using triggers
+➤ If the chart version or timestamp changes, it is re-applied.
+--------------------------------------------------------------------------------------------------
+
+
+================================================================================================================================================
+
+Why use locals in Terraform?
+==========================
+Avoid repetition – Define a value once and reuse it.
+
+Improve readability – Makes your code cleaner and easier to understand.
+
+Simplify updates – Change in one place reflects everywhere it's used.
+
+Support complex logic – You can compute values using expressions
+
+
+locals {
+  cluster_name = "${var.cluster_name}-${random_string.suffix.result}"
+}
+
+------------------
+local.cluster_name
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+What is data in Terraform?
+-=========================
+data blocks are used to read existing information from your infrastructure — instead of creating something new.
+
+eg.
+Get AWS region info	      data "aws_region" "current" {}
+
+Get current user/account	data "aws_caller_identity" "current" {}
+
+Get availability zones	      data "aws_availability_zones" "available" {}
+-----------------------------------------------------------------------------------------------------------------------------
+
+What are EKS Add-ons?
+========================
+EKS add-ons are extra tools or extensions that improve your Kubernetes cluster by adding functionality like:
+
+Load balancing
+
+Ingress (routing traffic)
+
+SSL certificates
+
+Monitoring
+
+Logging
+
+Security
+-----------------------------------------------------------------------------------
+version.tf
+==============
+
+
+
+terraform {
+  required_version = ">= 1.0"
+
+
+➡️ This says:
+Terraform must be version 1.0 or newer to run this code.
+
+--------------------------------------------------------------------------------------------------------
+
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+
+
+➡️ Use the **AWS provider** from **HashiCorp**, version 5.0 or newer.
+This lets Terraform manage AWS resources.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.0"
+    }
+
+
+➡️ Use the **Helm provider**, version 2.0 or newer.
+Helm is used to install apps into Kubernetes.
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.0"
+    }
+
+
+➡️ Use the **Kubernetes provider**, version 2.0 or newer.
+This lets Terraform manage Kubernetes resources (like pods, services).
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    time = {
+      source  = "hashicorp/time"
+      version = ">= 0.9"
+    }
+
+
+➡️ Use the **Time provider**, to do time-based actions (like wait, timestamps).
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.0"
+    }
+
+
+➡️ Use the **Null provider** — it helps run custom scripts or commands.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.0"
+    }
+  }
+}
+
+
+➡️ Use the **Random provider**, to generate random values (like random names or passwords).
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+ SECTION: Provider Configurations
+
+
+
+
+ 1️⃣ AWS Provider
+
+
+provider "aws" {
+  region = var.aws_region
+}
+
+
+➡️ This tells Terraform to connect to **AWS in the region** you set in your `variables.tf` file (like `ap-south-1`).
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+### 2️⃣ HELM Provider
+
+
+provider "helm" {
+  kubernetes {
+    host                   = module.retail_app_eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.retail_app_eks.cluster_certificate_authority_data)
+
+
+
+➡️ This connects Helm to your **EKS Kubernetes cluster**.
+
+----------------------------------------------------------------------------------------------------------
+
+
+`host`: the cluster URL
+ `cluster_ca_certificate`: the certificate needed to trust the cluster
+
+---
+
+`
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      args        = ["eks", "get-token", "--cluster-name", module.retail_app_eks.cluster_name]
+    }
+  }
+}
+```
+
+➡️ This uses AWS CLI to **get an authentication token** to access your cluster.
+
+
+----------------------------------------------------------------------------------------------------------
+
+---
+
+### 3️⃣ KUBERNETES Provider
+
+
+provider "kubernetes" {
+  host                   = module.retail_app_eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.retail_app_eks.cluster_certificate_authority_data)
+`
+
+➡️ This is **same as Helm**, but now Terraform will manage **Kubernetes resources** directly (like services, deployments, etc.)
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", module.retail_app_eks.cluster_name]
+  }
+}
+```
+
+➡️ Again, this connects using AWS CLI token to access EKS.
+
+------------------------------------------------------------------------------------------------------------------------
+========================================
+======================================================
+app/chart
+============
+
+.dockerignore
+==============
+
+This file tells Docker which files/folders to skip when building an image.
+
+It helps avoid adding unwanted or sensitive data, like .git/, which can increase image size.
+-----------------------------------------------------------------------------------------------------------------
+
+chart.yaml
+=========
+------------------------------------------------------------------------------------------------
+| Alias      | Chart Name                           | Path                   |
+| ---------- | ------------------------------------ | ---------------------- |
+| `cart`     | `retail-store-sample-cart-chart`     | `../../cart/chart`     |
+| `catalog`  | `retail-store-sample-catalog-chart`  | `../../catalog/chart`  |
+| `checkout` | `retail-store-sample-checkout-chart` | `../../checkout/chart` |
+| `orders`   | `retail-store-sample-orders-chart`   | `../../orders/chart`   |
+| `ui`       | `retail-store-sample-ui-chart`       | `../../ui/chart`       |
+--------------------------------------------------------------------------------------------------------------
+
+
+values-stateful.yaml
+===================
+This YAML file defines configurations for multiple microservices: cart, catalog, checkout, and orders.
+Each service specifies its required storage system (like DynamoDB, MySQL, Redis, or PostgreSQL) and whether to create it
+---------------------------------------------------------------------------------------------------------------------------
+
+values.yaml
+===========
+
+What is fullnameOverride used for?
+===================================
+The fullnameOverride field in a Helm chart is used to manually override the full name of Kubernetes resources created by the chart.
+
+for eg.
+==========
+suppose your Helm chart name is onlineshop and the release name is prod.
+Normally, the resource name would become something like prod-onlineshop-cart.
+
+But if you set:
+fullnameOverride: carts
+Then the resource (like Deployment, Service) will be named simply carts.
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
