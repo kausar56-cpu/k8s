@@ -1,0 +1,121 @@
+ 1. Take t2medium/15gb storage Instance
+ 2. apt-get update
+ 3. sudo apt-get install docker.io -y
+ 4.sudo usermod -aG docker $USER && newgrp docker(Gives you Docker access without sudo and applies it right away)
+   docker ps
+ 5.clone repo https://github.com/LondheShubham153/k8s-kind-voting-app.git
+------------------------------------------------------------------------------------------
+1. cd k8s-kind-voting-app/
+   ls
+   cd kind-cluster/
+   ls
+  chmod +x install_kind.sh (excutable permission to install kind)
+  ./install_kind.sh
+----------------------------------------------------------------------------------
+   kind will make  container of control plane and nodes 
+kind cluster works in the docker
+   once kind instlled we will make cluster
+   use of Argocd - takeing maifest file from github and depoly in k8s
+----------------------------------------------------------------------
+kind create cluster --config=config.yml --name=my-cluster
+ls
+chmod +x install_kubectl.sh
+./install_kubectl.sh
+kubectl get nodes
+
+--------------------------------------------------------------------------------------
+now we will install all application on cluster by using manifest file (db, redis, result, vote)
+cd ..
+ls
+cd k8s-specifications/
+ls
+kubectl apply -f .
+kubectl get all
+-----------------------------------------------------------------------------------------
+install helm
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+ls
+chmod 700 get_helm.sh
+./get_helm.sh
+to confirm run command - helm
+---------------------------------------------------------------------------------------------
+helm through we can install promitheus chart
+helm chart - collection of manefest file
+
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts ( promitheus related all manefest file will add here)
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
+
+
+kubectl create namespace monitoring
+helm install kind-prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --set prometheus.service.nodePort=30000 --set prometheus.service.type=NodePort --set grafana.service.nodePort=31000 --set grafana.service.type=NodePort --set alertmanager.service.nodePort=32000 --set alertmanager.service.type=NodePort --set prometheus-node-exporter.service.nodePort=32001 --set prometheus-node-exporter.service.type=NodePort
+kubectl get svc -n monitoring
+kubectl get namespace
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+kubectl get pods -n monitoring
+
+kubectl port-forward svc/kind-prometheus-kube-prome-prometheus -n monitoring 9090:9090 --address=0.0.0.0 &
+
+expose 9090 port in SG
+STATUS - TARGET show data is avilable or not
+url of promotheus/matrix
+application sending data to the prom
+---------------------------------------------------------------------------------------------------------------------
+To see the CPU uSAGE Quiry - sum (rate (container_cpu_usage_seconds_total{namespace="default"}[1m])) / sum (machine_cpu_cores) * 100
+then execute - go to graph
+
+sum (container_memory_usage_bytes{namespace="default"}) by (pod)
+
+
+sum(rate(container_network_receive_bytes_total{namespace="default"}[5m])) by (pod)
+sum(rate(container_network_transmit_bytes_total{namespace="default"}[5m])) by (pod)
+-----------------------------------------------------------------------------------------------------------------
+kubectl port-forward svc/vote 5000:5000 --address=0.0.0.0 & (by using this command we are exposing application)
+open port 5000 in SG
+WE ARE JUST INCREING CPU USAGE
+---------------------------------------------------------------------------------------------------------------------------
+NOW GRAFNA
+
+kubectl port-forward svc/kind-prometheus-grafana -n monitoring 3000:80 --address=0.0.0.0 &
+
+EXPOSE IN SG
+admin
+prom-operator
+---------------------------------------------------------------------------------------------------
+ADD DATA source - 
+click on 3 dot - adminstration - newuser- name- demo  email-  username- demo  password- demo
+--------------------------------------------------------------------------------
+change role - we can give granule permission to devlpers
+-----------------------------------------------------------------------------------------------------------------------------
+how to make connection in dashboeard- connection we can see here different types of datasource but we already added promo in grafna
+if you want u can add.
+---------------------------------------------------------------------------------------------------
+promotheus -connection- data source - build a dhashboard click - add visuallzation - select datta source
+add button - add visuallzation 
+------------------------------------------------------------------------------------------------------
+grafna -dhasboard - serch k8s - copy ID - 
+dhasboard - new - import - add id - load - imort
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
