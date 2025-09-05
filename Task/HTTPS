@@ -1,0 +1,43 @@
+
+create vpc- 12.0.0.0/16
+--------------------------------------------------------------------------------------------------------------
+We are going to create 2 public subnets.
+
+1.crtete subnet- name-testpublic-vpc-a - select vpc which we created - subnet range -12.0.1.0/24- select zone a
+2.crtete subnet- name-testpublic-vpc-b - select vpc which we created - subnet range -12.0.2.0/24 - select zone b
+ 
+--------------------------------------------------------------------------------------------------------------
+IG - create it - attach to the VPC which we have created  
+----------------------------------------------------------------------------------------------------
+setup route table - name - test-rt-public 
+---------------------------------------------------------------------------------------
+subnet association - edit - select subnets -save association then go to route - edit - add - 
+0.0.0.0/0 - choose the IG that we have created -save. 
+-------------------------------------------------------------------------------------------
+crte ec2 - test-ec2 - t2.micro -network setting - select vpc - subnet 1a - public ip -enable 
+add SG - HTTP -SOURCE type - anywhere
+------------------------------------------------------------------------------------
+#!/bin/bash
+
+yes | sudo apt update
+yes | sudo apt install apache2
+
+# Create an index.html file with server details
+echo "<h1>Server Details</h1>
+<p><strong>Hostname:</strong> $(hostname)</p>
+<p><strong>IP Address:</strong> $(hostname -I | cut -d' ' -f1)</p>" | sudo tee /var/www/html/index.html
+
+# Restart Apache service
+sudo systemctl restart
+--------------------------------------------------------------------------------------------------------
+access it
+----------------------------------------------------------------------------
+Set up load balancer - TG - first select http only.  
+--------------------------------------------------------------------------
+set up route table (NOTE - keep the domain as it is, do not add a subdomain) -  
+crete hosted zone - add record - access it by domain  - which will be http 
+------------------------------------------------------------------------------------------------------
+Now go to ACM - ADD domain - create record - allow alis - select ALB - keep 60 sec -region select - select alb. 
+Then go to ALB - add rule - create rule for https - select the domain over there - then access it, which will be https 
+--------------------------------------------------------------------------------------------------------
+
