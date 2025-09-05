@@ -1,0 +1,72 @@
+Check Existing Networks
+docker network ls
+
+Inspect the Default Bridge Network
+docker network inspect bridge
+
+
+Run Containers (on Default Bridge
+docker run -it --name dev ubuntu
+docker run -it --name prod ubuntu
+
+Access the dev Container
+docker exec -it dev bash
+
+
+Communication Test (using IP)
+apt-get update && apt-get install -y iputils-ping
+ping <prod_IP>
+ping prod
+
+External Access Example
+docker run -it --name prod -p 8080:80 nginx
+http://localhost:8080
+--------------------------------------------------
+docker network ls
+docker network create --driver bridge my_custom_bridge
+
+docker run -dit --name dev --network my_custom_bridge nginx
+docker run -dit --name prod --network my_custom_bridge nginx
+
+docker exec -it dev ping prod
+
+docker network inspect my_custom_bridge
+
+------------------------------------------------------
+docker swarm init
+
+docker network create -d overlay my_overlay_network
+
+docker service create --name service1 --network my_overlay_network -p 8081:80 nginx
+docker service create --name service2 --network my_overlay_network busybox sh -c "while true; do sleep 3600; done"
+
+docker network ls
+docker network inspect my_overlay_network
+
+docker exec -it $(docker ps -q --filter name=service2) ping service1
+
+-------------------------------------------------------------------
+
+Practical: Connect Custom Bridge + Overlay Network
+
+docker swarm init
+
+docker network create --driver bridge my_custom_bridge
+
+docker network create -d overlay my_overlay_net
+
+Run a Container in Bridge Network
+docker run -dit --name bridge-container --network my_custom_bridge busybox sh
+
+docker run -dit --name overlay-container --network my_overlay_net busybox sh
+
+docker network connect my_overlay_net bridge-container
+-------------------
+Test Connectivity
+docker ps | grep overlay-service
+
+docker exec -it bridge-container sh
+
+ping overlay-service
+
+
