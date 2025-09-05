@@ -1,3 +1,109 @@
+
+
+1.how to manage certification 
+2.how to integrate sonar qube
+3.diffence between add and copy in docker 
+4.providers
+5.how to increase capacity of EC2 if is running and full
+6.how to communicate 2 vpc having same cidr
+7.if EC2 is created manually and it is not reflecting in tf
+8.if deployment is ok in stage and dev but in prod it is pending 
+9.which ingress controller u r using for kubernetes 
+10.how to get cpu utilisation of pod
+11.how to get pods depending on environment 
+12. what is waf
+13. If you need to do access of your application to 200 users how to do it
+14. Count and for each
+15. What ingress you r using 
+16. How the flow of your application using cluster 
+17.route 53 workflow
+
+18.how to manage different state file for different environment in tf
+
+We use a single Remote Backend (S3 + DynamoDB) for all environments. 
+For each environment, we maintain a separate state file (key path).
+ Even if 5 users are working simultaneously, state locking (via DynamoDB) 
+ensures that two users cannot make changes to the same environment at the
+ same time. This prevents conflicts and keeps the state securely shared."
+
+
+19.if tfstate file is deleted how to do then
+20.if cpu utilisation is more how to debug
+-------------------------------------------------------------------------
+21.port mapping command in kubernetes
+
+kubectl port-forward pod/<pod-name> 8080:80 -n <namespace>
+kubectl port-forward svc/<service-name> 8080:80 -n <namespace>
+-------------------------------------------------------
+
+22.Sonarqube set up
+23.Can you describe your experience with CI/CD pipelines, particularly using Jenkins and Terraform?
+24.2/3 members are working at same time how to restrict to use module
+25.S3 bucket terraform module
+26.Egress service 
+27. Provisonal in tf
+28.Work on K8s
+---------------------------------------------------------------------
+
+29.Vpc already created on AWS console how to get vpc id using tf=
+
+Using Data Source (Recommended)
+
+Terraform AWS provider gives a aws_vpc data source.
+
+Example: Fetch existing VPC by tag
+
+data "aws_vpc" "existing" {
+  filter {
+    name   = "tag:Name"
+    values = ["my-existing-vpc"]
+  }
+}
+
+1. Can you explain your project workflow?
+2. What branching strategy you follow?
+3. write Terraform code for s3 bucket?
+---------------------------------------------------------------------
+4. Have you handled any CVE in you last project and how you handled it?
+Docker base image
+
+Old Alpine image had issue → I used the latest Alpine → rebuilt image. ✅
+
+4. Kubernetes CVE
+
+Cluster had a bug → I upgraded EKS version → services worked fine. ✅
+
+5. Nginx ingress
+
+Ingress image was vulnerable → I pulled latest version → redeployed and fixed. ✅
+----------------------------------------------------------------------------------
+5. Explain me the challenge you had in you last project and how did you resolved it.
+6. I showed by experience in Terraform and Jenkins. On which they asked 
+if you were asked to work on other tools like AWS CDK or argo cd? 
+how do you handle that, what would be approach?
+--------------------------------------------------------------------------------
+7. What is cloud formation linter?
+
+CloudFormation Linter = A static analysis tool to validate AWS 
+CloudFormation templates for correctness and best practices before deployment.
+
+---------------------------------------------------------------------------------
+8. What is Dockerfile?
+9. Tell me which are the orchestration tool you have used?
+10. Have you worked on hem chat and how do you write yaml manifest file?
+11. What are k8s deployment strategies?
+12. Have you worked in agile environment and what tool you used to tracking?
+13. Have you worked on confluence?
+14. What is docker container and docker daemon?
+15.  Do you have knowledge about gitOps?
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+
 3) How can you give temporary access of 5 mins to an object stored in S3 bucket to an external user while keeping bucket private ?
 
 “If my S3 bucket is private but I need to give temporary access to an external user,
