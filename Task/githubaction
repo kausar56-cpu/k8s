@@ -1,0 +1,37 @@
+GitHub Actions
+ニニニニニ
+===
+Topics
+
+1. What is GitHub Actions
+2. How to use GitHub Actions - step by step DEMO
+3. GitHub Actions Terms: Events, Workflows, Jobs, Steps
+
+GitHub Actions - feature in GitHub to create custom automated Workflows
+
+GitHub Actions - feature in GitHub to create custom automated Workflows
+- automate SDLC workflows
+- implement CI CD DevOps
+- run a task on a specific event
+----------------------------------------------
+DEMO
+Step 1 - Sign up or Login to GitHub.com
+Step 2 - Create a new repository
+Step 3 - In the repo create a folder github/workflows
+Step 4 - In the folder create a YAML file with extension yml
+Step 5 - Add the workflow content in the file
+Step 6 - Commit and push the changes
+Step 7 - Goto main page of repo and goto "Actions"
+Step 8 - Select the workflow from left side and check the logs and results
+---------------------------------------------------------------------------------------------
+Terms:
+name:
+on:
+Workflow - collection of jobs, defined in a YAN
+Events - any activity in the repo that can trigger a workficsheck
+JOBS - Collection of steps
+jobs:
+
+STEPS - actions to be taken, commands, scripts
+steps
+----------------------------------------------------------------------
