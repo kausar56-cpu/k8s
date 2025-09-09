@@ -1,5 +1,21 @@
 
+Q12. What is git init, and why do we use it?
 
+Answer:
+"git init is used to create a new Git repository in a project. 
+It makes a hidden .git folder which stores all commit history and configuration. 
+We use it when we want Git to start tracking changes in our project."
+
+Q13. What is the difference between git pull and git fetch?
+
+Answer:
+"git fetch only downloads the latest changes from the remote but does not merge them into my local branch. 
+git pull does both — it fetches the changes and merges them directly into my branch. 
+I use fetch when I want to review changes first, 
+and pull when I want to update my branch immediately."
+
+
+----------------------------------
 1.how to manage certification 
 2.how to integrate sonar qube
 3.diffence between add and copy in docker 
