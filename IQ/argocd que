@@ -1,0 +1,91 @@
+1. What does “Sync” mean in ArgoCD?
+
+👉 Answer:
+“Sync in ArgoCD means reconciling the live Kubernetes cluster with the desired state stored in Git.
+If the application is OutOfSync, ArgoCD applies manifests from Git to the cluster to make them identical.”
+
+
+
+2. What happens when an app is in OutOfSync state?
+
+👉 Answer:
+“It means the cluster resources do not match the Git repository. 
+This can happen if there are changes in Git not applied yet, or if someone modified resources directly in the cluster.”
+
+
+
+
+3. What is the difference between Manual Sync and Auto Sync?
+
+👉 Answer:
+“In Manual Sync, we have to trigger synchronization ourselves either via the ArgoCD UI or CLI. 
+In Auto Sync, ArgoCD automatically applies changes as soon as they are detected in Git, ensuring the cluster always matches Git.”
+
+
+
+4. How do you enable Auto-Sync in ArgoCD?
+
+👉 Answer:
+“Auto-Sync is enabled by setting the syncPolicy in the Application manifest with automated: {}.
+We can also enable options like selfHeal and prune under this policy.”
+
+
+
+5. What is Self-Heal in ArgoCD sync?
+
+👉 Answer:
+“Self-Heal ensures that if someone manually changes or deletes a resource in the cluster,
+ArgoCD will detect the drift and automatically restore it back to the Git-defined state.”
+
+
+
+6. Which CLI command is used to trigger a sync?
+
+👉 Answer:
+“We use argocd app sync <app-name> to manually trigger synchronization from the command line.”
+
+
+7. How can you rollback if a sync applies wrong changes?
+
+👉 Answer:
+“ArgoCD keeps application history. We can rollback by selecting a previous version
+from the ArgoCD UI or using argocd app rollback <app-name> <revision> from the CLI.”
+
+
+
+8. What happens if someone manually changes a resource in the cluster, but auto-sync + self-heal is enabled?
+
+👉 Answer:
+“ArgoCD will detect the drift and immediately revert the manual change, bringing it back to match Git.”
+
+
+
+9. What happens if the Git repo is ahead but auto-sync is disabled?
+
+👉 Answer:
+“The app will show OutOfSync status until someone triggers a manual sync.”
+
+
+
+10. What happens if ArgoCD is not able to sync due to resource conflicts?
+
+👉 Answer:
+“The sync will fail and the application will remain OutOfSync. 
+We need to check logs, fix the conflict, and retry syncing manually or after resolving the issue in Git.”
+
+
+
+11. Do you recommend enabling auto-sync in production? Why or why not?
+
+👉 Answer:
+“It depends. Auto-sync is great for non-prod environments to test continuous delivery. 
+In production, many teams prefer manual sync with approvals, to avoid accidental rollouts.
+If auto-sync is used in prod, it’s best combined with Git PR reviews and proper testing.”
+
+
+
+12. How do you handle secrets when using ArgoCD sync?
+
+👉 Answer:
+“Secrets should not be stored in plain Git. Instead, we use tools like Sealed Secrets,
+dsss9aaaaiSOPS, or AWS Secrets Manager and integrate them with ArgoCD, so sync happens securely without exposing sensitive data.”
