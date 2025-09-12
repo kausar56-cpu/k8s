@@ -63,7 +63,6 @@ if systemctl is-active --quiet "$SERVICE"; then
 else
     echo "No, $SERVICE is not running."
     systemctl restart servies
-fi
 
 -----
 #!/bin/bash
@@ -112,7 +111,10 @@ if [ -f $file_name ]; then
 else
     echo "File $file_name does not exist."
 fi  
-
+if [-f $ filename]; then
+  echo "file $ kausar exist"
+else
+  echo "file $k not exist"
 
 
 
@@ -125,10 +127,6 @@ for i in {1..5}; do
     echo "Number: $i"
 done
 ```
-
-
-
-
 
 
 ### Full Script:
@@ -227,6 +225,9 @@ else
     echo "Docker is not running. Restarting..."
     sudo systemctl restart docker && echo "Docker restarted successfully." || echo "Failed to restart Docker."
 fi
+
+
+
 
 
 
