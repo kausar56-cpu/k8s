@@ -60,7 +60,8 @@ docker exec -it app1 env
 ### **7. Docker Build & Push**  
 - `docker build -t <image-name> .` → Build an image from Dockerfile  
 - `docker tag <image> <repo>:<tag>` → Tag an image  
-- `docker push <repo>:<tag>` → Push image to Docker Hub  
+- docker push <registry>/<username>/<image_name>:<tag>
+ 
 - `docker history <image>` → Show image history  
 
 ---
