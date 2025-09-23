@@ -21,6 +21,12 @@ This switches traffic with zero downtime. If there’s an issue, I simply point 
 
 
 
+“In Kubernetes, a Rolling Update happens by changing the Deployment image. Kubernetes replaces old Pods with 
+new ones gradually using maxUnavailable and maxSurge. I usually run kubectl set image to trigger it,
+and if needed rollback with kubectl rollout undo.”
+
+
+
 ### **2️⃣ Blue-Green Deployment**  
 ✅ Runs **two environments** (Blue = old, Green = new).  
 ✅ Switches traffic from Blue to Green once testing is complete.  
