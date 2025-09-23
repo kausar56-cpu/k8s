@@ -15,6 +15,11 @@ kubectl set image deployment/myapp myapp=myimage:v2
 ```
 
 ---
+n Kubernetes, I keep two Deployments – Blue (current) and Green (new). The Service initially sends traffic to Blue. 
+I deploy Green, test it, and then just change the Service selector from Blue to Green.
+This switches traffic with zero downtime. If there’s an issue, I simply point the Service back to Blue.”
+
+
 
 ### **2️⃣ Blue-Green Deployment**  
 ✅ Runs **two environments** (Blue = old, Green = new).  
