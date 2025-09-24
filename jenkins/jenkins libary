@@ -22,3 +22,17 @@ pippeline mdil starting ch name he jenkins mde je dily te dych ani khali repo na
 }
 
 200 pipeline mde 1ch change krych asel tr tya libray mde jych change krych refect hoil jenkins mde 
+
+@Library('my-shared-lib') _    // <-- Jenkins मध्ये library चे नाव
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                helloworld()   // <-- हा function थेट call करू शकतो
+            }
+        }
+    }
+}
