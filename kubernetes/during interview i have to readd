@@ -130,6 +130,8 @@ The main advantage of integrating a database with Kubernetes is that the databas
 gets a hostname (unique URL), making it easier to manage across multiple applications.
 
 
+By default, every Pod gets a **default Service Account**, but we can create custom Service Accounts to provide 
+specific permissions using RBAC (Role-Based Access Control)."
 
 
 
