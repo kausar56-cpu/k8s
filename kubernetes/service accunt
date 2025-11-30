@@ -12,12 +12,15 @@
 ## **📌 Sample Interview Answer**  
 
 **👉 What is a Kubernetes Service Account?**  
-"A **Service Account** in Kubernetes is used by Pods to authenticate and interact with the Kubernetes API. By default, every Pod gets a **default Service Account**, but we can create custom Service Accounts to provide specific permissions using RBAC (Role-Based Access Control)."
+"A **Service Account** in Kubernetes is used by Pods to authenticate and interact with the Kubernetes API.
+By default, every Pod gets a **default Service Account**, but we can create custom Service Accounts to provide 
+specific permissions using RBAC (Role-Based Access Control)."
 
 ---
 
 **👉 Why is a Service Account needed?**  
-"Kubernetes uses Service Accounts to control which Pods can access the API server and what actions they can perform. This improves **security and access control** inside the cluster."
+"Kubernetes uses Service Accounts to control which Pods can access the API server and what actions they 
+can perform. This improves **security and access control** inside the cluster."
 
 ---
 
