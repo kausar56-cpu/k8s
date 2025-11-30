@@ -131,6 +131,45 @@ gets a hostname (unique URL), making it easier to manage across multiple applica
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+What is kubectx?
+kubectx is a CLI tool that simplifies switching between multiple Kubernetes contexts in a kubeconfig file. 
+Instead of using kubectl config use-context, you can use a short and quick command.
+openssl genrsa -out user1.key 2048
+
+1.static
+if my devoplper requre some 4 gb volume he caaot attact dirctly to node 
+he should be clame it 
+
+bunded means
+before state - it will be avilable state which means 
+If it is not bound to any PVC it will be showing as available once it has been claimed, and then the statue will turn to bounded
+------------------------------------------------------------------------------------------------------------------------------
+
+if soppose all pv bounded - still devlper want 20gb gp2 volume - its possible dynamic PV cliam
+how?
+whenever devolper raising cliam
+when deploying cluster with kops at backend storage class will be crteated - storage gp2 Imidiate class which mean
+if thre no pv remains - with help of storage class its possible - but its gooing to create volume as a dynamic provisioning cliam 
+
+
+node selector and node affinity diff 
+In the node selector, we can pass a single expression  here
+but in node affinity, we can pass multiple match expressions heare          -------vamp 
+Explain Kubernetes Architecture.
+
+
+
 actually in real-time they will have licensed keys, .crt, and .key. The only thing we have to do is,  
 we have to follow the process that I showed in the video. 
 
