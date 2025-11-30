@@ -90,3 +90,58 @@ static pod only created by kubelet
 
 cat/var/lib/kubelet/config.yaml
 Ya mde /etc/k8d/manifest path bhet
+
+
+
+ReplicaSet independently delete केला → Pods पण delete होतील, पुन्हा तयार होणार नाहीत.
+
+ReplicaSet Deployment ने manage केलेलं असेल → delete केला तरी Deployment लगेच नवीन ReplicaSet + नवीन Pods तयार करेल.
+what are posible way to connect application apart from servisescretse lens application - mainly used for monitoring 
+
+kubens 
+
+
+pod jr delete kela tri sevise rahte as it is
+
+
+
+pod delete kela 
+endpont none al then pod apply kely then tych sevise la connect zala lebel mul
+
+
+
+if devolper want to db port no    ---------------imp
+kubectl describe pod
+kubectl exec -it port name 
+env
+
+
+
+external name     --------------------------vimp
+
+
+
+I am working on k8s application - and suddenly product manager came - can u integrate the database into the K8s application  - this is an external database not from another region 
+this database accesses all teams because 
+it contains product info
+customer feedback 
+reviews
+The main advantage of integrating a database with Kubernetes is that the database 
+gets a hostname (unique URL), making it easier to manage across multiple applications.
+
+
+
+actually in real-time they will have licensed keys, .crt, and .key. The only thing we have to do is,  
+we have to follow the process that I showed in the video. 
+
+
+  imagePullSecrets:
+      - name: docker-pwd
+
+
+sidecar container is just dependent for the main container 
+types of sidecar container
+1.  init 
+2.adapter
+3.Ambassador Containers
+
