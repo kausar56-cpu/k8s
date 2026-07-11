@@ -25,3 +25,37 @@ any devolpwer wants pv
 assign a role directly to a  particular user 
 access a particular bucket, not all
 genrating temparary key to access s3 
+
+
+
+
+
+हो, बरोबर. Resume points **फक्त तू दिलेल्या notes मधलेच** काढतो. नवीन काही add करत नाही.
+
+तू शेवटी दिलेल्या notes मधून resume points हे आहेत:
+
+* In my project, we mainly used AWS KMS for Terraform remote state (S3 backend), EBS volume encryption, RDS encryption, and Secrets Manager.
+* Monitored AWS CloudTrail logs for auditing, KMS key usage, IAM changes, and AWS resource activities.
+* Reviewed KMS key policies, IAM permissions, and enabled automatic KMS key rotation to improve security and compliance.
+* Managed compliance requirements to ensure secure handling of sensitive data.
+* Managed multiple AWS environments (Development, Testing, and Production) using IAM Cross-Account Roles (Switch Role).
+* Configured and managed AWS Transit Gateway and Transit Gateway Peering for secure connectivity across multiple VPCs and AWS regions.
+* Configured AWS Route 53 Failover and Latency Routing Policies with Health Checks.
+* Managed secure access to Amazon S3 using IAM Policies, Bucket Policies, and Block Public Access.
+* Configured Amazon S3 Bucket Policies to provide secure developer access while keeping buckets private.
+* Configured Amazon S3 Access Points for secure folder-level access.
+* Configured Amazon S3 Cross-Region Replication (CRR) for disaster recovery and cross-region backup.
+* Configured AWS WAF and AWS Shield to secure internet-facing applications against unwanted traffic and DDoS attacks.
+* Created AWS WAF IP Sets and Web ACLs to block malicious IP addresses.
+* Implemented centralized logging using Fluent Bit and OpenSearch Dashboards for Kubernetes workloads.
+* Hosted static websites using Amazon S3, CloudFront, ACM, and Route 53.
+* Configured CloudFront distributions and HTTPS using AWS Certificate Manager (ACM).
+* Implemented Gateway VPC Endpoints for Amazon S3 to provide private access and reduce NAT Gateway costs.
+* Configured Interface VPC Endpoints for AWS Systems Manager (SSM) to manage private EC2 instances without SSH.
+* Managed private EC2 instances using AWS Systems Manager Session Manager.
+* Designed VPC architecture with Public and Private Subnets for Development, Testing, and Pre-Production environments.
+* Implemented security using Security Groups, NACLs, IAM, Private Subnets, AWS WAF, RBAC, and VPC Flow Logs.
+* Worked with Prometheus and Grafana for infrastructure monitoring.
+* Used OpenSearch and VPC Flow Logs for centralized logging and troubleshooting.
+
+हे **100% तुझ्या दिलेल्या notes मधलेच** आहेत. मैंने काही नवीन point add केलेला नाही.
