@@ -58,3 +58,290 @@ Validate the findings.
 Implement the appropriate fix while minimizing downtime.
 
 This structured troubleshooting approach helps resolve incidents efficiently and prevents recurring issues.
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+"A developer accidentally pushed a faulty commit directly to the main branch, and the application is now failing in production. How would you resolve the issue without affecting the team's workflow?"
+
+My Approach
+
+1️⃣ Understand the impact
+
+Identify the faulty commit.
+
+Verify whether other developers have already pulled the latest changes.
+Confirm whether the commit has been deployed to production.
+
+2️⃣ Review the commit history
+
+git log --oneline --graph
+
+Identify the commit hash that introduced the issue.
+
+3️⃣ Revert the faulty commit
+
+git revert <commit-id>
+
+This creates a new commit that safely reverses the changes.
+
+It preserves Git history, making it the preferred approach for shared branches like main.
+
+4️⃣ Push the revert commit
+
+git push origin main
+
+Deploy the corrected version through the CI/CD pipeline.
+
+What if the commit hasn't been shared?
+
+If the faulty commit exists only in my local branch and hasn't been pushed to the remote repository, I can remove it using:
+
+git reset --hard HEAD~1
+
+This rewrites local history and should never be used on a shared branch unless everyone agrees.
+
+Key Takeaway
+
+There are multiple ways to undo changes in Git, but choosing the right approach depends on the situation.
+
+✅ git revert → Best for shared branches because it preserves history.
+
+✅ git reset → Best for local commits that haven't been shared.
+
+⚠️ git push --force → Use with extreme caution, as it rewrites remote history and can impact the entire team.
+
+Understanding when to use each command is just as important as knowing the commands themselves.
+----------------------------------------------------------------------------------------------------
+
+🚀 DevOps Interview Series | Day 4/7 – Kubernetes
+
+☸️ Kubernetes Production Interview Scenario
+
+Interviewer:
+
+"A deployment was successful, but all the Pods are in the CrashLoopBackOff state. How would you troubleshoot the issue?"
+
+My Approach
+
+1️⃣ Check the pod status
+
+kubectl get pods -A
+
+2️⃣ Describe the failing pod
+
+kubectl describe pod <pod-name>
+
+Check Events.
+Verify image pull status.
+Look for probe failures.
+
+3️⃣ Check application logs
+
+kubectl logs <pod-name>
+If the container keeps restarting:
+kubectl logs <pod-name> --previous
+
+4️⃣ Verify the Deployment configuration
+
+kubectl describe deployment <deployment-name>
+kubectl get deployment
+
+5️⃣ Check ConfigMaps and Secrets
+
+kubectl get configmap
+kubectl get secrets
+Verify required environment variables exist.
+
+6️⃣ Verify resource limits
+
+kubectl top pod
+kubectl describe node
+Check whether the Pod is getting OOMKilled.
+Verify CPU and Memory requests/limits.
+
+7️⃣ Verify image availability
+kubectl describe pod <pod-name>
+Ensure the image exists.
+Verify image tag and registry credentials.
+
+Key Takeaway
+
+Most CrashLoopBackOff issues are caused by:
+
+Application startup failures
+
+Incorrect environment variables
+
+Missing Secrets or ConfigMaps
+
+Liveness/Readiness probe failures
+
+Insufficient CPU or Memory
+
+A structured troubleshooting approach helps identify the root cause much faster than simply restarting Pods.
+
+------------------------------------------------------------------------------------
+
+Production Terraform Scenario: EC2 Instance Deleted Manually – What Happens Next?
+Recently, while preparing for DevOps interviews, I came across an interesting Terraform production scenario.
+Scenario
+Your infrastructure is managed using Terraform.
+Terraform code:
+
+resource "aws_instance" "web" {
+ ami = "ami-123"
+ instance_type = "t3.micro"
+}
+
+Everything is working fine until someone manually deletes the EC2 instance from the AWS Console.
+At this point:
+✅ Terraform State File still contains the EC2 resource
+❌ Actual EC2 instance no longer exists in AWS
+What Happens When You Run terraform plan?
+Terraform compares:
+Desired State (Terraform code)
+Actual State (AWS Infrastructure)
+It detects that the EC2 instance is missing and reports infrastructure drift.
+Example output:
+Plan: 1 to add, 0 to change, 0 to destroy
+
+What Happens When You Run terraform apply?
+Terraform automatically recreates the missing EC2 instance to bring the infrastructure back to the desired state defined in the code.
+This demonstrates one of the biggest advantages of Infrastructure as Code (IaC):
+✅ Drift Detection
+✅ Infrastructure Recovery
+✅ Consistency Across Environments
+✅ Reduced Manual Errors
+Key Learning
+In production environments, Terraform should remain the single source of truth.
+Manual changes through the AWS Console can introduce infrastructure drift and unexpected behavior.
+The best practice is:
+👉 Make changes through Terraform code
+👉 Run terraform plan
+👉 Review changes
+👉 Apply using terraform apply
+-------------------------------------------------------------------------------------
+I just lost 2 hours to a space. Literally. One extra space 🙃😅 
+
+Today I was containerizing a Go application. Image built perfectly. But the container kept crashing on every startup with:
+
+exec: "./product-catalog": no such file or directory
+
+I went through everything:
+✅ Multi-stage build artifacts — fine
+✅ Go binary compiled — fine
+✅ File permissions — fine
+✅ Runtime image contents — fine
+
+The binary was RIGHT THERE. I could see it in the image.
+
+After 2 hours I finally looked closely at my ENTRYPOINT...
+
+❌ ENTRYPOINT ["  ./product-catalog"]  ← what I had
+✅ ENTRYPOINT ["./product-catalog"]    ← what it should be
+
+A single accidental space before the path. That's it. That's the whole issue.
+
+Fixed it, rebuilt, container started instantly. 🤦‍♂️
+
+💡 If your Docker container fails at startup despite a clean build — before doing ANYTHING else, just read your ENTRYPOINT character by character. You might be surprised.
+
+The most expensive bugs are often the smallest ones.
+------------------------------------------------------------------------------------------
+
+1) “A deployment succeeded, but traffic is still going to the old version.
+Explain exactly where you start debugging.”
+
+2) “A Kubernetes application is healthy according to kubectl get pods,
+but users report 504 errors.
+Walk me through your troubleshooting flow.”
+
+3) “Your AWS bill spiked 3x overnight.
+No deployments happened.
+What’s your step-by-step response?”
+
+4) “CI/CD pipeline is taking 40+ minutes.
+Your CTO wants it under 10 without adding hardware.
+What will you optimize?”
+
+5) “An SRE says infra is stable, dev team says the system is slow, and monitoring shows everything is GREEN.
+Who do you believe — and what do you check first?”
+
+6) “Terraform apply is failing due to drift,
+but the infra is currently live and critical.
+How do you fix it without causing downtime?”
+
+7) “Your rollback script fails during a production outage.
+You have 5 minutes before SLA breach.
+Walk me through your decision.”
+
+8) “A secret was accidentally committed to GitHub.
+It has already been cloned.
+What are your next exact steps?”
+
+9) “A Kubernetes cluster upgrade works in staging but corrupts core DNS in production.
+How do you approach patching and restoring service?”
+
+10) “Tell me a real scenario where YOU introduced a failure in infrastructure.
+ What happened, what did you learn, and what changed after?”
+ Most candidates freeze here.
+ Because this question isn’t about tools -
+ It’s about awareness, accountability, and engineering maturity.
+-----------------------------------------------------------------------------------------------
+1. How do you design zero-downtime deployments for stateful apps on Kubernetes?
+ → PDBs, readiness probes, preStop hooks, DB migration sequencing
+
+2. Terraform state is huge (200MB) and plan takes 12 mins. How do you fix it?
+ → State splitting, module boundaries, remote backend optimization
+
+3. Pods are Running but users see 503 errors. Where do you debug?
+ → Readiness vs liveness, endpoints, service selectors, upstream failures
+
+4. How do you manage secrets across 50+ services without exposing Vault access?
+ → Vault injector, K8s auth, dynamic secrets, external secrets operator
+
+5. How do you design GitOps for multiple teams with independent releases?
+ → ArgoCD App-of-Apps, ApplicationSets, controlled infra repos
+
+6. Image passed scans but got exploited. What did you miss?
+ → Runtime security, RBAC, seccomp, writable FS, exposed secrets
+
+7. How do you implement SLO-based alerting without alert fatigue?
+ → Error budget, burn rate alerts, multi-window strategy
+
+8. CI builds 40 Docker images and takes 18 mins. How do you optimize?
+ → BuildKit caching, parallel builds, selective rebuilds
+
+9. How do you upgrade a Kubernetes cluster with zero downtime?
+ → Cordon, drain, rolling node upgrade, compatibility checks
+
+10. Reduce cloud cost by 40% without impacting performance. Where do you start?
+ → Right-sizing, spot instances, autoscaling tuning, cost observability
+---------------------------------------------------------------------------------------------------------
+🔹 1. How does Terraform determine the execution order of resources?
+Hint: It's not the order in your .tf files.
+🔹 2. What happens if your Terraform state file is corrupted or accidentally deleted?
+How would you recover production infrastructure?
+🔹 3. Why does terraform plan sometimes show changes even though nobody modified the code?
+What causes state drift, and how do you detect and fix it?
+🔹 4. Explain the difference between count and for_each.
+When would using count become a production problem?
+🔹 5. What happens if two engineers run terraform apply at the same time?
+How does state locking work?
+🔹 6. Why would you use depends_on?
+When should you avoid using it?
+🔹 7. How do you safely rename a Terraform resource without deleting and recreating production infrastructure?
+🔹 8. How would you manage multiple environments (Dev, QA, UAT, Prod) without duplicating code?
+🔹 9. How do Terraform modules communicate with each other?
+When should you use outputs instead of remote state?
+🔹 10. Your infrastructure was created manually in AWS.
+How do you bring it under Terraform management without downtime?
+🔹 11. How do you protect sensitive values such as passwords, API keys, and database credentials?
+Is storing them in .tfvars enough?
+🔹 12. Terraform apply failed halfway through.
+Some resources were created.
+Some weren't.
+What would you do next?
+-----------------------------------------------------------------------
