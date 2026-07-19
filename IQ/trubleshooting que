@@ -1,0 +1,60 @@
+"It's 2:00 AM, and you're the on-call DevOps Engineer. A production application hosted on a Linux server has suddenly become very slow, and users are reporting timeouts. You cannot simply restart the server. How would you troubleshoot the issue?"
+
+My Approach
+
+1️⃣ Check the overall system health
+
+uptime
+top
+htop
+
+Verify CPU utilization.
+Check the load average.
+Identify processes consuming excessive resources.
+
+2️⃣ Check memory utilization
+free -h
+vmstat 1 5
+Verify available memory.
+Check whether the server is swapping heavily.
+
+3️⃣ Verify disk usage
+df -h
+du -sh /*
+Ensure no filesystem has reached 100% utilization.
+Identify directories consuming excessive disk space.
+
+4️⃣ Identify resource-intensive processes
+ps aux --sort=-%cpu
+ps aux --sort=-%mem
+Find processes consuming abnormal CPU or memory.
+
+5️⃣ Review system and application logs
+journalctl -xe
+tail -100 /var/log/syslog
+Look for service failures, kernel messages, or application errors.
+
+6️⃣ Verify network connectivity
+ss -tulnp
+curl localhost:<port>
+Confirm the application is listening on the expected port.
+Verify the service is responding locally. 
+
+7️⃣ Check critical services
+systemctl status nginx
+systemctl status docker
+systemctl status kubelet
+Verify that required services are healthy before taking any action.
+
+Key Takeaway
+
+In production, restarting the server should be the last option—not the first.
+
+A DevOps Engineer's responsibility is to:
+
+Gather evidence.
+Identify the root cause.
+Validate the findings.
+Implement the appropriate fix while minimizing downtime.
+
+This structured troubleshooting approach helps resolve incidents efficiently and prevents recurring issues.
